@@ -64,11 +64,6 @@ return {
 			---@type lspconfig.options
 			servers = {
 				lua_ls = {
-					-- mason = false, -- set to false if you don't want this server to be installed with mason
-					-- Use this to add any additional keymaps
-					-- for specific lsp servers
-					-- ---@type LazyKeysSpec[]
-					-- keys = {},
 					settings = {
 						Lua = {
 							workspace = {
@@ -107,20 +102,15 @@ return {
 						},
 					},
 					handlers = {
-						-- Usually gets called after another code action
-						-- https://github.com/jose-elias-alvarez/typescript.nvim/issues/17
 						['_typescript.rename'] = function(_, result)
 							return result
 						end,
-						-- 'Go to definition' workaround
-						-- https://github.com/holoiii/nvim/commit/73a4db74fe463f5064346ba63870557fedd134ad
 						['textDocument/definition'] = function(err, result, ...)
 							result = vim.islist(result) and result[1] or result
 							vim.lsp.handlers['textDocument/definition'](err, result, ...)
 						end,
 					},
 				},
-				--[[ cfg_lazy_lsp_servers_volar ]]
 				volar = {
 					filetypes = { 'vue' },
 					init_options = {
@@ -139,30 +129,20 @@ return {
 						},
 					},
 				},
-				-- pylsp = {
-				-- 	settings = {
-				-- 		pylsp = {
-				-- 			filetypes = { 'python' },
-				-- 			plugins = {
-				-- 				pycodestyle={
-				-- 					enabled = false,
-				-- 				},
-				-- 			}
-				-- 		}
-				-- 	}
-				-- },
+				-- Explicitly exclude julials from LazyVim management
+				julials = {
+					mason = false, -- Don't manage julia through mason
+					enabled = false, -- Don't set up through standard LazyVim mechanism
+				},
 			},
 			-- you can do any additional lsp server setup here
 			-- return true if you don't want this server to be setup with lspconfig
 			---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
 			setup = {
-				-- example to setup with typescript.nvim
 				tsserver = function(_, opts)
 					require("typescript").setup({ server = opts })
 					return true
 				end,
-				-- Specify * to use this function as a fallback for any server
-				-- ["*"] = function(server, opts) end,
 			},
 		}
 		local keys = require("lazyvim.plugins.lsp.keymaps").get()
@@ -171,10 +151,53 @@ return {
 	end,
 	---@param opts PluginLspOpts
 	config = function(_, opts)
-		-- setup autoformat
+		-- Setup Julia LSP with its original configuration first
+		-- Create specialized Julia capabilities function
+		local function create_capabilities()
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities.textDocument.completion.completionItem.snippetSupport = true
+			capabilities.textDocument.completion.completionItem.preselectSupport = true
+			capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
+			capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+			capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+			capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+			capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+			capabilities.textDocument.completion.completionItem.resolveSupport = {
+				properties = { "documentation", "detail", "additionalTextEdits" },
+			}
+			capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown" }
+			capabilities.textDocument.codeAction = {
+				dynamicRegistration = true,
+				codeActionLiteralSupport = {
+					codeActionKind = {
+						valueSet = (function()
+							local res = vim.tbl_values(vim.lsp.protocol.CodeActionKind)
+							table.sort(res)
+							return res
+						end)(),
+					},
+				},
+			}
+			return capabilities
+		end
+
+		-- Set up Julia LSP directly as in the original config
+		local on_attach = function(client, bufnr)
+			-- Use the default attach function first
+			vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+
+			-- Add any Julia-specific keybindings here if needed
+		end
+
+		-- Set up Julia LSP server directly using the original approach
+		require("lspconfig").julials.setup({
+			on_attach = on_attach,
+			capabilities = create_capabilities(),
+		})
+
+		-- Continue with LazyVim's standard LSP setup for other languages
 		LazyVim.format.register(LazyVim.lsp.formatter())
 
-		-- setup keymaps
 		LazyVim.lsp.on_attach(function(client, buffer)
 			require("lazyvim.plugins.lsp.keymaps").on_attach(client, buffer)
 		end)
@@ -182,7 +205,6 @@ return {
 		LazyVim.lsp.setup()
 		LazyVim.lsp.on_dynamic_capability(require("lazyvim.plugins.lsp.keymaps").on_attach)
 
-		-- diagnostics signs
 		if vim.fn.has("nvim-0.10.0") == 0 then
 			if type(opts.diagnostics.signs) ~= "boolean" then
 				for severity, icon in pairs(opts.diagnostics.signs.text) do
@@ -221,16 +243,17 @@ return {
 
 		if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
 			opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
-				or function(diagnostic)
-					local icons = LazyVim.config.icons.diagnostics
-					for d, icon in pairs(icons) do
-						if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
-							return icon
-						end
+			or function(diagnostic)
+				local icons = LazyVim.config.icons.diagnostics
+				for d, icon in pairs(icons) do
+					if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+						return icon
 					end
 				end
+			end
 		end
 
+		-- Apply global diagnostics config (will be overridden for Julia via the handler)
 		vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
 		local servers = opts.servers
@@ -246,6 +269,11 @@ return {
 		)
 
 		local function setup(server)
+			-- Skip julials since we set it up separately
+			if server == "julials" then
+				return
+			end
+
 			local server_opts = vim.tbl_deep_extend("force", {
 				capabilities = vim.deepcopy(capabilities),
 			}, servers[server] or {})
@@ -274,7 +302,7 @@ return {
 
 		local ensure_installed = {} ---@type string[]
 		for server, server_opts in pairs(servers) do
-			if server_opts then
+			if server_opts and server ~= "julials" then -- Skip julials
 				server_opts = server_opts == true and {} or server_opts
 				if server_opts.enabled ~= false then
 					-- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
