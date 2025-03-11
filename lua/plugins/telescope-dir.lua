@@ -1,10 +1,14 @@
 return {
 	"nvim-telescope/telescope-file-browser.nvim",
 	dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
-	priority = 100,
-	lazy = false,
+	event = "UIEnter",
 	config = function()
-		vim.keymap.set("n", "<leader><space>", ":Telescope file_browser<CR>")
+		local wk = require("which-key")
+		
+		wk.add({
+			mode = "n",
+			{"<leader><space>", ":Telescope file_browser<CR>", desc = "Open File Browser"}
+		})
 		require("telescope").setup({
 			extensions = {
 				file_browser = {

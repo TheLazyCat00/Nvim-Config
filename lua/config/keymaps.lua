@@ -4,9 +4,6 @@
 
 local wk = require("which-key")
 
--- Common options for all keymaps
-local CONFIG = { noremap = true, silent = true }
-
 wk.add({
 	-- Insert mode mappings
 	{
@@ -59,7 +56,7 @@ wk.add({
 			desc = "Indent line left"
 		},
 	},
-}, CONFIG)
+})
 
 -- Auto format on paste (optional)
 local autoformatEnabled = false
@@ -81,5 +78,5 @@ if autoformatEnabled then
 				desc = "Paste and auto-format"
 			}
 		}
-	}, CONFIG)
+	})
 end

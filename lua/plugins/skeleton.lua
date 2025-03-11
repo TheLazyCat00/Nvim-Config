@@ -24,7 +24,7 @@ end
 
 return {
 	"motosir/skel-nvim",
-	lazy = false,
+	event = "UIEnter",
 	opts = {
 		templates_dir = templatesDir,
 		mappings = getFilesInDir(templatesDir),

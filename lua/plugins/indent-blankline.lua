@@ -1,7 +1,7 @@
 return {
 	"lukas-reineke/indent-blankline.nvim",
 	version = "*", -- Use the latest version
-	lazy = false,
+	event = "BufReadPre",
 	config = function()
 		require("ibl").setup {
 			indent = {

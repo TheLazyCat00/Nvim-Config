@@ -1,8 +1,8 @@
 return {
 	{
 		"rebelot/kanagawa.nvim",
-		enabled = true,
 		lazy = false,
+		prioriy = 1000,
 		opts = function()
 			return {
 				theme = "wave",

@@ -3,6 +3,7 @@
 -- Add any additional options here
 vim.g.lazyvim_picker = "telescope"
 vim.g.lazyvim_cmp = "blink"
+vim.g.ai_assistant = "codecompanion"
 vim.g.ai_cmp = false
 
 vim.g.autoformat = false
@@ -18,3 +19,10 @@ vim.opt.autoindent = true
 
 vim.o.cmdheight = 0
 vim.opt.laststatus = 3
+
+vim.o.guifont = "CommitMono Nerd Font Mono:h10"
+
+vim.g.neovide_position_animation_length = 0.1
+vim.g.neovide_cursor_animation_length = 0.1
+vim.g.neovide_scroll_animation_length = 0.3
+vim.g.neovide_hide_mouse_when_typing = true
