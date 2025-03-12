@@ -124,7 +124,7 @@ return {
 				{"<leader>ai", ":CodeCompanion<CR>", desc = "Inline Assistant"},
 			},
 			{
-				mode = {"v", "x"},
+				mode = "x",
 				{"<leader>ap", ":CodeCompanionChat Add<CR>", desc = "Add Selected to Chat"},
 			}
 		})
