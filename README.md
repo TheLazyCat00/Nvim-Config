@@ -1,4 +1,7 @@
-# 💤 LazyVim
+### My nice Neovim Config: Fast and clean
 
-A starter template for [LazyVim](https://github.com/LazyVim/LazyVim).
-Refer to the [documentation](https://lazyvim.github.io/installation) to get started.
+Goals:
+- Make Neovim fast
+- Make it clean
+- Make it usefull
+- LAZYLOADING
