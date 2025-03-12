@@ -9,15 +9,18 @@ function _G.changeFromStart()
 end
 
 function _G.lineOperator()
-	local pending_operator = vim.v.operator
+	local pendingOperator = vim.v.operator
 	
 	-- If called with "c" as operator, use changeFromStart instead
-	if pending_operator == "c" then
+	if pendingOperator == "c" then
 		_G.changeFromStart()
 		return
 	end
+	if pendingOperator == "r" then
+		vim.cmd("normal! ^v$")
+	end
 
-	vim.cmd("normal! " .. pending_operator.. pending_operator)
+	vim.cmd("normal! " .. pendingOperator.. pendingOperator)
 end
 
 function _G.replaceWithClipboard(motion_type)
