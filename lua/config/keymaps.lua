@@ -3,36 +3,20 @@
 -- Add any additional keymaps here
 -- Define the uppercase operator function
 
-function _G.changeFromStart()
-	-- Go to start of line and set [ mark
-	vim.cmd("normal! $v^c")
-end
-
 function _G.lineOperator()
-	local pendingOperator = vim.v.operator
-	
-	-- If called with "c" as operator, use changeFromStart instead
-	if pendingOperator == "c" then
-		_G.changeFromStart()
-		return
-	end
-	if pendingOperator == "r" then
-		vim.cmd("normal! ^v$")
-	end
+	local view = vim.fn.winsaveview()
 
-	vim.cmd("normal! " .. pendingOperator.. pendingOperator)
+	vim.cmd('normal! ^v$')
+
+	vim.schedule(function()
+		vim.fn.winrestview(view)
+	end)
 end
 
 function _G.replaceWithClipboard(motion_type)
 	local start_pos = vim.fn.getpos("'[")
 	local end_pos = vim.fn.getpos("']")
 
-	local line = vim.api.nvim_buf_get_lines(0, start_pos[2] - 1, start_pos[2], false)[1]
-
-	-- Find next non-whitespace character column
-	while start_pos[3] <= #line and line:sub(start_pos[3], start_pos[3]):match("%s") do
-		start_pos[3] = start_pos[3] + 1
-	end
 	-- Get clipboard content (using the + register for system clipboard)
 	local clipboard_text = vim.fn.getreg('+')
 	clipboard_text = vim.trim(clipboard_text)
