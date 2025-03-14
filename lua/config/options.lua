@@ -20,6 +20,8 @@ vim.opt.autoindent = true
 vim.o.cmdheight = 0
 vim.opt.laststatus = 3
 
+vim.opt.scrolloff = 10
+
 vim.o.guifont = "CommitMono Nerd Font Mono:h10"
 
 vim.g.neovide_position_animation_length = 0.1

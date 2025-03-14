@@ -42,11 +42,12 @@ require("lazy").setup({
 				"gzip",
 				-- "matchit",
 				-- "matchparen",
-				-- "netrwPlugin",
+				"netrwPlugin",
 				"tarPlugin",
 				"tohtml",
 				"tutor",
 				"zipPlugin",
+				"man",              -- Manual page viewer (if you don't use :Man)
 			},
 		},
 	},

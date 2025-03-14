@@ -21,9 +21,10 @@ vim.api.nvim_create_user_command('Wqa', 'wqa', { nargs = 0 })
 vim.api.nvim_create_user_command('Q', 'q', { nargs = 0 })
 vim.api.nvim_create_user_command('Qa', 'qa', { nargs = 0 })
 
-vim.opt.scroll = 15
 
 vim.cmd("language en_US.UTF-8")
 vim.cmd([[
 	au BufReadPost * if expand('%:p') !~# '\m/\.git/' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 ]])
+
+vim.opt.scroll = 15

@@ -3,17 +3,31 @@
 -- Add any additional keymaps here
 -- Define the uppercase operator function
 
-function _G.lineOperator()
+function _G.lineMotion()
 	local view = vim.fn.winsaveview()
 
-	vim.cmd('normal! ^v$')
+	local last_operator = vim.v.operator
+
+	if last_operator == "d" then
+		vim.api.nvim_feedkeys("dd", "n", true)
+		return
+	elseif last_operator == "y" then
+		vim.api.nvim_feedkeys("yy", "n", true)
+		return
+	end
+	
+	vim.cmd('normal! ^v$h')
+
+	if last_operator == "c" then
+		return
+	end
 
 	vim.schedule(function()
 		vim.fn.winrestview(view)
 	end)
 end
 
-function _G.replaceWithClipboard(motion_type)
+function _G.replaceWithClipboard()
 	local start_pos = vim.fn.getpos("'[")
 	local end_pos = vim.fn.getpos("']")
 
@@ -88,7 +102,7 @@ wk.add({
 			desc = "Indent line left"
 		},
 		{
-			"r",
+			"t",
 			function()
 				vim.o.operatorfunc = 'v:lua.replaceWithClipboard'
 				return 'g@'
@@ -100,12 +114,27 @@ wk.add({
 	{
 		mode = {"o", "x"},
 		{
-			"o",
-			_G.lineOperator,
+			"u",
+			_G.lineMotion,
 			desc = "Current line",
-		}
+		},
 	},
 })
+
+local doubles = { "d", "y", "c", "=", "<", ">", "z" }
+
+local disabledDoubles = {
+	mode = "o"
+}
+
+for index, double in ipairs(doubles) do
+	disabledDoubles[index] = {
+		double,
+		"<NOP>"
+	}
+end
+
+wk.add(disabledDoubles)
 
 -- Auto format on paste (optional)
 local autoformatEnabled = false
