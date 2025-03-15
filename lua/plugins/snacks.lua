@@ -24,7 +24,6 @@ return {
 			image = { enabled = false },
 			indent = { enabled = false },
 			scroll = { enabled = false },
-			lazygit = { enabled = false },
 			picker = { enabled = false },
 			scope = { enabled = false },
 			rename = { enabled = false },
@@ -35,6 +34,7 @@ return {
 			quickfile = { enabled = true },
 			statuscolumn = { enabled = true },
 			words = { enabled = true },
+			lazygit = { enabled = true },
 			dashboard = {
 				enabled = true,
 				preset = {
