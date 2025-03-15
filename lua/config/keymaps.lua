@@ -80,11 +80,11 @@ wk.add({
 		{ "-", '"_', desc = "Use black hole register" },
 	},
 
-	-- Normal mode mappings
+	-- Normal mode mapping
 	{
 		mode = "n",
 		{ "U", ":redo<CR>", desc = "Redo" },
-		{ "s", "<NOP>", desc = "Disable substitute (used as prefix)" },
+		{ "s", "<NOP>", desc = "Exit"},
 		{ "sj", ":wa<CR>", desc = "Save all buffers" },
 		{ "sk", ":wqa<CR>", desc = "Save all and quit" },
 		{
