@@ -14,7 +14,7 @@ return {
 
 		-- All the patterns used to detect root dir, when **"pattern"** is in
 		-- detection_methods
-		patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "LICENSE.txt", ".gitignore" },
+		patterns = { "main.*", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "LICENSE.txt", ".gitignore", "README.*" },
 
 		-- Table of lsp clients to ignore by name
 		-- eg: { "efm", ... }
@@ -61,5 +61,13 @@ return {
 			end,
 			once = true
 		})
-	end
+	end,
+	keys = {
+		{
+			"so", function ()
+				require'telescope'.extensions.projects.projects{}
+			end,
+			desc = "Open Sessions"
+		}
+	}
 }

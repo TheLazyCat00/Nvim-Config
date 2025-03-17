@@ -3,9 +3,15 @@ return {
 	event = "VeryLazy",
 	opts = {
 		preset = "classic",
+		spec = {
+			{
+				mode = "n",
+				{ "<leader>q", group = false },
+			}
+		},
 		triggers = {
 			{ "<auto>", mode = "nixsotc" },
-			{ "s", mode = "n" },
+			{ "s", mode = "n", group = "quit/session" },
 		}
 	},
 }
