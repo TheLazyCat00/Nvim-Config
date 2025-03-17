@@ -85,7 +85,6 @@ wk.add({
 		mode = "n",
 		{ "U", ":redo<CR>", desc = "Redo" },
 		{ "<leader>qq", "<NOP>", hidden = true},
-		{ "s", "<NOP>", desc = "session/exit"},
 		{ "sj", ":wa<CR>", desc = "Save all buffers" },
 		{ "sk", ":wqa<CR>", desc = "Save all and quit" },
 		{
@@ -127,6 +126,7 @@ wk.add({
 		mode = "n",
 		{ "<leader>a", group = "ai assistant"},
 		{ "<leader>p", group = "profiler"},
+		{ "s", "<NOP>", group = "session/exit"},
 	}
 })
 

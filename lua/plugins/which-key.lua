@@ -11,7 +11,7 @@ return {
 		},
 		triggers = {
 			{ "<auto>", mode = "nixsotc" },
-			{ "s", mode = "n", group = "quit/session" },
+			{ "s", mode = "n" },
 		}
 	},
 }
