@@ -40,7 +40,7 @@ function _G.replaceWithClipboard()
 
 	-- Replace the text
 	vim.api.nvim_buf_set_text(
-		0,                    -- buffer number (0 = current)
+		0,                   -- buffer number (0 = current)
 		start_pos[2] - 1,    -- start line
 		start_pos[3] - 1,    -- start col
 		end_pos[2] - 1,      -- end line
@@ -101,6 +101,8 @@ wk.add({
 			end,
 			desc = "Indent line left"
 		},
+	},
+		mode = {"n", "x"},
 		{
 			"t",
 			function()
@@ -110,7 +112,6 @@ wk.add({
 			desc = "Replace with Clipboard",
 			expr = true
 		},
-	},
 	{
 		mode = {"o", "x"},
 		{
