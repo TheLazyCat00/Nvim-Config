@@ -14,10 +14,10 @@ local function line_sub(line_num, pattern, replacement)
 	vim.opt.lazyredraw = true
 
 	-- Do the substitution silently on just that line
-	vim.cmd(string.format('keepjumps %d s/%s/%s/ge', 
-		line_num,    -- Target line number
-		pattern,     -- Search pattern
-		replacement  -- Replacement text
+	vim.cmd(string.format('keepjumps silent! %d s/%s/%s/ge',
+		line_num,   -- Target line number
+		pattern,    -- Search pattern
+		replacement -- Replacement text
 	))
 
 	-- Restore the saved view
@@ -28,23 +28,20 @@ local function line_sub(line_num, pattern, replacement)
 end
 
 function _G.formatCurrentLine()
-	local none_white = [[\(\S\)]]
+	local word = [[\(\w\)]]
+	local search = [[\(=\|{\|}\)]]
 
-	local excluded = [[\(?<!=\|!\|+\|-\|*\|\/\|\)]]
-	local replace = [[\(]] .. excluded .. [[=\|{\|}\)]]
+	local pattern1 = word .. search
+	local pattern2 = search .. word
 
-	local replace_groups1 = [[\1 \2]]
-	local replace_groups2 = [[\1 \3]]
+	local replace_group = [[\1 \2]]
 
-	local whole_string1 = none_white .. replace
-	local whole_string2 = replace .. none_white
-
-	line_sub(vim.fn.line("."), whole_string1, replace_groups1)
-	line_sub(vim.fn.line("."), whole_string2, replace_groups2)
+	line_sub(vim.fn.line("."), pattern1, replace_group)
+	line_sub(vim.fn.line("."), pattern2, replace_group)
 end
 
 vim.api.nvim_create_autocmd("ModeChanged", {
-	pattern = "*:n",  -- Triggers when changing TO normal mode
+	pattern = "*:n", -- Triggers when changing TO normal mode
 	callback = _G.formatCurrentLine
 })
 
@@ -52,9 +49,9 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = "python",
 	callback = function()
 		vim.bo.expandtab = false -- Use tabs instead of spaces
-		vim.bo.tabstop = 4 -- Number of spaces per tab
-		vim.bo.shiftwidth = 4 -- Number of spaces for indentation
-		vim.bo.softtabstop = 4 -- Tab key behaves as 4 spaces
+		vim.bo.tabstop = 4       -- Number of spaces per tab
+		vim.bo.shiftwidth = 4    -- Number of spaces for indentation
+		vim.bo.softtabstop = 4   -- Tab key behaves as 4 spaces
 	end,
 })
 
