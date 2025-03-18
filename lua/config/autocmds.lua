@@ -6,45 +6,6 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
-local function line_sub(line_num, pattern, replacement)
-	-- Save the current window view
-	local view = vim.fn.winsaveview()
-
-	-- Disable screen redraws
-	vim.opt.lazyredraw = true
-
-	-- Do the substitution silently on just that line
-	vim.cmd(string.format('keepjumps silent! %d s/%s/%s/ge',
-		line_num,   -- Target line number
-		pattern,    -- Search pattern
-		replacement -- Replacement text
-	))
-
-	-- Restore the saved view
-	vim.fn.winrestview(view)
-
-	-- Re-enable screen redraws
-	vim.opt.lazyredraw = false
-end
-
-function _G.formatCurrentLine()
-	local word = [[\(\w\)]]
-	local search = [[\(=\|{\|}\)]]
-
-	local pattern1 = word .. search
-	local pattern2 = search .. word
-
-	local replace_group = [[\1 \2]]
-
-	line_sub(vim.fn.line("."), pattern1, replace_group)
-	line_sub(vim.fn.line("."), pattern2, replace_group)
-end
-
-vim.api.nvim_create_autocmd("ModeChanged", {
-	pattern = "*:n", -- Triggers when changing TO normal mode
-	callback = _G.formatCurrentLine
-})
-
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "python",
 	callback = function()
