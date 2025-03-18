@@ -5,31 +5,30 @@
 
 function _G.lineMotion()
 	local view = vim.fn.winsaveview()
+	vim.opt.lazyredraw = true
 
 	local last_operator = vim.v.operator
 
 	if last_operator == "d" then
 		vim.api.nvim_feedkeys("dd", "n", true)
-		return
 	elseif last_operator == "y" then
 		vim.api.nvim_feedkeys("yy", "n", true)
-		return
-	end
-	
-	vim.cmd('normal! ^v$h')
-
-	if last_operator == "c" then
-		return
+	else
+		vim.cmd('normal! ^v$h')
 	end
 
-	vim.schedule(function()
-		vim.fn.winrestview(view)
-	end)
+	if last_operator ~= "c" then
+		vim.schedule(function()
+			vim.fn.winrestview(view)
+		end)
+	end
+
+	vim.opt.lazyredraw = false
 end
 
 function _G.replaceWithClipboard()
 	local start_pos = vim.fn.getpos("'[")
-	local end_pos = vim.fn.getpos("']")
+	local end_pos=vim.fn.getpos("']")
 
 	-- Get clipboard content (using the + register for system clipboard)
 	local clipboard_text = vim.fn.getreg('+')
@@ -54,7 +53,7 @@ local wk = require("which-key")
 wk.add({
 	-- Insert mode mappings
 	{
-		mode = "i",
+		mode="i",
 		{ "<C-k>", "<Up>", desc = "Move cursor up" },
 		{ "<C-h>", "<Left>", desc = "Move cursor left" },
 		{ "<C-j>", "<Down>", desc = "Move cursor down" },
@@ -82,9 +81,9 @@ wk.add({
 
 	-- Normal mode mapping
 	{
-		mode = "n",
+		mode="n",
 		{ "U", ":redo<CR>", desc = "Redo" },
-		{ "<leader>qq", "<NOP>", hidden = true},
+		{ "<leader>qq", "<NOP>", hidden = true } ,
 		{ "sj", ":wa<CR>", desc = "Save all buffers" },
 		{ "sk", ":wqa<CR>", desc = "Save all and quit" },
 		{
@@ -102,7 +101,7 @@ wk.add({
 			desc = "Indent line left"
 		},
 	},
-		mode = {"n", "x"},
+		mode = {"n", "x" } ,
 		{
 			"t",
 			function()
@@ -113,7 +112,7 @@ wk.add({
 			expr = true
 		},
 	{
-		mode = {"o", "x"},
+		mode = {"o", "x" } ,
 		{
 			"u",
 			_G.lineMotion,
@@ -125,9 +124,9 @@ wk.add({
 wk.add({
 	{
 		mode = "n",
-		{ "<leader>a", group = "ai assistant"},
-		{ "<leader>p", group = "profiler"},
-		{ "s", "<NOP>", group = "session/exit"},
+		{ "<leader>a", group = "ai assistant" } ,
+		{ "<leader>p", group = "profiler" } ,
+		{ "s", "<NOP>", group = "session/exit" } ,
 	}
 })
 
