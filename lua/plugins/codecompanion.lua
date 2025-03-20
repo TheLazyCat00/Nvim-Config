@@ -76,6 +76,7 @@ return {
 		adapters = {
 			opts = {
 				show_defaults = false,
+				cache_models_for = 1800
 			},
 
 			["copilot"] = function()
