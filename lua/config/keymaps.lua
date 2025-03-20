@@ -1,7 +1,6 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
--- Define the uppercase operator function
 
 function _G.lineMotion()
 	local view = vim.fn.winsaveview()
@@ -53,7 +52,7 @@ local wk = require("which-key")
 wk.add({
 	-- Insert mode mappings
 	{
-		mode="i",
+		mode = "i",
 		{ "<C-k>", "<Up>", desc = "Move cursor up" },
 		{ "<C-h>", "<Left>", desc = "Move cursor left" },
 		{ "<C-j>", "<Down>", desc = "Move cursor down" },
@@ -69,8 +68,8 @@ wk.add({
 	-- Visual mode mappings
 	{
 		mode = "x",
-		{ ".", ":norm .<CR>", desc = "Repeat last change" },
-		{ "@", ":norm @q<CR>", desc = "Execute macro 'q'" },
+		{ ".", "<cmd>norm .<CR>", desc = "Repeat last change" },
+		{ "@", "<cmd>norm @q<CR>", desc = "Execute macro 'q'" },
 	},
 
 	-- Normal and Visual mode mappings
@@ -82,10 +81,10 @@ wk.add({
 	-- Normal mode mapping
 	{
 		mode="n",
-		{ "U", ":redo<CR>", desc = "Redo" },
+		{ "U", "<cmd>redo<CR>", desc = "Redo" },
 		{ "<leader>qq", "<NOP>", hidden = true } ,
-		{ "sj", ":wa<CR>", desc = "Save all buffers" },
-		{ "sk", ":wqa<CR>", desc = "Save all and quit" },
+		{ "sj", "<cmd>wa<CR>", desc = "Save all buffers" },
+		{ "sk", "<cmd>wqa<CR>", desc = "Save all and quit" },
 		{
 			">",
 			function()

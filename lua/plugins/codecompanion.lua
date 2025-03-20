@@ -12,9 +12,10 @@ local maxTokens = {
 	default = nil,
 	desc = "The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.",
 }
+
 return {
 	"olimorris/codecompanion.nvim",
-	event = "UIEnter",
+	event = "VeryLazy",
 	enabled = vim.g.ai_assistant == "codecompanion",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
@@ -89,45 +90,12 @@ return {
 					},
 				})
 			end,
-
-			-- ["claude-3.5-sonnet"] = function()
-			-- 	return require("codecompanion.adapters").extend("copilot", {
-			-- 		name = "claude-3.5-sonnet",
-			-- 		schema = {
-			-- 			model = {
-			-- 				default = "claude-3.5-sonnet",
-			-- 			},
-			-- 			max_tokens = maxTokens
-			-- 		},
-			-- 	})
-			-- end,
-
-			-- ["o3-mini"] = function()
-			-- 	return require("codecompanion.adapters").extend("copilot", {
-			-- 		name = "o3-mini",
-			-- 		schema = {
-			-- 			model = {
-			-- 				default = "o3-mini",
-			-- 			},
-			-- 			max_tokens = maxTokens
-			-- 		},
-			-- 	})
-			-- end,
 		}
 	},
-	init = function()
-		local wk = require("which-key")
-		wk.add({
-			{
-				mode = "n",
-				{"<leader>at", ":CodeCompanionChat Toggle<CR>", desc = "Toggle Companion"},
-				{"<leader>aa", ":CodeCompanionActions<CR>", desc = "Companion Actions"},
-				{"<leader>ai", ":CodeCompanion<CR>", desc = "Inline Assistant"},
-			},
-			{
-				mode = "x",
-				{"<leader>ap", ":CodeCompanionChat Add<CR>", desc = "Add Selected to Chat"},
-			}
-		})
-	end,
+	keys = {
+		{"<leader>at", ":CodeCompanionChat Toggle<CR>", mode = "n", desc = "Toggle Companion"},
+		{"<leader>aa", ":CodeCompanionActions<CR>", mode = "n", desc = "Companion Actions"},
+		{"<leader>ai", ":CodeCompanion<CR>", mode = "n", desc = "Inline Assistant"},
+		{"<leader>ap", ":CodeCompanionChat Add<CR>", mode = "n", desc = "Add Selected to Chat"},
+	}
 }

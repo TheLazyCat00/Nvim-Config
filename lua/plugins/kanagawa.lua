@@ -21,7 +21,7 @@ return {
 				overrides = function(colors)
 					return {
 						-- Your existing boolean override
-						Boolean = { fg = "#89DEE9" },
+						Boolean = { fg = "#38d5ea" },
 
 						StatusLine = { bg = "#2a2a37" },
 					}
