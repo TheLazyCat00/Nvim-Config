@@ -95,6 +95,6 @@ return {
 		{"<leader>at", ":CodeCompanionChat Toggle<CR>", mode = "n", desc = "Toggle Companion"},
 		{"<leader>aa", ":CodeCompanionActions<CR>", mode = "n", desc = "Companion Actions"},
 		{"<leader>ai", ":CodeCompanion<CR>", mode = "n", desc = "Inline Assistant"},
-		{"<leader>ap", ":CodeCompanionChat Add<CR>", mode = "n", desc = "Add Selected to Chat"},
+		{"<leader>ap", ":CodeCompanionChat Add<CR>", mode = "x", desc = "Add Selected to Chat"},
 	}
 }

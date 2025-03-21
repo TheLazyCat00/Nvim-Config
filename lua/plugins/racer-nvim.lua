@@ -1,9 +1,14 @@
 return {
 	"TheLazyCat00/racer-nvim",
+	enabled = false,
 	opts = {
 		triggers = {
 			{"[", "]"},
 			{"F", "f"},
+		},
+		external = {
+			["f"] = require("flash.plugins.char").next,
+			["F"] = require("flash.plugins.char").prev,
 		}
 	},
 	keys = {

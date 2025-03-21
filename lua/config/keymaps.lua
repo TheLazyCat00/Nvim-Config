@@ -123,7 +123,7 @@ wk.add({
 wk.add({
 	{
 		mode = "n",
-		{ "<leader>a", group = "ai assistant" } ,
+		{ "<leader>a", group = "ai assistant", mode = {"x", "n"} } ,
 		{ "<leader>p", group = "profiler" } ,
 		{ "s", "<NOP>", group = "session/exit" } ,
 	}
