@@ -45,7 +45,7 @@ return {
 		require("project_nvim").setup(opts)
 		require('telescope').load_extension('projects')
 
-		vim.schedule(function ()
+		vim.defer_fn(function ()
 			local recent_projects = require("project_nvim").get_recent_projects()
 
 			if #recent_projects > 0 then
@@ -53,7 +53,7 @@ return {
 				print("Switching to recent project: " .. latest_project)
 				vim.cmd("cd " .. vim.fn.fnameescape(latest_project))
 			end
-		end)
+		end, 10)
 	end,
 	keys = {
 		{

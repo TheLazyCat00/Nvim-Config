@@ -1,5 +1,6 @@
 return {
 	"TheLazyCat00/racer-nvim",
+	event = "BufReadPost",
 	opts = {
 		triggers = {
 			{"[", "]"},

@@ -92,9 +92,9 @@ return {
 		}
 	},
 	keys = {
-		{"<leader>at", ":CodeCompanionChat Toggle<CR>", mode = "n", desc = "Toggle Companion"},
-		{"<leader>aa", ":CodeCompanionActions<CR>", mode = "n", desc = "Companion Actions"},
-		{"<leader>ai", ":CodeCompanion<CR>", mode = "n", desc = "Inline Assistant"},
-		{"<leader>ap", ":CodeCompanionChat Add<CR>", mode = "x", desc = "Add Selected to Chat"},
+		{"<leader>at", "<cmd>CodeCompanionChat Toggle<CR>", mode = "n", desc = "Toggle Companion"},
+		{"<leader>aa", "<cmd>CodeCompanionActions<CR>", mode = "n", desc = "Companion Actions"},
+		{"<leader>ai", "<cmd>CodeCompanion<CR>", mode = "n", desc = "Inline Assistant"},
+		{"<leader>ap", "<cmd>CodeCompanionChat Add<CR>", mode = "x", desc = "Add Selected to Chat"},
 	}
 }
