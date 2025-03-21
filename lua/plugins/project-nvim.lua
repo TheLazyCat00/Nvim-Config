@@ -1,6 +1,6 @@
 return {
 	"ahmedkhalf/project.nvim",
-	event = "VimEnter",
+	event = "VeryLazy",
 	opts = {
 		-- Manual mode doesn't automatically change your root directory, so you have
 		-- the option to manually do so using `:ProjectRoot` command.
@@ -45,22 +45,15 @@ return {
 		require("project_nvim").setup(opts)
 		require('telescope').load_extension('projects')
 
-		vim.api.nvim_create_autocmd("UIEnter", {
-			callback = function()
-				-- Add a small delay to ensure everything is initialized
-				vim.defer_fn(function()
-					local project_nvim = require("project_nvim")
-					local recent_projects = project_nvim.get_recent_projects()
+		vim.schedule(function ()
+			local recent_projects = require("project_nvim").get_recent_projects()
 
-					if #recent_projects > 0 then
-						local latest_project = recent_projects[#recent_projects]
-						print("Switching to recent project: " .. latest_project)
-						vim.cmd("cd " .. vim.fn.fnameescape(latest_project))
-					end
-				end, 100)
-			end,
-			once = true
-		})
+			if #recent_projects > 0 then
+				local latest_project = recent_projects[#recent_projects]
+				print("Switching to recent project: " .. latest_project)
+				vim.cmd("cd " .. vim.fn.fnameescape(latest_project))
+			end
+		end)
 	end,
 	keys = {
 		{

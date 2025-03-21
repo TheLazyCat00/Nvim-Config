@@ -4,8 +4,9 @@ return {
 		default_config = {
 			target_query = [[
 				value: (_) @value
-				arguments: (_) @arguments
-				parameters: (_) @parameters
+				arguments: (_ 
+					(_) @arguments)
+				name: (_) @name
 			]],
 			offsets = {},
 		}
