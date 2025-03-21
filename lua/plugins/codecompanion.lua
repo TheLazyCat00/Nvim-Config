@@ -15,7 +15,6 @@ local maxTokens = {
 
 return {
 	"olimorris/codecompanion.nvim",
-	event = "VeryLazy",
 	enabled = vim.g.ai_assistant == "codecompanion",
 	dependencies = {
 		"nvim-lua/plenary.nvim",

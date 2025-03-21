@@ -1,4 +1,4 @@
 return {
 	"https://github.com/rafcamlet/nvim-luapad",
-	event = "VeryLazy",
+	cmd = {"Luapad", "LuaRun"}
 }

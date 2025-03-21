@@ -1,6 +1,5 @@
 return {
 	"https://github.com/chrisgrieser/nvim-spider",
-	event = "BufReadPost",
 	opts = {
 		skipInsignificantPunctuation = true,
 		consistentOperatorPending = true, -- see "Consistent Operator-pending Mode" in the README

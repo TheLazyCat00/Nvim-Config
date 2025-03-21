@@ -27,7 +27,7 @@ end
 
 function _G.replaceWithClipboard()
 	local start_pos = vim.fn.getpos("'[")
-	local end_pos=vim.fn.getpos("']")
+	local end_pos = vim.fn.getpos("']")
 
 	-- Get clipboard content (using the + register for system clipboard)
 	local clipboard_text = vim.fn.getreg('+')
