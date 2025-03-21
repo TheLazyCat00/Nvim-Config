@@ -7,3 +7,9 @@ Philosphy:
 - LAZYLOADING
 
 There might be some weird keymaps since my config is optimized for speed.
+
+| Stats | |
+| --- | --- |
+| Distro | LazyVim |
+| Theme | Kanagawa |
+| Startup  time | ~30 ms |
