@@ -28,3 +28,5 @@ vim.g.neovide_position_animation_length = 0.1
 vim.g.neovide_cursor_animation_length = 0.1
 vim.g.neovide_scroll_animation_length = 0.3
 vim.g.neovide_hide_mouse_when_typing = true
+
+vim.hl = vim.highlight -- workaround for :Inspect

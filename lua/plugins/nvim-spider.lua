@@ -2,7 +2,7 @@ return {
 	"https://github.com/chrisgrieser/nvim-spider",
 	opts = {
 		skipInsignificantPunctuation = true,
-		consistentOperatorPending = true, -- see "Consistent Operator-pending Mode" in the README
+		consistentOperatorPending = false, -- see "Consistent Operator-pending Mode" in the README
 		subwordMovement = false,
 		customPatterns = {}, -- check "Custom Movement Patterns" in the README for details
 	},

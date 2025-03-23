@@ -53,7 +53,7 @@ return {
 				print("Switching to recent project: " .. latest_project)
 				vim.cmd("cd " .. vim.fn.fnameescape(latest_project))
 			end
-		end, 10)
+		end, 100)
 	end,
 	keys = {
 		{
