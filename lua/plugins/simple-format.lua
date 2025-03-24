@@ -12,11 +12,6 @@ return {
 				vim.schedule(function ()
 					replace("(%S)(<operator>)", "%1 %2")
 					replace("(<operator>)(%S)", "%1 %2")
-					replace("(%S)(<constructor>)", "%1 %2")
-					replace("(<constructor>)(%S)", "%1 %2")
-					replace("(<punctuation.bracket>) (<constructor>)", "%1%2")
-					replace("(<constructor>) (<punctuation.bracket>)", "%1%2")
-					replace("(<constructor>) (<constructor>)", "%1%2")
 					replace("(<punctuation.bracket>) (<punctuation.bracket>)", "%1%2")
 				end)
 			end,
