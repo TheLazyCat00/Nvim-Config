@@ -1,8 +1,11 @@
 return {
 	'Wansmer/treesj',
-	event = "BufRead",
+	event = "BufReadPost",
 	dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
-	config = function()
-		vim.keymap.set('n', 'm', require('treesj').toggle)
-	end
+	opts = {
+		max_join_length = 500,
+	},
+	keys = {
+		{ "m", "<cmd>lua require('treesj').toggle()<CR>", mode = "n", desc = "Toggle split/join" }
+	}
 }

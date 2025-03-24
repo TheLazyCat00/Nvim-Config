@@ -35,6 +35,7 @@
   "persistence.nvim": { "branch": "main", "commit": "166a79a55bfa7a4db3e26fc031b4d92af71d0b51" },
   "plenary.nvim": { "branch": "master", "commit": "857c5ac632080dba10aae49dba902ce3abf91b35" },
   "project.nvim": { "branch": "main", "commit": "8c6bad7d22eef1b71144b401c9f74ed01526a4fb" },
+  "satellite.nvim": { "branch": "main", "commit": "253bf5215a7329e0e24f7b0ec27c06eae13a6b79" },
   "skel-nvim": { "branch": "main", "commit": "db2f023c5a7bfbae6d5896be2cd0ceb0e6b92a80" },
   "snacks.nvim": { "branch": "main", "commit": "bc0630e43be5699bb94dadc302c0d21615421d93" },
   "tabtree.nvim": { "branch": "main", "commit": "7254d5486a4b12153c4e084dbd350e20ebefb461" },

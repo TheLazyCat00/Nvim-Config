@@ -1,5 +1,5 @@
 return {
-	"https://github.com/mawkler/demicolon.nvim",
+	"mawkler/demicolon.nvim",
 	enabled = false,
 	event = "BufReadPost",
 	config = function ()

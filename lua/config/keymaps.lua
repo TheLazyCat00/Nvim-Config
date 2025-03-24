@@ -2,7 +2,7 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
-function _G.lineMotion()
+function _G.line_motion()
 	local view = vim.fn.winsaveview()
 	vim.opt.lazyredraw = true
 
@@ -23,28 +23,6 @@ function _G.lineMotion()
 	end
 
 	vim.opt.lazyredraw = false
-end
-
-function _G.replaceWithClipboard()
-	local start_pos = vim.fn.getpos("'[")
-	local end_pos = vim.fn.getpos("']")
-
-	-- Get clipboard content (using the + register for system clipboard)
-	local clipboard_text = vim.fn.getreg('+')
-	clipboard_text = vim.trim(clipboard_text)
-
-	-- Split clipboard text into lines
-	local clipboard_lines = vim.split(clipboard_text, '\n', { plain = true })
-
-	-- Replace the text
-	vim.api.nvim_buf_set_text(
-		0,                   -- buffer number (0 = current)
-		start_pos[2] - 1,    -- start line
-		start_pos[3] - 1,    -- start col
-		end_pos[2] - 1,      -- end line
-		end_pos[3],          -- end col
-		clipboard_lines      -- replacement text from clipboard
-	)
 end
 
 local wk = require("which-key")
@@ -100,21 +78,11 @@ wk.add({
 			desc = "Indent line left"
 		},
 	},
-		mode = {"n", "x" } ,
-		{
-			"t",
-			function()
-				vim.o.operatorfunc = 'v:lua.replaceWithClipboard'
-				return 'g@'
-			end,
-			desc = "Replace with Clipboard",
-			expr = true
-		},
 	{
 		mode = {"o", "x" } ,
 		{
 			"u",
-			_G.lineMotion,
+			_G.line_motion,
 			desc = "Current line",
 		},
 	},
@@ -123,7 +91,7 @@ wk.add({
 wk.add({
 	{
 		mode = "n",
-		{ "<leader>a", group = "ai assistant", mode = {"x", "n"} } ,
+		{ "<leader>a", group = "ai assistant", mode = { "x", "n" }},
 		{ "<leader>p", group = "profiler" } ,
 		{ "s", "<NOP>", group = "session/exit" } ,
 	}
