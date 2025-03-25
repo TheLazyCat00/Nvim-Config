@@ -3,7 +3,8 @@
 -- Add any additional options here
 vim.g.lazyvim_picker = "telescope"
 vim.g.lazyvim_cmp = "blink"
-vim.g.ai_assistant = "codecompanion"
+-- vim.g.ai_assistant = "codecompanion"
+vim.g.ai_assistant = "avante"
 vim.g.ai_cmp = false
 
 vim.g.autoformat = false

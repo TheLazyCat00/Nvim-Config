@@ -4,7 +4,8 @@ return {
 	enabled = vim.g.ai_assistant == "avante",
 	version = false, -- Use latest code changes
 	opts = {
-		provider = "copilot2",
+		provider = "copilot3",
+		cursor_applying_provider = "copilot4",
 		auto_suggestions_provider = "copilot4",
 
 		behaviour = {
@@ -17,7 +18,7 @@ return {
 			enable_token_counting = false,
 		},
 		file_selector = {
-			provider = "native",
+			provider = "telescope",
 			provider_opts = {},
 		},
 		web_search_engine = {
@@ -38,19 +39,22 @@ return {
 			["copilot1"] = {
 				__inherited_from = "copilot",
 				model = "claude-3.5-sonnet",
+				display_name = "claude-3.5-sonnet"
 			},
 			["copilot2"] = {
 				__inherited_from = "copilot",
 				model = "claude-3.7-sonnet",
+				display_name = "claude-3.7-sonnet"
 			},
 			["copilot3"] = {
 				__inherited_from = "copilot",
-				model = "claude-3.7-sonnet-thinking",
+				model = "claude-3.7-sonnet-thought",
+				display_name = "claude-3.7-sonnet-thought",
 			},
 			["copilot4"] = {
 				__inherited_from = "copilot",
 				model = "o3-mini",
-				reasoning_effort = "low",
+				display_name = "o3-mini",
 			},
 		},
 	},
@@ -61,6 +65,8 @@ return {
 		"stevearc/dressing.nvim",
 		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
+		"zbirenbaum/copilot.lua",
+		"nvim-telescope/telescope.nvim",
 		{
 			"MeanderingProgrammer/render-markdown.nvim",
 			opts = {
