@@ -1,10 +1,11 @@
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
-vim.g.lazyvim_picker = "telescope"
+
+vim.g.lazyvim_picker = "snacks-picker"
 vim.g.lazyvim_cmp = "blink"
--- vim.g.ai_assistant = "codecompanion"
 vim.g.ai_assistant = "avante"
+vim.g.project_manager = "persistence.nvim"
 vim.g.ai_cmp = false
 
 vim.g.autoformat = false

@@ -1,6 +1,7 @@
 return {
 	"nvim-telescope/telescope-file-browser.nvim",
 	dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+	enabled = vim.g.lazyvim_picker == "telescope",
 	event = "UIEnter",
 	opts = {
 		extensions = {
