@@ -18,7 +18,7 @@ return {
 			enable_token_counting = false,
 		},
 		file_selector = {
-			provider = "telescope",
+			provider = vim.g.lazyvim_picker,
 			provider_opts = {},
 		},
 		web_search_engine = {
@@ -30,8 +30,9 @@ return {
 			endpoint = "https://api.githubcopilot.com",
 			proxy = nil, -- [protocol://]host[:port] Use this proxy
 			allow_insecure = false, -- Allow insecure server connections
-			timeout = 5*60*1000, -- Timeout in milliseconds
+			timeout = 10 * 60 * 1000, -- Timeout in milliseconds
 			temperature = 0,
+			max_completion_tokens = 1000000,
 			reasoning_effort = "high",
 		},
 
@@ -65,8 +66,6 @@ return {
 		"stevearc/dressing.nvim",
 		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
-		"zbirenbaum/copilot.lua",
-		"nvim-telescope/telescope.nvim",
 		{
 			"MeanderingProgrammer/render-markdown.nvim",
 			opts = {

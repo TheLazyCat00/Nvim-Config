@@ -3,9 +3,10 @@ return {
 	event = "BufReadPost",
 	dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
 	opts = {
+		use_default_keymaps = false,
 		max_join_length = 500,
 	},
 	keys = {
-		{ "m", "<cmd>lua require('treesj').toggle()<CR>", mode = "n", desc = "Toggle split/join" }
+		{ "m", "<cmd>lua require('treesj').toggle()<CR>", mode = "n", desc = "Toggle split/join" },
 	}
 }

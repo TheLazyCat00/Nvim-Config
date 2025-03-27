@@ -89,16 +89,24 @@ return {
 			win = {
 				input = {
 					keys = {
-						["f"] = "toggle_focus",
+						["f"] = "focus_list",
+						["t"] = "focus_preview",
 						["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
 						["<c-u>"] = { "preview_scroll_up", mode = { "i", "n" }},
 					}
 				},
 				list = {
 					keys = {
-						["f"] = "toggle_focus",
+						["f"] = "focus_input",
+						["t"] = "focus_preview",
 					},
 				},
+				preview = {
+					keys = {
+						["f"] = "focus_list",
+						["t"] = "focus_input",
+					}
+				}
 			},
 		},
 	},
