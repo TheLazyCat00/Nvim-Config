@@ -4,7 +4,7 @@
 
 vim.g.lazyvim_picker = "snacks"
 vim.g.lazyvim_cmp = "blink"
-vim.g.ai_assistant = "avante"
+vim.g.ai_assistant = "codecompanion"
 vim.g.project_manager = "persistence.nvim"
 vim.g.ai_cmp = false
 
@@ -20,7 +20,6 @@ vim.opt.autoindent = true
 
 vim.o.cmdheight = 0
 vim.opt.laststatus = 3
-
 vim.opt.scrolloff = 10
 
 vim.o.guifont = "CommitMono Nerd Font Mono:h10"
