@@ -12,25 +12,15 @@ local wholeImage =
 
 return {
 	"folke/snacks.nvim",
+	priority = 10,
+	-- event = "UIEnter",
+	lazy = false,
 	---@type snacks.Config
 	opts = function ()
 		-- Toggle the profiler
 		Snacks.toggle.profiler():map("<leader>pp")
 		-- Toggle the profiler highlights
 		Snacks.toggle.profiler_highlights():map("<leader>ph")
-		local restore_session = ""
-		if vim.g.project_manager == "project.nvim" then
-			restore_session = ":lua require'telescope'.extensions.projects.projects{}"
-		elseif vim.g.project_manager  == "neovim-project" then
-			restore_session = ":NeovimProjectHistory"
-		elseif vim.g.project_manager == "persistence.nvim" then
-			restore_session = ":lua require('persistence').select()"
-		end
-
-		local continue = {}
-		if vim.g.project_manager == "persistence.nvim" then
-			continue = { icon = "󰠜 ", key = "<leader>", desc = "Continue", action = ":lua require('persistence').load({ last = true })" }
-		end
 
 		return {
 			animate = { enabled = false },
@@ -55,12 +45,13 @@ return {
 				preset = {
 					header = wholeImage,
 					keys = {
-						continue,
-						{ icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
+						{ icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+						{ icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+						{ icon = " ", key = "r", desc = "Recent Projects", action = ":lua require('persistence').select()" },
 						{ icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
-						{ icon = " ", key = "s", desc = "Restore Session", action = restore_session },
+						{ icon = " ", key = "s", desc = "Restore Session", section = "session" },
 						{ icon = " ", key = "x", desc = "Lazy Extras", action = ":LazyExtras" },
-						{ icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
+						{ icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy" },
 						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
 					},
 				},
