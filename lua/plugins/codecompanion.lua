@@ -31,18 +31,16 @@ return {
 					["file"] = {
 						-- Location to the slash command in CodeCompanion
 						callback = "strategies.chat.slash_commands.file",
-						description = "Select a file using Telescope",
 						opts = {
-							provider = "telescope", -- Other options include 'default', 'mini_pick', 'fzf_lua', snacks
+							provider = vim.g.lazyvim_picker, -- Other options include 'default', 'mini_pick', 'fzf_lua', snacks
 							contains_code = true,
 						},
 					},
 					["buffer"] = {
 						-- Location to the slash command in CodeCompanion
 						callback = "strategies.chat.slash_commands.buffer",
-						description = "Select a buffer using Telescope",
 						opts = {
-							provider = "telescope", -- Other options include 'default', 'mini_pick', 'fzf_lua', snacks
+							provider = vim.g.lazyvim_picker, -- Other options include 'default', 'mini_pick', 'fzf_lua', snacks
 							contains_code = true,
 						},
 					},

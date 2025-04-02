@@ -27,4 +27,19 @@ vim.cmd([[
 	au BufReadPost * if expand('%:p') !~# '\m/\.git/' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 ]])
 
+vim.cmd("hi clear StatusLine")
+vim.cmd("hi link StatusLine lualine_c_normal")
+
+vim.api.nvim_create_autocmd("VimResized", {
+	callback = function()
+		vim.cmd("silent! set scroll=15")
+	end
+})
+
+vim.api.nvim_create_autocmd("WinScrolled", {
+	callback = function()
+		vim.cmd("silent! set scroll=15")
+	end
+})
+
 vim.opt.scroll = 15

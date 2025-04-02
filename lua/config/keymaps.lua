@@ -60,6 +60,7 @@ wk.add({
 	{
 		mode="n",
 		{ "U", "<cmd>redo<CR>", desc = "Redo" },
+		{ "<leader>qq", "<NOP>", hidden = true } ,
 		{ "<leader>q", "<NOP>", hidden = true } ,
 		{ "sj", "<cmd>wa<CR>", desc = "Save all buffers" },
 		{ "sk", "<cmd>wqa<CR>", desc = "Save all and quit" },

@@ -36,7 +36,7 @@ return {
 			-- provide the inlay hints.
 			inlay_hints = {
 				enabled = true,
-				exclude = {  }, -- filetypes for which you don't want to enable inlay hints
+				exclude = {}, -- filetypes for which you don't want to enable inlay hints
 			},
 			-- Enable this to enable the builtin LSP code lenses on Neovim >= 0.10.0
 			-- Be aware that you also will need to properly configure your LSP server to
@@ -82,9 +82,9 @@ return {
 								enable = true,
 								setType = false,
 								paramType = true,
-								paramName = "Disable",
-								semicolon = "Disable",
-								arrayIndex = "Disable",
+								paramName = "All", -- Show parameter names
+								semicolon = "Disable", -- Show semicolon hints
+								arrayIndex = "Disable", -- Show array index hints
 							},
 						},
 					},
@@ -119,15 +119,21 @@ return {
 						},
 					},
 				},
-				pyright = {
+				basedpyright = {
 					settings = {
-						python = {
+						basedpyright = {
 							analysis = {
 								typeCheckingMode = "basic",
 								disableTypeCheckingForAny = true,
+								inlayHints = {
+									variableTypes = false,
+									callArgumentNames = true,
+									functionReturnTypes = false,
+									genericTypes = false,
+								}
 							},
-						},
-					},
+						}
+					}
 				},
 				-- Explicitly exclude julials from LazyVim management
 				julials = {
@@ -184,7 +190,7 @@ return {
 		-- Set up Julia LSP directly as in the original config
 		local on_attach = function(client, bufnr)
 			-- Use the default attach function first
-			vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+			vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
 
 			-- Add any Julia-specific keybindings here if needed
 		end
