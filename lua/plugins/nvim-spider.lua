@@ -1,5 +1,6 @@
 return {
 	"chrisgrieser/nvim-spider",
+	enabled = false,
 	opts = {
 		skipInsignificantPunctuation = true,
 		consistentOperatorPending = false, -- see "Consistent Operator-pending Mode" in the README

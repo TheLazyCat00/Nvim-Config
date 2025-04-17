@@ -54,30 +54,22 @@ wk.add({
 	{
 		mode = { "n", "x" },
 		{ "-", '"_', desc = "Use black hole register" },
+		{ "0", "<cmd>norm! ^<CR>" },
+		{ "^", "<cmd>norm! 0<CR>" },
+		{ "<C-u>", "<cmd>norm! <C-u>zz<CR>" },
+		{ "<C-d>", "<cmd>norm! <C-d>zz<CR>" },
 	},
 
 	-- Normal mode mapping
 	{
-		mode="n",
+		mode = "n",
 		{ "U", "<cmd>redo<CR>", desc = "Redo" },
 		{ "<leader>qq", "<NOP>", hidden = true } ,
 		{ "<leader>q", "<NOP>", hidden = true } ,
 		{ "sj", "<cmd>wa<CR>", desc = "Save all buffers" },
 		{ "sk", "<cmd>wqa<CR>", desc = "Save all and quit" },
-		{
-			">",
-			function()
-				vim.api.nvim_command("normal! >>")
-			end,
-			desc = "Indent line right"
-		},
-		{
-			"<",
-			function()
-				vim.api.nvim_command("normal! <<")
-			end,
-			desc = "Indent line left"
-		},
+		{ ">", "<cmd>norm! >><CR>", desc = "Indent line right" },
+		{ "<", "<cmd>norm! <<<CR>", desc = "Indent line left" },
 	},
 	{
 		mode = {"o", "x" } ,

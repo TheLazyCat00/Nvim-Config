@@ -6,6 +6,10 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
+vim.api.nvim_create_user_command('Size', function(opts)
+	vim.o.guifont = "CommitMono Nerd Font Mono:h" .. opts.args
+end, { nargs = 1 })
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "python",
 	callback = function()
@@ -16,11 +20,12 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-vim.api.nvim_create_user_command('W', 'w', { nargs = 0 })
-vim.api.nvim_create_user_command('Wqa', 'wqa', { nargs = 0 })
-vim.api.nvim_create_user_command('Q', 'q', { nargs = 0 })
-vim.api.nvim_create_user_command('Qa', 'qa', { nargs = 0 })
-
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = { "*" },
+	callback = function()
+		vim.opt.fileformat = "unix"
+	end,
+})
 
 vim.cmd("language en_US.UTF-8")
 vim.cmd([[
@@ -30,16 +35,28 @@ vim.cmd([[
 vim.cmd("hi clear StatusLine")
 vim.cmd("hi link StatusLine lualine_c_normal")
 
-vim.api.nvim_create_autocmd("VimResized", {
+vim.api.nvim_create_autocmd('User', {
+	pattern = 'CodeCompanionRequestStarted',
 	callback = function()
-		vim.cmd("silent! set scroll=15")
-	end
+		vim.notify("Message sent", vim.log.levels.INFO)
+		vim.schedule(function()
+			vim.cmd('stopinsert')
+		end)
+	end,
 })
 
-vim.api.nvim_create_autocmd("WinScrolled", {
-	callback = function()
-		vim.cmd("silent! set scroll=15")
-	end
-})
+if vim.g.static_scrolling then
+	vim.api.nvim_create_autocmd("VimResized", {
+		callback = function()
+			vim.cmd("silent! set scroll=15")
+		end
+	})
 
-vim.opt.scroll = 15
+	vim.api.nvim_create_autocmd("WinScrolled", {
+		callback = function()
+			vim.cmd("silent! set scroll=15")
+		end
+	})
+
+	vim.opt.scroll = 15
+end

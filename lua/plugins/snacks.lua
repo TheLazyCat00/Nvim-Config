@@ -45,11 +45,9 @@ return {
 				preset = {
 					header = wholeImage,
 					keys = {
-						{ icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
-						{ icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
-						{ icon = " ", key = "r", desc = "Recent Projects", action = ":lua require('persistence').select()" },
+						{ icon = " ", key = "<leader>", desc = "Restore Session", action = ":lua require('persistence').load({last = true})" },
+						{ icon = " ", key = "o", desc = "Recent Projects", action = ":lua require('persistence').select()" },
 						{ icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
-						{ icon = " ", key = "s", desc = "Restore Session", section = "session" },
 						{ icon = " ", key = "x", desc = "Lazy Extras", action = ":LazyExtras" },
 						{ icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy" },
 						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },

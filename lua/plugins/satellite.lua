@@ -1,7 +1,13 @@
 return {
 	"lewis6991/satellite.nvim",
 	event = "BufReadPre",
-	opts = {},
+	opts = {
+		handlers = {
+			marks = {
+				enable = false,
+			},
+		}
+	},
 	init = function ()
 		vim.cmd("highlight link SatelliteBar PmenuThumb")
 	end

@@ -1,5 +1,6 @@
 return {
 	"TheLazyCat00/focus-nvim",
-	event = "BufReadPre",
+	lazy = false,
+	-- enabled = false,
 	opts = {}
 }
