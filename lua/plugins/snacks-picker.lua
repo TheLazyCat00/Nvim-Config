@@ -34,7 +34,7 @@ local explorer = {
 	win = {
 		input = {
 			keys = {
-				["f"] = "toggle_focus",
+				["<BS>"] = "explorer_up",
 				["<CR>"] = { "jump", mode = { "n", "i" }},
 				["<c-a>"] = { "explorer_add", mode = { "n", "i" }},
 				["<c-x>"] = { "explorer_del", mode = { "n", "i" }},
@@ -45,7 +45,6 @@ local explorer = {
 		},
 		list = {
 			keys = {
-				["f"] = "toggle_focus",
 				["<BS>"] = "explorer_up",
 				["<CR>"] = "confirm",
 				["h"] = "explorer_close", -- close directory
@@ -113,6 +112,7 @@ return {
 	keys = {
 		{ "<leader>fc", function () Snacks.explorer({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
 		{ "<leader>e", false },
+		{ "<leader>E", false },
 		{ "<leader>fE", false },
 		{ "<leader>fe", function() Snacks.explorer({ cwd = LazyVim.root() }) end, desc = "FIle Explorer (root)" },
 		{ "<leader><space>", function() Snacks.explorer() end, desc = "File Explorer (cwd)" },
