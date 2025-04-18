@@ -60,3 +60,5 @@ if vim.g.static_scrolling then
 
 	vim.opt.scroll = 15
 end
+
+require("config.functionality")

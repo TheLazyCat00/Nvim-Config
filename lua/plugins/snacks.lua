@@ -46,7 +46,7 @@ return {
 					header = wholeImage,
 					keys = {
 						{ icon = " ", key = "<leader>", desc = "Restore Session", action = ":lua require('persistence').load({last = true})" },
-						{ icon = " ", key = "o", desc = "Recent Projects", action = ":lua require('persistence').select()" },
+						{ icon = " ", key = "o", desc = "Recent Projects", action = ":lua Snacks.picker.projects()" },
 						{ icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
 						{ icon = " ", key = "x", desc = "Lazy Extras", action = ":LazyExtras" },
 						{ icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy" },

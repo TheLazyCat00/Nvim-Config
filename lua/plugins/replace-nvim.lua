@@ -1,7 +1,9 @@
 return {
 	"TheLazyCat00/replace-nvim",
-	event = "BufReadPost",
-	opts = {
-		key = "t"
+	opts = {},
+	keys = {
+		{ "t", function()
+			return require('replace-nvim').replace()
+		end, expr = true, desc = "Replace with clipboard" }
 	}
 }

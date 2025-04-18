@@ -28,10 +28,10 @@ vim.g.snacks_animate = false
 vim.o.guifont = "CommitMono Nerd Font Mono:h10"
 
 vim.g.neovide_position_animation_length = 0.2
-vim.g.neovide_cursor_animation_length = 0.15
 vim.g.neovide_cursor_short_animation_length = 0.1
+vim.g.neovide_scroll_animation_length = 0.15
+vim.g.neovide_cursor_animation_length = 0.15
 vim.g.neovide_cursor_trail_size = 0.6
-vim.g.neovide_scroll_animation_length = 0.2
 vim.g.neovide_hide_mouse_when_typing = true
 
 vim.hl = vim.highlight -- workaround for :Inspect

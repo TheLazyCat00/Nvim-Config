@@ -111,8 +111,11 @@ return {
 		},
 	},
 	keys = {
+		{ "<leader>fc", function () Snacks.explorer({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
 		{ "<leader>e", false },
-		{ "<leader><space>", function() Snacks.explorer() end, desc = "File Explorer" },
+		{ "<leader>fE", false },
+		{ "<leader>fe", function() Snacks.explorer({ cwd = LazyVim.root() }) end, desc = "FIle Explorer (root)" },
+		{ "<leader><space>", function() Snacks.explorer() end, desc = "File Explorer (cwd)" },
 		{ "<leader>fp", false },
 	},
 }
