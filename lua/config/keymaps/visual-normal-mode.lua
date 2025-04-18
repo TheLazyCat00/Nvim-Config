@@ -6,4 +6,5 @@ return {
 	{ "<C-d>", "<cmd>norm! <C-d>zz<CR>" },
 	{ "x", '"_x' },
 	{ "X", '"_X' },
+	{ "<leader>a", group = "ai assistant", mode = { "x", "n" }},
 }
