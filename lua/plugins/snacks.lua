@@ -49,7 +49,7 @@ return {
 						{ icon = " ", key = "o", desc = "Recent Projects", action = ":lua require('persistence').select()" },
 						{ icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
 						{ icon = " ", key = "x", desc = "Lazy Extras", action = ":LazyExtras" },
-						{ icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy" },
+						{ icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
 						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
 					},
 				},

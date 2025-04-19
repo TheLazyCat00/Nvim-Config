@@ -14,12 +14,11 @@ vim.o.cmdheight = 0
 vim.opt.laststatus = 3
 vim.opt.scrolloff = 10
 
-vim.g.static_scrolling = false
 vim.g.lazyvim_picker = "snacks"
 vim.g.lazyvim_cmp = "blink"
 vim.g.ai_assistant = "codecompanion"
-vim.g.project_manager = "persistence.nvim"
 vim.g.ai_cmp = false
+vim.g.static_scrolling = false
 
 vim.g.autoformat = false
 vim.g.autoformat_align = 1 -- Only align code
