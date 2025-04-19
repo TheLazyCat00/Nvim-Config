@@ -8,7 +8,6 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.api.nvim_create_autocmd("BufWritePost", {
 			buffer = bufnr,
 			callback = function ()
-				vim.notify("hi", vim.log.levels.DEBUG)
 				require("otter").activate()
 			end
 		})
