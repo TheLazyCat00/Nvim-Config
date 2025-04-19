@@ -3,7 +3,15 @@ return {
 	event = "LazyFile",
 	dependencies = {
 		"mason.nvim",
-		{ "williamboman/mason-lspconfig.nvim", config = function() end },
+		{
+			"williamboman/mason-lspconfig.nvim",
+			opts = {
+				automatic_installation = true,
+				ensure_installed = {
+					"clangd",
+				},
+			}
+		},
 	},
 	opts = function()
 		---@class PluginLspOpts
