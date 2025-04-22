@@ -12,11 +12,33 @@ local wholeImage =
 
 return {
 	"folke/snacks.nvim",
-	priority = 10,
-	-- event = "UIEnter",
 	lazy = false,
 	---@type snacks.Config
 	opts = function ()
+		Toggler = {}
+		Toggler.__index = Toggler
+
+		function Toggler.new(mode, lhs, rhs, name, startValue)
+			startValue = startValue or false
+
+			local self = setmetatable({}, Toggler)
+			self.toggled = startValue
+
+			local toggler = Snacks.toggle.new({
+				get = function()
+					return self.toggled
+				end,
+				set = function()
+					self.toggled = not self.toggled
+					local keys = vim.api.nvim_replace_termcodes(rhs, true, false, true)
+					vim.api.nvim_feedkeys(keys, "n", false)
+				end,
+				name = name,
+			})
+
+			toggler:map(lhs)
+		end
+
 		-- Toggle the profiler
 		Snacks.toggle.profiler():map("<leader>pp")
 		-- Toggle the profiler highlights
