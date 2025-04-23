@@ -51,6 +51,7 @@ return {
 			scroll = { enabled = false },
 			scope = { enabled = false },
 			rename = { enabled = false },
+			bufdelete = { enabled = false },
 
 			notifier = { enabled = true },
 			profiler = { enabled = true },
