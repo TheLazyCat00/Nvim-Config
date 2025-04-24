@@ -14,9 +14,15 @@ vim.api.nvim_create_autocmd("FileType", {
 	end
 })
 
+vim.api.nvim_create_autocmd("user", {
+	pattern = 'CodeCompanionRequestFinished',
+	callback = function ()
+		require("otter").activate()
+	end
+})
+
 return {
 	"jmbuhr/otter.nvim",
-	ft = filetypes,
 	dependencies = {
 		'nvim-treesitter/nvim-treesitter',
 	},
