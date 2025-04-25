@@ -50,5 +50,10 @@ return {
 		-- where X is the buffer number. But only a static string is accepted here.
 		no_name_title = "NO NAME",
 	},
+	keys = {
+		{ "ö", "<Cmd>BufferPick<CR>", desc = "Barbar magic pick" },
+		{ "H", "<Cmd>BufferPrevious<CR>", desc = "Prev tab" },
+		{ "L", "<Cmd>BufferNext<CR>", desc = "Next tab" },
+	},
 	init = function() vim.g.barbar_auto_setup = false end,
 }

@@ -1,5 +1,4 @@
 local filetypes = { "markdown" }
-local chatBuf = 0
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = filetypes,
@@ -16,18 +15,11 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("user", {
-	pattern = 'CodeCompanionRequestStarted',
-	callback = function(request)
-		chatBuf = request.buf
-	end
-})
-
-vim.api.nvim_create_autocmd("user", {
 	pattern = 'CodeCompanionRequestFinished',
 	callback = function(request)
 		local currentBuf = vim.api.nvim_get_current_buf()
 
-		vim.cmd("buffer " .. chatBuf)
+		vim.cmd("buffer " .. request.data.bufnr)
 		require("otter").activate()
 		vim.cmd("buffer " .. currentBuf)
 	end

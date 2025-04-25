@@ -8,10 +8,6 @@ return {
 	{ ">", "<cmd>norm! >><CR>", desc = "Indent line right" },
 	{ "<", "<cmd>norm! <<<CR>", desc = "Indent line left" },
 
-	{ "ö", "<Cmd>BufferPick<CR>", desc = "Barbar magic pick" },
-	{ "H", "<Cmd>BufferPrevious<CR>", desc = "Prev tab" },
-	{ "L", "<Cmd>BufferNext<CR>", desc = "Next tab" },
-
 	{ "<leader>p", group = "profiler" } ,
 	{ "s", "<NOP>", group = "session/exit" } ,
 }

@@ -1,4 +1,4 @@
-vim.g.font = "CommitMono Nerd Font"
+vim.g.font = "CommitMono Nerd Font Mono"
 vim.g.size = "10"
 
 vim.g.updateFont = function ()
