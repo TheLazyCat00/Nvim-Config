@@ -6,9 +6,22 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
+vim.cmd("hi clear StatusLine")
+vim.cmd("hi link StatusLine lualine_c_normal")
+
 vim.api.nvim_create_user_command('Size', function(opts)
-	vim.o.guifont = "CommitMono Nerd Font Mono:h" .. opts.args
+	vim.g.size = opts.args
+	vim.g.updateFont()
 end, { nargs = 1 })
+
+vim.api.nvim_create_user_command('Font', function(opts)
+	vim.g.font = opts.args
+	vim.g.updateFont()
+end, { nargs = 1 })
+
+vim.cmd([[
+	au BufReadPost * if expand('%:p') !~# '\m/\.git/' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+]])
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "python",
@@ -26,14 +39,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 		vim.opt.fileformat = "unix"
 	end,
 })
-
-vim.cmd("language en_US.UTF-8")
-vim.cmd([[
-	au BufReadPost * if expand('%:p') !~# '\m/\.git/' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-]])
-
-vim.cmd("hi clear StatusLine")
-vim.cmd("hi link StatusLine lualine_c_normal")
 
 vim.api.nvim_create_autocmd('User', {
 	pattern = 'CodeCompanionRequestStarted',
