@@ -3,7 +3,6 @@ return {
 	opts = {
 		highlight_substituted_text = {
 			enabled = false,
-			timer = 500,
 		},
 	},
 	keys = {
