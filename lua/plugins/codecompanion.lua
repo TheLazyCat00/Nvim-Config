@@ -9,7 +9,7 @@ local reasoningEffort = {
 }
 
 local maxTokens = {
-	default = nil,
+	default = 30000,
 	desc = "The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.",
 }
 
@@ -22,6 +22,35 @@ return {
 		"folke/which-key.nvim",
 	},
 	opts = {
+		display = {
+			action_palette = {
+				width = 95,
+				height = 10,
+				prompt = "Prompt ", -- Prompt used for interactive LLM calls
+				provider = "default", -- default|telescope|mini_pick
+				opts = {
+					show_default_actions = true, -- Show the default actions in the action palette?
+					show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+				},
+			},
+		},
+		adapters = {
+			opts = {
+				show_defaults = false,
+				cache_models_for = 1800
+			},
+
+			["copilot"] = function()
+				return require("codecompanion.adapters").extend("copilot", {
+					schema = {
+						model = {
+							default = "o4-mini",
+						},
+						max_tokens = maxTokens
+					},
+				})
+			end,
+		},
 		strategies = {
 			-- Change the default chat adapter
 			chat = {
@@ -50,7 +79,7 @@ return {
 					---The header name for the LLM's messages
 					---@type string|fun(adapter: CodeCompanion.Adapter): string
 					llm = function(adapter)
-						return "CodeCompanion (" .. adapter.formatted_name .. ")"
+						return "CodeCompanion (" .. adapter.parameters.model .. ")"
 					end,
 
 					---The header name for your messages
@@ -223,35 +252,6 @@ return {
 				},
 			},
 		},
-		display = {
-			action_palette = {
-				width = 95,
-				height = 10,
-				prompt = "Prompt ", -- Prompt used for interactive LLM calls
-				provider = "default", -- default|telescope|mini_pick
-				opts = {
-					show_default_actions = true, -- Show the default actions in the action palette?
-					show_default_prompt_library = true, -- Show the default prompt library in the action palette?
-				},
-			},
-		},
-		adapters = {
-			opts = {
-				show_defaults = false,
-				cache_models_for = 1800
-			},
-
-			["copilot"] = function()
-				return require("codecompanion.adapters").extend("copilot", {
-					schema = {
-						model = {
-							default = "o3-mini",
-						},
-						max_tokens = maxTokens
-					},
-				})
-			end,
-		}
 	},
 	keys = {
 		{"<leader>at", "<cmd>CodeCompanionChat Toggle<CR>", mode = "n", desc = "Toggle Companion"},
