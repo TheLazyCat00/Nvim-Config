@@ -36,7 +36,7 @@ local coqSettings = {
 		},
 		["icons.mode"] = "short",
 		["pum.kind_context"] = { " ", "" },
-		["pum.source_context"] = { "󰿟", "󰿟" },
+		["pum.source_context"] = { "", "" },
 	},
 }
 
