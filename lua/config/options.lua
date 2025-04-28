@@ -18,7 +18,7 @@ vim.opt.laststatus = 3
 vim.opt.scrolloff = 10
 
 vim.g.lazyvim_picker = "snacks"
-vim.g.lazyvim_cmp = "blink"
+vim.g.lazyvim_cmp = "coq_nvim"
 vim.g.ai_assistant = "codecompanion"
 vim.g.ai_cmp = false
 vim.g.static_scrolling = false

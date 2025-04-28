@@ -12,6 +12,22 @@ return {
 				},
 			}
 		},
+
+		-- INFO: coq
+		-- main one
+		{ "ms-jpq/coq_nvim", branch = "coq" },
+
+		-- 9000+ Snippets
+		{ "ms-jpq/coq.artifacts", branch = "artifacts" },
+
+		-- lua & third party sources -- See https://github.com/ms-jpq/coq.thirdparty
+		-- Need to **configure separately**
+		{ 'ms-jpq/coq.thirdparty', branch = "3p" }
+		-- - shell repl
+		-- - nvim lua api
+		-- - scientific calculator
+		-- - comment banner
+		-- - etc
 	},
 	opts = function()
 		---@class PluginLspOpts
@@ -271,12 +287,15 @@ return {
 		vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
 		local servers = opts.servers
+
+		local has_coq, coq = pcall(require, "coq")
 		local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 		local has_blink, blink = pcall(require, "blink.cmp")
 		local capabilities = vim.tbl_deep_extend(
 			"force",
 			{},
 			vim.lsp.protocol.make_client_capabilities(),
+			has_coq and coq.lsp_ensure_capabilities() or {},
 			has_cmp and cmp_nvim_lsp.default_capabilities() or {},
 			has_blink and blink.get_lsp_capabilities() or {},
 			opts.capabilities or {}

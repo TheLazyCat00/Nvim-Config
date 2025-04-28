@@ -44,7 +44,7 @@ return {
 				return require("codecompanion.adapters").extend("copilot", {
 					schema = {
 						model = {
-							default = "o4-mini",
+							default = "gemini-2.5-pro",
 						},
 						max_tokens = maxTokens
 					},
@@ -248,6 +248,26 @@ return {
 						index = 18,
 						callback = "keymaps.auto_tool_mode",
 						description = "Toggle automatic tool mode",
+					},
+				},
+			},
+			inline = {
+				keymaps = {
+					accept_change = {
+						modes = {
+							n = "<leader>ay",
+						},
+						index = 1,
+						callback = "keymaps.accept_change",
+						description = "Accept change",
+					},
+					reject_change = {
+						modes = {
+							n = "<leader>ax",
+						},
+						index = 2,
+						callback = "keymaps.reject_change",
+						description = "Reject change",
 					},
 				},
 			},

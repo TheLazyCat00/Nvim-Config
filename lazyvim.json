@@ -1,6 +1,5 @@
 {
   "extras": [
-    "lazyvim.plugins.extras.editor.harpoon2",
     "lazyvim.plugins.extras.ui.treesitter-context"
   ],
   "install_version": 8,
