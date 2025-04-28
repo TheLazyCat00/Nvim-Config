@@ -2,7 +2,6 @@ local coqSettings = {
 	auto_start = true,
 	keymap = {
 		recommended = false,
-		pre_select = true,
 		manual_complete = nil,
 		bigger_preview = nil,
 		jump_to_mark = nil
