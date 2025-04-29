@@ -36,5 +36,15 @@ return {
 				TypeParameter = '󰬛',
 			}
 		},
+		fuzzy = {
+			implementation = "prefer_rust_with_warning",
+		},
+		sources = {
+			providers = {
+				snippets = {
+					score_offset = 4
+				}
+			}
+		}
 	}
 }
