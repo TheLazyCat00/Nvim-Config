@@ -68,9 +68,8 @@ local function getCurrentNodeVisual()
 	if not current then return end -- Handle case where no node is found
 	local start_row, start_col, end_row, end_col = current:range()
 
-	vim.cmd("normal! " .. vim.fn.mode(0))
 	vim.api.nvim_win_set_cursor(0, { start_row + 1, start_col })
-	vim.cmd("normal! v")
+	vim.cmd("normal! o")
 	vim.api.nvim_win_set_cursor(0, { end_row + 1, end_col })
 end
 
