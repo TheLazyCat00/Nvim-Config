@@ -12,7 +12,7 @@ local coqSettings = {
 		},
 	},
 	completion = {
-		skip_after = { " ", "	", "\n", "{", "[", "(" }
+		skip_after = { " ", "	", "{", "[", "(", ")", "]", "}" },
 	},
 	display = {
 		["icons.mappings"] = {
@@ -54,6 +54,23 @@ local coqSettings = {
 }
 
 if vim.g.lazyvim_cmp == "coq_nvim" then
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "codecompanion",
+		callback = function (args)
+			vim.keymap.set("i", "/", function()
+				vim.cmd("normal! i/")
+				vim.cmd("stopinsert")
+				vim.api.nvim_input("la<C-_>")
+			end, { noremap = true, buffer = true })
+
+			vim.keymap.set("i", "@", function()
+				vim.cmd("normal! i@")
+				vim.cmd("stopinsert")
+				vim.api.nvim_input("la<C-_>")
+			end, { noremap = true, buffer = true })
+		end
+	})
+
 	vim.api.nvim_set_keymap(
 		"i",
 		"<CR>",
