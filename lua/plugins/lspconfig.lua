@@ -1,34 +1,46 @@
+local deps = {
+	"mason.nvim",
+	{
+		"williamboman/mason-lspconfig.nvim",
+		opts = {
+			automatic_installation = true,
+			ensure_installed = {
+				"clangd",
+			},
+		}
+	},
+}
+
+local coqDeps = {
+	-- INFO: coq
+	-- main one
+	{ "ms-jpq/coq_nvim", branch = "coq" },
+
+	-- 9000+ Snippets
+	{ "ms-jpq/coq.artifacts", branch = "artifacts" },
+
+	-- lua & third party sources -- See https://github.com/ms-jpq/coq.thirdparty
+	-- Need to **configure separately**
+	{ 'ms-jpq/coq.thirdparty', branch = "3p" }
+	-- - shell repl
+	-- - nvim lua api
+	-- - scientific calculator
+	-- - comment banner
+	-- - etc
+}
+
+local function getDeps()
+	if vim.g.lazyvim_cmp == "coq_nvim" then
+		return vim.tbl_extend("force", deps, coqDeps)
+	else
+		return deps
+	end
+end
+
 return {
 	"neovim/nvim-lspconfig",
 	event = "LazyFile",
-	dependencies = {
-		"mason.nvim",
-		{
-			"williamboman/mason-lspconfig.nvim",
-			opts = {
-				automatic_installation = true,
-				ensure_installed = {
-					"clangd",
-				},
-			}
-		},
-
-		-- INFO: coq
-		-- main one
-		{ "ms-jpq/coq_nvim", branch = "coq" },
-
-		-- 9000+ Snippets
-		{ "ms-jpq/coq.artifacts", branch = "artifacts" },
-
-		-- lua & third party sources -- See https://github.com/ms-jpq/coq.thirdparty
-		-- Need to **configure separately**
-		{ 'ms-jpq/coq.thirdparty', branch = "3p" }
-		-- - shell repl
-		-- - nvim lua api
-		-- - scientific calculator
-		-- - comment banner
-		-- - etc
-	},
+	dependencies = getDeps(),
 	opts = function()
 		---@class PluginLspOpts
 		local ret = {

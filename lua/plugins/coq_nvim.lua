@@ -4,7 +4,7 @@ local coqSettings = {
 		recommended = false,
 		manual_complete = "",
 		bigger_preview = "",
-		jump_to_mark = "<Tab>",
+		jump_to_mark = "<C-CR>",
 	},
 	clients = {
 		snippets = {
@@ -12,7 +12,7 @@ local coqSettings = {
 		},
 	},
 	completion = {
-		skip_after = { " ", "	", "{", "[", "(", ")", "]", "}" },
+		skip_after = { "\"", " ", "	", "{", "[", "(", ")", "]", "}", "," },
 	},
 	display = {
 		["icons.mappings"] = {
@@ -80,7 +80,7 @@ if vim.g.lazyvim_cmp == "coq_nvim" then
 	vim.api.nvim_set_keymap(
 		"i",
 		"<Tab>",
-		[[pumvisible() ? (complete_info().selected == -1 ? "\<C-n><C-y>" : "\<C-y>") : "\<CR>"]],
+		[[pumvisible() ? (complete_info().selected == -1 ? "\<C-n><C-y>" : "\<C-y>") : "\<Tab>"]],
 		{ expr = true, noremap = true }
 	)
 	vim.g.coq_settings = coqSettings
