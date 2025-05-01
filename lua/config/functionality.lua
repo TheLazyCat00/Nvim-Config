@@ -66,7 +66,7 @@ local function getCurrentNode()
 		local last = vim.api.nvim_buf_get_lines(0, end_row - 1, end_row, true)[1]
 		end_col = #last - 1
 	end
-	vim.api.nvim_win_set_cursor(0, { end_row, end_col })
+	vim.api.nvim_win_set_cursor(0, { end_row, end_col - 1 })
 end
 
 local function getCurrentNodeVisual()
@@ -80,9 +80,9 @@ local function getCurrentNodeVisual()
 	if end_row > vim.api.nvim_buf_line_count(0) then
 		end_row = vim.api.nvim_buf_line_count(0)
 		local last = vim.api.nvim_buf_get_lines(0, end_row - 1, end_row, true)[1]
-		end_col = #last - 1
+		end_col = #last
 	end
-	vim.api.nvim_win_set_cursor(0, { end_row, end_col })
+	vim.api.nvim_win_set_cursor(0, { end_row, end_col - 1 })
 end
 
 wk.add({
