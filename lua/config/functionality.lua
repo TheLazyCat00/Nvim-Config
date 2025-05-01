@@ -60,7 +60,13 @@ local function getCurrentNode()
 
 	vim.api.nvim_win_set_cursor(0, { start_row + 1, start_col })
 	vim.cmd("normal! v")
-	vim.api.nvim_win_set_cursor(0, { end_row + 1, end_col })
+	end_row = end_row + 1
+	if end_row > vim.api.nvim_buf_line_count(0) then
+		end_row = vim.api.nvim_buf_line_count(0)
+		local last = vim.api.nvim_buf_get_lines(0, end_row - 1, end_row, true)[1]
+		end_col = #last - 1
+	end
+	vim.api.nvim_win_set_cursor(0, { end_row, end_col })
 end
 
 local function getCurrentNodeVisual()
@@ -70,7 +76,13 @@ local function getCurrentNodeVisual()
 
 	vim.api.nvim_win_set_cursor(0, { start_row + 1, start_col })
 	vim.cmd("normal! o")
-	vim.api.nvim_win_set_cursor(0, { end_row + 1, end_col })
+	end_row = end_row + 1
+	if end_row > vim.api.nvim_buf_line_count(0) then
+		end_row = vim.api.nvim_buf_line_count(0)
+		local last = vim.api.nvim_buf_get_lines(0, end_row - 1, end_row, true)[1]
+		end_col = #last - 1
+	end
+	vim.api.nvim_win_set_cursor(0, { end_row, end_col })
 end
 
 wk.add({

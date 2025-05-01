@@ -16,6 +16,7 @@ local maxTokens = {
 return {
 	"olimorris/codecompanion.nvim",
 	enabled = vim.g.ai_assistant == "codecompanion",
+	branch = "has-xml-tools",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-treesitter/nvim-treesitter",

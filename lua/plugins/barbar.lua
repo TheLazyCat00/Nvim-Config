@@ -2,11 +2,12 @@ return {
 	'romgrk/barbar.nvim',
 	event = "UIEnter",
 	dependencies = {
-		'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+		'lewis6991/gitsigns.nvim',
 		'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
 	},
 	opts = {
 		clickable = false,
+		tabpages = false,
 
 		exclude_ft = {},
 		exclude_name = {'package.json'},
