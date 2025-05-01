@@ -12,7 +12,7 @@ return {
 
 		-- The color of the above highlight. Must be a valid vim highlight group.
 		-- (see :h highlight-group for options)
-		highlight_group = 'NodeHighlight',
+		highlight_group = 'CursorLine',
 	},
 	keys = {
 		{ "<M-k>", "<Cmd>Treewalker Up<cr>", desc = "Treewalker up" },
