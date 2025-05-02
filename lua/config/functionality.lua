@@ -64,7 +64,7 @@ local function getCurrentNode()
 	if end_row > vim.api.nvim_buf_line_count(0) then
 		end_row = vim.api.nvim_buf_line_count(0)
 		local last = vim.api.nvim_buf_get_lines(0, end_row - 1, end_row, true)[1]
-		end_col = #last - 1
+		end_col = #last
 	end
 	vim.api.nvim_win_set_cursor(0, { end_row, end_col - 1 })
 end
@@ -85,7 +85,38 @@ local function getCurrentNodeVisual()
 	vim.api.nvim_win_set_cursor(0, { end_row, end_col - 1 })
 end
 
+local isActive = false
+
+vim.api.nvim_create_autocmd('ModeChanged', {
+	-- group = groupId,
+	pattern = '*', -- Apply to all buffers
+	callback = function (args)
+		if not isActive then
+			return
+		end
+
+		if vim.api.nvim_get_mode().mode ~= "no" then
+			return
+		end
+
+		vim.schedule(function ()
+			if vim.api.nvim_get_mode().mode ~= "no" then
+				return
+			end
+			vim.api.nvim_input("m")
+		end)
+	end,
+})
+
 wk.add({
 	{ "m", getCurrentNode, desc = "Node under cursor", mode = "o" },
 	{ "m", getCurrentNodeVisual, desc = "Node under cursor", mode = "x" },
+	{
+		"<leader>m",
+		function ()
+			isActive = not isActive
+		end,
+		desc = "Toggle autonode",
+		mode = "n",
+	}
 })
