@@ -1,5 +1,6 @@
 return {
 	'romgrk/barbar.nvim',
+	enabled = false,
 	event = "UIEnter",
 	dependencies = {
 		'lewis6991/gitsigns.nvim',

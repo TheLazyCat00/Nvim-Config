@@ -1,5 +1,6 @@
 return {
 	"roobert/tabtree.nvim",
+	enabled = false,
 	opts = {
 		default_config = {
 			target_query = [[

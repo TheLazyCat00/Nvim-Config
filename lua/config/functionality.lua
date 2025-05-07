@@ -120,3 +120,40 @@ wk.add({
 		mode = "n",
 	}
 })
+-- Seed the random number generator
+math.randomseed(os.time())
+
+-- Helper function to generate a random hex color string
+local function generate_random_hex_color()
+  local r = math.random(0, 255)
+  local g = math.random(0, 255)
+  local b = math.random(0, 255)
+  return string.format("#%02X%02X%02X", r, g, b)
+end
+
+-- Function to set WinBar and WinBarNC to random colors
+local function set_random_winbar_colors()
+  local active_fg = generate_random_hex_color()
+  local active_bg = generate_random_hex_color()
+  local inactive_fg = generate_random_hex_color()
+  local inactive_bg = generate_random_hex_color()
+
+  vim.api.nvim_set_hl(0, 'WinBar', { fg = active_fg, bg = active_bg, force = true })
+  vim.api.nvim_set_hl(0, 'WinBarNC', { fg = inactive_fg, bg = inactive_bg, force = true })
+  
+  -- Optional: print a confirmation
+  -- print("WinBar colors randomized!")
+end
+
+-- Create a user command to trigger the randomization
+vim.api.nvim_create_user_command('RandomizeWinbar', set_random_winbar_colors, {
+  desc = 'Set WinBar and WinBarNC to random colors'
+})
+
+-- To make this visible, you need to have the winbar option set.
+-- For example, in your Neovim config:
+-- vim.opt.winbar = "%#WinBar# Window: %w %#WinBarNC# Buffer: %b (%f)"
+-- Or a simpler one:
+-- vim.opt.winbar = "%#WinBar#%f%m%r%h%w"
+--
+-- After loading this code, you can run :RandomizeWinbar

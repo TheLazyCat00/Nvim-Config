@@ -57,6 +57,11 @@ return {
 				model = "o3-mini",
 				display_name = "o3-mini",
 			},
+			["copilot5"] = {
+				__inherited_from = "copilot",
+				model = "gemini-2.5-pro",
+				display_name = "gemini-2.5-pro",
+			},
 		},
 	},
 	-- Build command for the plugin

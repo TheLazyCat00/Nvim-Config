@@ -127,25 +127,6 @@ return {
 				},
 				ts_ls = {
 					filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact' },
-					init_options = {
-						plugins = {
-							{
-								name = '@vue/typescript-plugin',
-								location = require('mason-registry').get_package('vue-language-server'):get_install_path() ..
-									'/node_modules/@vue/language-server',
-								languages = { 'vue' },
-							},
-						},
-					},
-					handlers = {
-						['_typescript.rename'] = function(_, result)
-							return result
-						end,
-						['textDocument/definition'] = function(err, result, ...)
-							result = vim.islist(result) and result[1] or result
-							vim.lsp.handlers['textDocument/definition'](err, result, ...)
-						end,
-					},
 				},
 				volar = {
 					filetypes = { 'vue' },
@@ -342,7 +323,7 @@ return {
 		local have_mason, mlsp = pcall(require, "mason-lspconfig")
 		local all_mslp_servers = {}
 		if have_mason then
-			all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
+			all_mslp_servers = vim.tbl_keys(require("mason-lspconfig").get_mappings().lspconfig_to_package)
 		end
 
 		local ensure_installed = {} ---@type string[]
