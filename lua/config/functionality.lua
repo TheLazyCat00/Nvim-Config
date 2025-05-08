@@ -120,40 +120,49 @@ wk.add({
 		mode = "n",
 	}
 })
--- Seed the random number generator
-math.randomseed(os.time())
 
--- Helper function to generate a random hex color string
-local function generate_random_hex_color()
-  local r = math.random(0, 255)
-  local g = math.random(0, 255)
-  local b = math.random(0, 255)
-  return string.format("#%02X%02X%02X", r, g, b)
+
+---@return snacks.picker.Config
+local function recent_dirs()
+	return {
+		items = {
+			{
+				file = "C:/JUCE",
+				dir = true
+			},
+		},
+		actions = {
+			confirm = function(picker, item)
+				picker:close()
+				if not item then
+					return
+				end
+			end
+		},
+		format = Snacks.picker.format.filename,
+		preview = Snacks.picker.preview.directory, -- Use the item.preview data
+		-- Optional: auto_confirm = true,
+		title = "My Custom Picker"
+	}
 end
 
--- Function to set WinBar and WinBarNC to random colors
-local function set_random_winbar_colors()
-  local active_fg = generate_random_hex_color()
-  local active_bg = generate_random_hex_color()
-  local inactive_fg = generate_random_hex_color()
-  local inactive_bg = generate_random_hex_color()
+-- vim.fn.chdir([[C:\Users\TheLa\Documents\CODE\Projects\CaveGame]])
+vim.api.nvim_create_autocmd("VimLeave", {
+	callback = function ()
+		local filepath = vim.fn.stdpath("data") .. "/recent-dirs"
+		local lines = vim.fn.readfile(filepath)
 
-  vim.api.nvim_set_hl(0, 'WinBar', { fg = active_fg, bg = active_bg, force = true })
-  vim.api.nvim_set_hl(0, 'WinBarNC', { fg = inactive_fg, bg = inactive_bg, force = true })
-  
-  -- Optional: print a confirmation
-  -- print("WinBar colors randomized!")
-end
+		local cwd = vim.fn.getcwd():gsub("\\", "/")
+		local cur_buf_path = vim.api.nvim_buf_get_name(0):gsub("\\", "/")
+		local line_data = cwd .. "" .. cur_buf_path
+		for i, value in ipairs(lines) do
+			if value:match("(.-)") == cwd then
+				table.remove(lines, i)
+				break
+			end
+		end
 
--- Create a user command to trigger the randomization
-vim.api.nvim_create_user_command('RandomizeWinbar', set_random_winbar_colors, {
-  desc = 'Set WinBar and WinBarNC to random colors'
+		table.insert(lines, 1, line_data)
+		vim.fn.writefile(lines, filepath)
+	end
 })
-
--- To make this visible, you need to have the winbar option set.
--- For example, in your Neovim config:
--- vim.opt.winbar = "%#WinBar# Window: %w %#WinBarNC# Buffer: %b (%f)"
--- Or a simpler one:
--- vim.opt.winbar = "%#WinBar#%f%m%r%h%w"
---
--- After loading this code, you can run :RandomizeWinbar

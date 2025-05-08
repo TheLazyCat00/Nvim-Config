@@ -114,7 +114,7 @@ return {
 		{ "<leader>e", false },
 		{ "<leader>E", false },
 		{ "<leader>fE", false },
-		{ "<leader>fe", function() Snacks.explorer({ cwd = LazyVim.root() }) end, desc = "FIle Explorer (root)" },
+		{ "<leader>fe", function() Snacks.explorer({ cwd = LazyVim.root() }) end, desc = "File Explorer (root)" },
 		{ "<leader><space>", function() Snacks.explorer() end, desc = "File Explorer (cwd)" },
 		{ "<leader>fp", false },
 	},

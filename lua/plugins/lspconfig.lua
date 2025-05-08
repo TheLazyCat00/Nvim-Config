@@ -7,7 +7,8 @@ local deps = {
 			ensure_installed = {
 				"clangd",
 			},
-		}
+		},
+		config = function() end,
 	},
 }
 
@@ -121,6 +122,9 @@ return {
 								paramName = "All", -- Show parameter names
 								semicolon = "Disable", -- Show semicolon hints
 								arrayIndex = "Disable", -- Show array index hints
+							},
+							diagnostics = {
+								disable = { "unused-function" }
 							},
 						},
 					},
@@ -300,9 +304,13 @@ return {
 				return
 			end
 
-			local server_opts = vim.tbl_deep_extend("force", {
-				capabilities = vim.deepcopy(capabilities),
-			}, servers[server] or {})
+			local server_opts = vim.tbl_deep_extend(
+				"force",
+				{
+					capabilities = vim.deepcopy(capabilities),
+				},
+				servers[server] or {}
+			)
 			if server_opts.enabled == false then
 				return
 			end
@@ -316,7 +324,9 @@ return {
 					return
 				end
 			end
-			require("lspconfig")[server].setup(server_opts)
+
+			vim.lsp.config(server, server_opts)
+			vim.lsp.enable(server)
 		end
 
 		-- get all the servers that are available through mason-lspconfig
@@ -333,10 +343,9 @@ return {
 				if server_opts.enabled ~= false then
 					-- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
 					if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
-						setup(server)
-					else
 						ensure_installed[#ensure_installed + 1] = server
 					end
+					setup(server)
 				end
 			end
 		end
@@ -348,7 +357,6 @@ return {
 					ensure_installed,
 					LazyVim.opts("mason-lspconfig.nvim").ensure_installed or {}
 				),
-				handlers = { setup },
 			})
 		end
 

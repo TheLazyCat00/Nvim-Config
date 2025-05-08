@@ -8,7 +8,7 @@ return {
 		open = {
 			by_default = true,
 			position = "top_right",
-			padding = {
+			offset = {
 				x = -3,
 				y = 3,
 			},
