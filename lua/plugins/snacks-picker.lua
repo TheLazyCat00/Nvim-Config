@@ -31,6 +31,15 @@ local explorer = {
 	config = function(opts)
 		return require("snacks.picker.source.explorer").setup(opts)
 	end,
+	actions = {
+		---@param picker snacks.Picker
+		---@param item snacks.picker.Item
+		change_cwd = function (picker, item)
+			pcall(function ()
+				vim.fn.chdir(item.file)
+			end)
+		end
+	},
 	win = {
 		input = {
 			keys = {
@@ -41,6 +50,7 @@ local explorer = {
 				["<c-r>"] = { "explorer_rename", mode = { "n", "i" }},
 				["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
 				["<c-u>"] = { "preview_scroll_up", mode = { "i", "n" }},
+				["<c-w>"] = { "change_cwd", mode = { "i", "n" }},
 			}
 		},
 		list = {

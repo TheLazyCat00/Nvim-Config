@@ -7,6 +7,6 @@ return {
 		max_join_length = 500,
 	},
 	keys = {
-		{ "m", "<cmd>lua require('treesj').toggle()<CR>", mode = "n", desc = "Toggle split/join" },
+		{ "gs", "<cmd>lua require('treesj').toggle()<CR>", mode = "n", desc = "Toggle split/join" },
 	}
 }

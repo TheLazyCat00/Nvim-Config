@@ -29,4 +29,8 @@ vim.g.snacks_animate = false
 
 vim.hl = vim.highlight -- workaround for :Inspect
 
+function Print(value)
+	vim.notify(vim.inspect(value))
+end
+
 require("config.neovide")

@@ -108,61 +108,16 @@ vim.api.nvim_create_autocmd('ModeChanged', {
 	end,
 })
 
-wk.add({
-	{ "m", getCurrentNode, desc = "Node under cursor", mode = "o" },
-	{ "m", getCurrentNodeVisual, desc = "Node under cursor", mode = "x" },
-	{
-		"<leader>m",
-		function ()
-			isActive = not isActive
-		end,
-		desc = "Toggle autonode",
-		mode = "n",
-	}
-})
+-- wk.add({
+-- 	{ "m", getCurrentNode, desc = "Node under cursor", mode = "o" },
+-- 	{ "m", getCurrentNodeVisual, desc = "Node under cursor", mode = "x" },
+-- 	{
+-- 		"<leader>m",
+-- 		function ()
+-- 			isActive = not isActive
+-- 		end,
+-- 		desc = "Toggle autonode",
+-- 		mode = "n",
+-- 	}
+-- })
 
-
----@return snacks.picker.Config
-local function recent_dirs()
-	return {
-		items = {
-			{
-				file = "C:/JUCE",
-				dir = true
-			},
-		},
-		actions = {
-			confirm = function(picker, item)
-				picker:close()
-				if not item then
-					return
-				end
-			end
-		},
-		format = Snacks.picker.format.filename,
-		preview = Snacks.picker.preview.directory, -- Use the item.preview data
-		-- Optional: auto_confirm = true,
-		title = "My Custom Picker"
-	}
-end
-
--- vim.fn.chdir([[C:\Users\TheLa\Documents\CODE\Projects\CaveGame]])
-vim.api.nvim_create_autocmd("VimLeave", {
-	callback = function ()
-		local filepath = vim.fn.stdpath("data") .. "/recent-dirs"
-		local lines = vim.fn.readfile(filepath)
-
-		local cwd = vim.fn.getcwd():gsub("\\", "/")
-		local cur_buf_path = vim.api.nvim_buf_get_name(0):gsub("\\", "/")
-		local line_data = cwd .. "" .. cur_buf_path
-		for i, value in ipairs(lines) do
-			if value:match("(.-)") == cwd then
-				table.remove(lines, i)
-				break
-			end
-		end
-
-		table.insert(lines, 1, line_data)
-		vim.fn.writefile(lines, filepath)
-	end
-})

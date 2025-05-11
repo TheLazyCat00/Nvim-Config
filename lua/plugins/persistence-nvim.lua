@@ -1,11 +1,11 @@
 return {
 	"folke/persistence.nvim",
 	event = "UIEnter",
-	enabled = true,
+	enabled = false,
 	opts = {},
 	keys = function ()
 		return {
-			{ "so", function() require("persistence").select() end, desc = "Select Session" },
+			-- { "so", function() require("persistence").select() end, desc = "Select Session" },
 		}
 	end,
 }
