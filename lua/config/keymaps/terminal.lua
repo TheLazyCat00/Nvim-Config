@@ -1,3 +1,3 @@
 return {
-	{ "<Esc>", "<C-\\><C-n>", desc = "Exit terminal mode" },
+	{ "<Esc><Esc>", "<C-\\><C-n>", desc = "Exit terminal mode" },
 }

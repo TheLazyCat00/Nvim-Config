@@ -10,4 +10,7 @@ return {
 
 	{ "<leader>p", group = "profiler" } ,
 	{ "s", "<NOP>", group = "session/exit" } ,
+	{"<leader>e", function ()
+		Snacks.terminal.colorize()
+	end}
 }
