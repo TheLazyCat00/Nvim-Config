@@ -1,6 +1,8 @@
 return {
 	{ "<leader>qq", "<NOP>", hidden = true } ,
 	{ "<leader>q", "<NOP>", hidden = true } ,
+	{ "]M", "<NOP>", hidden = true } ,
+	{ "[M", "<NOP>", hidden = true } ,
 
 	{ "U", "<cmd>redo<CR>", desc = "Redo" },
 	{ "sj", "<cmd>wa<CR>", desc = "Save all buffers" },
@@ -10,7 +12,4 @@ return {
 
 	{ "<leader>p", group = "profiler" } ,
 	{ "s", "<NOP>", group = "session/exit" } ,
-	{"<leader>e", function ()
-		Snacks.terminal.colorize()
-	end}
 }

@@ -3,6 +3,10 @@ local explorer = {
 	sort = {
 		fields = { "score:desc", "#text", "idx" },
 	},
+	show_empty = true,
+	hidden = true,
+	ignored = true,
+	follow = false,
 	supports_live = true,
 	tree = false,
 	watch = true,

@@ -29,6 +29,10 @@ vim.g.snacks_animate = false
 
 vim.hl = vim.highlight -- workaround for :Inspect
 
+--- method keymaps are useless
+vim.keymap.set("n", "]m", "<NOP>")
+vim.keymap.set("n", "[m", "<NOP>")
+
 function Print(value)
 	vim.notify(vim.inspect(value))
 end
