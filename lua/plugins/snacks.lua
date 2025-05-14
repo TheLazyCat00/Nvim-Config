@@ -31,18 +31,13 @@ return {
 				set = function()
 					self.toggled = not self.toggled
 					local keys = vim.api.nvim_replace_termcodes(rhs, true, false, true)
-					vim.api.nvim_feedkeys(keys, "n", false)
+					vim.api.nvim_feedkeys(keys, mode, false)
 				end,
 				name = name,
 			})
 
 			toggler:map(lhs)
 		end
-
-		-- Toggle the profiler
-		Snacks.toggle.profiler():map("<leader>pp")
-		-- Toggle the profiler highlights
-		Snacks.toggle.profiler_highlights():map("<leader>ph")
 
 		return {
 			animate = { enabled = false },
@@ -79,7 +74,4 @@ return {
 			}
 		}
 	end,
-	keys = {
-		{ "<leader>ps", function() Snacks.profiler.scratch() end, desc = "Profiler Scratch Bufer" },
-	}
 }

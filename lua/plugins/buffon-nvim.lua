@@ -1,7 +1,7 @@
 return {
 	"francescarpi/buffon.nvim",
 	lazy = false,
-	branch = "develop",
+	-- branch = "develop",
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
 		"nvim-lua/plenary.nvim",
@@ -27,7 +27,7 @@ return {
 		},
 		num_pages = 1,
 		leader_key = "ö",
-		mapping_chars = "abcdefgilmnoprstvwy",
+		mapping_chars = "befgimnaoplrstvwy",
 		keybindings = {
 			toggle_buffon_window = "<buffonleader>u",
 			toggle_buffon_window_position = "<buffonleader>z",
@@ -36,6 +36,7 @@ return {
 			close_buffers_above = "<buffonleader>K",
 			close_buffers_below = "<buffonleader>J",
 			show_help = "<buffonleader>h",
+			close_others = "<buffonleader>c",
 			goto_next_buffer = "",
 			goto_previous_buffer = "",
 			move_buffer_top = "",
@@ -43,7 +44,6 @@ return {
 			switch_previous_used_buffer = "",
 			close_buffer = "",
 			close_all_buffers = "",
-			close_others = "",
 			reopen_recent_closed_buffer = "",
 			previous_page = "",
 			next_page = "",

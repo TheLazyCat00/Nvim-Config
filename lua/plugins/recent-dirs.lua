@@ -10,6 +10,6 @@ return {
 	keys = {
 		{ "so", function ()
 			require("recent-dirs").pick()
-		end }
+		end, desc = "Open session" }
 	}
 }
