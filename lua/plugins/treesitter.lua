@@ -2,6 +2,7 @@ local installedLanguages = {
 	"bash",
 	"c",
 	"cpp",
+	"c_sharp",
 	"cmake",
 	"diff",
 	"html",
@@ -30,7 +31,6 @@ local installedLanguages = {
 	"vue",
 	"xml",
 	"yaml",
-
 }
 
 -- Define keymaps for "around node" (an) and "inside node" (in)

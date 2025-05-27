@@ -2,6 +2,7 @@ return {
 	"francescarpi/buffon.nvim",
 	lazy = false,
 	-- branch = "develop",
+	dev = true,
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
 		"nvim-lua/plenary.nvim",
@@ -27,7 +28,7 @@ return {
 		},
 		num_pages = 1,
 		leader_key = "ö",
-		mapping_chars = "befgimnaoplrstvwy",
+		mapping_chars = "bgmnaoplrstvwy",
 		keybindings = {
 			toggle_buffon_window = "<buffonleader>u",
 			toggle_buffon_window_position = "<buffonleader>z",

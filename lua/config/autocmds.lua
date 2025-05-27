@@ -24,7 +24,7 @@ vim.cmd([[
 ]])
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "python",
+	pattern = { "python", "yaml" },
 	callback = function()
 		vim.bo.expandtab = false -- Use tabs instead of spaces
 		vim.bo.tabstop = 4       -- Number of spaces per tab

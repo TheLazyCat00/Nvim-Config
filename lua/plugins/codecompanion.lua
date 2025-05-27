@@ -16,7 +16,7 @@ local maxTokens = {
 return {
 	"olimorris/codecompanion.nvim",
 	enabled = vim.g.ai_assistant == "codecompanion",
-	branch = "has-xml-tools",
+	-- branch = "has-xml-tools",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-treesitter/nvim-treesitter",
@@ -46,7 +46,7 @@ return {
 				return require("codecompanion.adapters").extend("copilot", {
 					schema = {
 						model = {
-							default = "gemini-2.5-pro",
+							default = "claude-sonnet-4",
 						},
 						max_tokens = maxTokens
 					},

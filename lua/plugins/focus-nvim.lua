@@ -1,7 +1,16 @@
 return {
 	"TheLazyCat00/focus-nvim",
-	lazy = false,
-	opts = {},
+	event = "BufReadPost",
+	opts = {
+		languages = {
+			["cs"] = [[
+				(method_declaration) @func
+				(constructor_declaration) @func
+				(operator_declaration) @func
+			]],
+			["lua"] = "(function_declaration) @func",
+		},
+	},
 	keys = {
 		{
 			"l",
