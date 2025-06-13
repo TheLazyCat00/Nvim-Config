@@ -8,10 +8,10 @@ return {
 		"nvim-lua/plenary.nvim",
 
 		--- buffon extensions
-		{
-			"TheLazyCat00/buffon-colors",
-			opts = {},
-		},
+		-- {
+		-- 	"TheLazyCat00/buffon-colors",
+		-- 	opts = {},
+		-- },
 	},
 	---@type BuffonConfig
 	opts = {

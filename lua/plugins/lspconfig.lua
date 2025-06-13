@@ -4,9 +4,6 @@ local deps = {
 		"williamboman/mason-lspconfig.nvim",
 		opts = {
 			automatic_installation = true,
-			ensure_installed = {
-				"clangd",
-			},
 		},
 		config = function() end,
 	},
@@ -156,6 +153,7 @@ return {
 						}
 					}
 				},
+				clangd = {},
 				omnisharp = {},
 				-- Explicitly exclude julials from LazyVim management
 				julials = {
@@ -232,16 +230,6 @@ return {
 
 		LazyVim.lsp.setup()
 		LazyVim.lsp.on_dynamic_capability(require("lazyvim.plugins.lsp.keymaps").on_attach)
-
-		if vim.fn.has("nvim-0.10.0") == 0 then
-			if type(opts.diagnostics.signs) ~= "boolean" then
-				for severity, icon in pairs(opts.diagnostics.signs.text) do
-					local name = vim.diagnostic.severity[severity]:lower():gsub("^%l", string.upper)
-					name = "DiagnosticSign" .. name
-					vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
-				end
-			end
-		end
 
 		if vim.fn.has("nvim-0.10") == 1 then
 			-- inlay hints
@@ -330,46 +318,17 @@ return {
 			vim.lsp.enable(server)
 		end
 
-		-- get all the servers that are available through mason-lspconfig
 		local have_mason, mlsp = pcall(require, "mason-lspconfig")
-		local all_mslp_servers = {}
-		if have_mason then
-			all_mslp_servers = vim.tbl_keys(require("mason-lspconfig").get_mappings().lspconfig_to_mason)
-		end
+		mlsp.setup({
+			ensure_installed = servers,
+			automatic_installation = true,
+		})
 
-		local ensure_installed = {} ---@type string[]
-		for server, server_opts in pairs(servers) do
-			if server_opts and server ~= "julials" then -- Skip julials
-				server_opts = server_opts == true and {} or server_opts
-				if server_opts.enabled ~= false then
-					-- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
-					if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
-						ensure_installed[#ensure_installed + 1] = server
-					end
-					setup(server)
-				end
+		local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig").get_mappings().lspconfig_to_mason)
+		for _, server in ipairs(all_mslp_servers) do
+			if server.mason ~= false then
+				setup(server)
 			end
-		end
-
-		if have_mason then
-			mlsp.setup({
-				ensure_installed = vim.tbl_deep_extend(
-					"force",
-					ensure_installed,
-					LazyVim.opts("mason-lspconfig.nvim").ensure_installed or {}
-				),
-			})
-		end
-
-		if LazyVim.lsp.is_enabled("denols") and LazyVim.lsp.is_enabled("vtsls") then
-			local is_deno = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc")
-			LazyVim.lsp.disable("vtsls", is_deno)
-			LazyVim.lsp.disable("denols", function(root_dir, config)
-				if not is_deno(root_dir) then
-					config.settings.deno.enable = false
-				end
-				return false
-			end)
 		end
 	end,
 }

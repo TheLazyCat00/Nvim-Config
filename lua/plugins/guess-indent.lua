@@ -1,6 +1,7 @@
 return {
 	"NMAC427/guess-indent.nvim",
 	event = "BufReadPost",
+	enabled = false,
 	opts = {
 		auto_cmd = true,  -- Set to false to disable automatic execution
 		override_editorconfig = false, -- Set to true to override settings set by .editorconfig
