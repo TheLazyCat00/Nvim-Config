@@ -39,14 +39,15 @@ return {
 		adapters = {
 			opts = {
 				show_defaults = false,
-				cache_models_for = 1800
+				cache_models_for = 1800,
+				show_model_choices = true,
 			},
 
 			["copilot"] = function()
 				return require("codecompanion.adapters").extend("copilot", {
 					schema = {
 						model = {
-							default = "claude-sonnet-4",
+							default = "gemini-2.5-pro",
 						},
 						max_tokens = maxTokens
 					},
@@ -82,7 +83,6 @@ return {
 			-- Change the default chat adapter
 			chat = {
 				adapter = "copilot",
-
 				slash_commands = {
 					["file"] = {
 						-- Location to the slash command in CodeCompanion

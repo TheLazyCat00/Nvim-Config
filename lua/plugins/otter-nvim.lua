@@ -1,18 +1,18 @@
 local filetypes = { "markdown" }
 
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = filetypes,
-	callback = function (args)
-		require("otter").activate()
-		local bufnr = args.buf
-		vim.api.nvim_create_autocmd("BufWritePost", {
-			buffer = bufnr,
-			callback = function ()
-				require("otter").activate()
-			end
-		})
-	end
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	pattern = filetypes,
+-- 	callback = function (args)
+-- 		require("otter").activate()
+-- 		local bufnr = args.buf
+-- 		vim.api.nvim_create_autocmd("BufWritePost", {
+-- 			buffer = bufnr,
+-- 			callback = function ()
+-- 				require("otter").activate()
+-- 			end
+-- 		})
+-- 	end
+-- })
 
 -- vim.api.nvim_create_autocmd("user", {
 -- 	pattern = 'CodeCompanionRequestFinished',
