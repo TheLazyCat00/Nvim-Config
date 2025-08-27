@@ -63,12 +63,19 @@ return {
 				preset = {
 					header = wholeImage,
 					keys = {
-						{ icon = " ", key = "r", desc = "Restore Session", action = ":lua require('recent-dirs').open_buffer(1)" },
-						{ icon = " ", key = "o", desc = "Recent Projects", action = ":lua require('recent-dirs').pick()" },
 						{ icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
 						{ icon = " ", key = "x", desc = "Lazy Extras", action = ":LazyExtras" },
 						{ icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
 						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
+						(function ()
+							if vim.g.neovide then
+								return
+									{ icon = " ", key = "r", desc = "Restore Session", action = ":lua require('recent-dirs').open_buffer(1)" },
+									{ icon = " ", key = "o", desc = "Recent Projects", action = ":lua require('recent-dirs').pick()" }
+							else
+								return nil
+							end
+						end)(),
 					},
 				},
 			}

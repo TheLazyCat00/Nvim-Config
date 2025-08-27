@@ -1,6 +1,6 @@
 return {
 	"TheLazyCat00/recent-dirs",
-	enabled = false,
+	enabled = vim.g.neovide or false,
 	event = "UIEnter",
 	config = function ()
 		require("recent-dirs").load_recent()
