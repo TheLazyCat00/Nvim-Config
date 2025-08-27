@@ -1,6 +1,6 @@
 return {
 	"TheLazyCat00/focus-nvim",
-	event = "BufReadPost",
+	event = "VeryLazy",
 	opts = {
 		languages = {
 			["cs"] = [[

@@ -1,6 +1,5 @@
 return {
 	'Wansmer/treesj',
-	event = "BufReadPost",
 	dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
 	opts = {
 		use_default_keymaps = false,

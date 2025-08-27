@@ -14,3 +14,8 @@ vim.g.font = "CommitMono Nerd Font Mono"
 vim.g.size = "10"
 
 vim.g.updateFont()
+
+vim.api.nvim_create_user_command('Size', function(opts)
+	vim.g.size = opts.args
+	vim.g.updateFont()
+end, { nargs = 1 })

@@ -1,6 +1,6 @@
 return {
 	"NMAC427/guess-indent.nvim",
-	event = "BufReadPost",
+	event = "VeryLazy",
 	enabled = false,
 	opts = {
 		auto_cmd = true,  -- Set to false to disable automatic execution

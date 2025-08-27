@@ -37,4 +37,6 @@ function Print(value)
 	vim.notify(vim.inspect(value))
 end
 
-require("config.neovide")
+if vim.g.neovide then
+	require("config.neovide")
+end

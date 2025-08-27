@@ -1,4 +1,4 @@
-local deps = {
+local standard = {
 	"mason.nvim",
 	{
 		"williamboman/mason-lspconfig.nvim",
@@ -27,18 +27,16 @@ local coqDeps = {
 	-- - etc
 }
 
-local function getDeps()
-	if vim.g.lazyvim_cmp == "coq_nvim" then
-		return vim.tbl_extend("force", deps, coqDeps)
-	else
-		return deps
-	end
-end
-
 return {
 	"neovim/nvim-lspconfig",
-	event = "LazyFile",
-	dependencies = getDeps(),
+	event = "VeryLazy",
+	dependencies = (function ()
+		if vim.g.lazyvim_cmp == "coq_nvim" then
+			return vim.tbl_extend("force", standard, coqDeps)
+		else
+			return standard
+		end
+	end)(),
 	opts = function()
 		---@class PluginLspOpts
 		local ret = {
