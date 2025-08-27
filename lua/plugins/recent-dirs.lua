@@ -1,5 +1,6 @@
 return {
 	"TheLazyCat00/recent-dirs",
+	enabled = false,
 	event = "UIEnter",
 	config = function ()
 		require("recent-dirs").load_recent()
