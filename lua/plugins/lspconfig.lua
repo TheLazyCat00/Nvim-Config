@@ -286,11 +286,6 @@ return {
 		)
 
 		local function setup(server)
-			-- Skip julials since we set it up separately
-			if server == "julials" then
-				return
-			end
-
 			local server_opts = vim.tbl_deep_extend(
 				"force",
 				{
@@ -317,9 +312,14 @@ return {
 		end
 
 		local have_mason, mlsp = pcall(require, "mason-lspconfig")
+
+		local serverNames = {}
+		for key, _ in pairs(servers) do
+			table.insert(serverNames, key)
+		end
+
 		mlsp.setup({
-			ensure_installed = servers,
-			automatic_installation = true,
+			ensure_installed = serverNames,
 		})
 
 		local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig").get_mappings().lspconfig_to_mason)
