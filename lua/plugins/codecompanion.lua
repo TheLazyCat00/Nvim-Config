@@ -1,13 +1,3 @@
-local reasoningEffort = {
-	default = "medium",
-	desc = "Constrains effort on reasoning for reasoning models. Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.",
-	choices = {
-		"high",
-		"medium",
-		"low",
-	},
-}
-
 local maxTokens = {
 	default = 30000,
 	desc = "The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.",
@@ -193,7 +183,7 @@ return {
 							n = "<leader>ap",
 						},
 						index = 9,
-						callback = "keymaps.pin_reference",
+						callback = "keymaps.pin_context",
 						description = "Pin Reference",
 					},
 					watch = {
