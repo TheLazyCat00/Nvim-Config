@@ -118,7 +118,7 @@ local function run_last_task()
 end
 
 return {
-	'TheLazyCat00/overseer.nvim',
+	'stevearc/overseer.nvim',
 	cmd = { "OverseerRun", "OverseerToggle" },
 	opts = {
 		task_list = {
