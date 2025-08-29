@@ -163,10 +163,6 @@ return {
 			-- return true if you don't want this server to be setup with lspconfig
 			---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
 			setup = {
-				tsserver = function(_, opts)
-					require("typescript").setup({ server = opts })
-					return true
-				end,
 			},
 		}
 		local keys = require("lazyvim.plugins.lsp.keymaps").get()
@@ -320,13 +316,11 @@ return {
 
 		mlsp.setup({
 			ensure_installed = serverNames,
+			automatic_enable = false
 		})
 
-		local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig").get_mappings().lspconfig_to_mason)
-		for _, server in ipairs(all_mslp_servers) do
-			if server.mason ~= false then
-				setup(server)
-			end
+		for _, server in ipairs(serverNames) do
+			setup(server)
 		end
 	end,
 }
