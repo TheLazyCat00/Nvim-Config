@@ -31,32 +31,8 @@ local function save_table(tbl)
 	local json_str = vim.json.encode(tbl)
 	-- Pretty-print JSON
 	local pretty_json = ""
-	local indent_level = 0
-	local in_string = false
-	for i = 1, #json_str do
-		local char = json_str:sub(i, i)
-		if char == '"' and (i == 1 or json_str:sub(i - 1, i - 1) ~= "\\") then
-			in_string = not in_string
-		end
-
-		if not in_string then
-			if char == "{" or char == "[" then
-				indent_level = indent_level + 1
-				pretty_json = pretty_json .. char .. "\n" .. string.rep("\t", indent_level)
-			elseif char == "}" or char == "]" then
-				indent_level = indent_level - 1
-				pretty_json = pretty_json .. "\n" .. string.rep("\t", indent_level) .. char
-			elseif char == "," then
-				pretty_json = pretty_json .. char .. "\n" .. string.rep("\t", indent_level)
-			elseif char == ":" then
-				pretty_json = pretty_json .. char .. " "
-			elseif char ~= " " and char ~= "\n" and char ~= "\r" then
-				pretty_json = pretty_json .. char
-			end
-		else
-			pretty_json = pretty_json .. char
-		end
-	end
+	local ok, pretty = pcall(vim.fn.system, { "jq", "." }, json_str)
+	local pretty_json = (ok and pretty) or json_str
 
 	create_file_if_missing(history_path)
 
@@ -92,42 +68,13 @@ local function sanitize_for_json(tbl)
 	if type(tbl) ~= "table" then return tbl end
 
 	local sanitized_tbl = {}
-	local has_numeric_keys = false
-	local has_string_keys = false
-	local numeric_keys = {}
-	for k, _ in pairs(tbl) do
-		if type(k) == "number" then
-			has_numeric_keys = true
-			table.insert(numeric_keys, k)
-		elseif type(k) == "string" then
-			has_string_keys = true
-		end
+	-- Process array part
+	for i = 1, #tbl do
+		sanitized_tbl[i] = sanitize_for_json(tbl[i])
 	end
-	table.sort(numeric_keys)
-
-	if has_numeric_keys and has_string_keys then
-		-- Mixed table, convert to object
-		local is_component = false
-		if #numeric_keys == 1 and numeric_keys[1] == 1 and type(tbl[1]) == "string" then
-			sanitized_tbl["name"] = tbl[1]
-			is_component = true
-		end
-		for k, v in pairs(tbl) do
-			if type(k) == "string" then
-				sanitized_tbl[k] = sanitize_for_json(v)
-			elseif not is_component then
-				-- Handle non-component mixed tables if necessary
-				sanitized_tbl[tostring(k)] = sanitize_for_json(v)
-			end
-		end
-	elseif has_numeric_keys then
-		-- Array-like table
-		for _, k in ipairs(numeric_keys) do
-			table.insert(sanitized_tbl, sanitize_for_json(tbl[k]))
-		end
-	else
-		-- Object-like table
-		for k, v in pairs(tbl) do
+	-- Process hash part
+	for k, v in pairs(tbl) do
+		if type(k) == "string" then
 			sanitized_tbl[k] = sanitize_for_json(v)
 		end
 	end
@@ -158,15 +105,57 @@ local function append_to_history(task_defn)
 	save_table(history)
 end
 
+local function run_last_task()
+	local history = load_json()
+	local cwd = vim.fn.getcwd():gsub("\\", "/")
+	if history[cwd] and #history[cwd] > 0 then
+		local overseer = require("overseer")
+		local task = overseer.new_task(history[cwd][1])
+		task:start()
+	else
+		vim.notify("No previous tasks found for this project", vim.log.levels.WARN)
+	end
+end
+
 return {
 	'TheLazyCat00/overseer.nvim',
 	cmd = { "OverseerRun", "OverseerToggle" },
-	opts = {},
+	opts = {
+		task_list = {
+			bindings = {
+				["?"] = "ShowHelp",
+				["<CR>"] = "RunAction",
+				["<C-e>"] = "Edit",
+				["<C-v>"] = "OpenVsplit",
+				["<C-s>"] = "OpenSplit",
+				["<C-f>"] = "OpenFloat",
+				["<C-q>"] = "OpenQuickFix",
+				["p"] = "TogglePreview",
+				["<C-l>"] = "IncreaseDetail",
+				["<C-h>"] = "DecreaseDetail",
+				["L"] = "IncreaseAllDetail",
+				["H"] = "DecreaseAllDetail",
+				["["] = "DecreaseWidth",
+				["]"] = "IncreaseWidth",
+				["{"] = "PrevTask",
+				["}"] = "NextTask",
+				["<C-k>"] = "ScrollOutputUp",
+				["<C-j>"] = "ScrollOutputDown",
+				["q"] = "Close",
+			},
+		}
+	},
 	config = function (_, opts)
 		local overseer = require("overseer")
 		overseer.setup(opts)
 		overseer.add_template_hook({}, function (task_defn, util)
 			append_to_history(task_defn)
 		end)
-	end
+	end,
+	keys = {
+		{ "<leader>r", run_last_task, desc = "Run Last Task" },
+		{ "<leader>td", "<cmd>OverseerQuickAction dispose<cr>", desc = "Dispose Task" },
+		{ "<leader>tr", "<cmd>OverseerRun<cr>", desc = "Run Task" },
+		{ "<leader>tt", "<cmd>OverseerToggle<cr>", desc = "Toggle Task List" },
+	},
 }

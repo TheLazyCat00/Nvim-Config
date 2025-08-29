@@ -61,4 +61,15 @@ if vim.g.static_scrolling then
 	vim.opt.scroll = 15
 end
 
+local term_group = vim.api.nvim_create_augroup('TermGroup', { clear = true })
+
+-- Set a buffer-local keymap when a terminal is opened
+vim.api.nvim_create_autocmd('TermOpen', {
+	group = term_group,
+	desc = "Map q to quit terminal window in normal mode",
+	callback = function()
+		vim.keymap.set('n', 'q', '<Cmd>q<CR>', { buffer = true, silent = true })
+	end,
+})
+
 require("config.functionality")
