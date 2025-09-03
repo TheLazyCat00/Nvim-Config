@@ -131,16 +131,16 @@ return {
 				["<C-f>"] = "OpenFloat",
 				["<C-q>"] = "OpenQuickFix",
 				["p"] = "TogglePreview",
-				["<C-l>"] = "IncreaseDetail",
-				["<C-h>"] = "DecreaseDetail",
+				["<M-l>"] = "IncreaseDetail",
+				["<M-h>"] = "DecreaseDetail",
+				["<M-k>"] = "ScrollOutputUp",
+				["<M-j>"] = "ScrollOutputDown",
 				["L"] = "IncreaseAllDetail",
 				["H"] = "DecreaseAllDetail",
 				["["] = "DecreaseWidth",
 				["]"] = "IncreaseWidth",
 				["{"] = "PrevTask",
 				["}"] = "NextTask",
-				["<C-k>"] = "ScrollOutputUp",
-				["<C-j>"] = "ScrollOutputDown",
 				["q"] = "Close",
 			},
 		}
@@ -151,17 +151,11 @@ return {
 		overseer.add_template_hook({}, function (task_defn, util)
 			append_to_history(task_defn)
 		end)
-
-		vim.api.nvim_create_autocmd('User', {
-			pattern = 'OverseerListTaskHover',
-			callback = function()
-				vim.keymap.set("n", "d", "<cmd>OverseerQuickAction dispose<cr>", { desc = "Dispose Task", buffer = true, silent = true })
-			end,
-		})
 	end,
 	keys = {
 		{ "<leader>r", run_last_task, desc = "Run Last Task" },
-		{ "<leader>tr", "<cmd>OverseerRun<cr>", desc = "Run Task" },
-		{ "<leader>tt", "<cmd>OverseerToggle<cr>", desc = "Toggle Task List" },
+		{ "<leader>od", "<cmd>OverseerQuickAction dispose<cr>", desc = "Dispose Task" },
+		{ "<leader>or", "<cmd>OverseerRun<cr>", desc = "Run Task" },
+		{ "<leader>ot", "<cmd>OverseerToggle<cr>", desc = "Toggle Task List" },
 	},
 }

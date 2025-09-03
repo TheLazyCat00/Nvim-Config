@@ -37,7 +37,7 @@ return {
 				return require("codecompanion.adapters").extend("copilot", {
 					schema = {
 						model = {
-							default = "gemini-2.5-pro",
+							default = "claude-sonnet-4",
 						},
 						max_tokens = maxTokens
 					},
@@ -73,6 +73,20 @@ return {
 			-- Change the default chat adapter
 			chat = {
 				adapter = "copilot",
+				tools = {
+					["insert_edit_into_file"] = {
+						callback = "strategies.chat.tools.catalog.insert_edit_into_file",
+						description = "Insert code into an existing file",
+						opts = {
+							patching_algorithm = "strategies.chat.tools.catalog.helpers.patch",
+							requires_approval = { -- Require approval before the tool is executed?
+								buffer = false, -- For editing buffers in Neovim
+								file = false, -- For editing files in the current working directory
+							},
+							user_confirmation = false, -- Require confirmation from the user before accepting the edit?
+						},
+					},
+				},
 				slash_commands = {
 					["file"] = {
 						-- Location to the slash command in CodeCompanion

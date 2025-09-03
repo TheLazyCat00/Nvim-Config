@@ -125,6 +125,8 @@ return {
 					},
 				},
 				ts_ls = {
+					name = "tsserver",
+					cmd = { 'typescript-language-server', '--stdio' },
 					filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact' },
 				},
 				volar = {
@@ -301,6 +303,10 @@ return {
 				if opts.setup["*"](server, server_opts) then
 					return
 				end
+			end
+
+			if server_opts.name then
+				server = server_opts.name
 			end
 
 			vim.lsp.config(server, server_opts)
