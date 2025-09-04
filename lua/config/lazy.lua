@@ -37,7 +37,7 @@ require("lazy").setup({
 		path = "~/Documents/CODE/Nvim",
 		---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
 		patterns = { "TheLazyCat00" }, -- For example {"folke"}
-		fallback = true-- Fallback to git when local plugin doesn't exist
+		fallback = true -- Fallback to git when local plugin doesn't exist
 	},
 	install = { colorscheme = { "kanagawa-wave" } },
 	checker = {

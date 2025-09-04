@@ -16,7 +16,7 @@ return {
 	---@type BuffonConfig
 	opts = {
 		open = {
-			by_default = true,
+			by_default = false,
 			offset = {
 				x = -3,
 				y = 3,
