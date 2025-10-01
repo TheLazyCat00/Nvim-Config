@@ -79,11 +79,11 @@ return {
 						description = "Insert code into an existing file",
 						opts = {
 							patching_algorithm = "strategies.chat.tools.catalog.helpers.patch",
-							requires_approval = { -- Require approval before the tool is executed?
-								buffer = false, -- For editing buffers in Neovim
-								file = false, -- For editing files in the current working directory
-							},
-							user_confirmation = false, -- Require confirmation from the user before accepting the edit?
+							-- requires_approval = { -- Require approval before the tool is executed?
+							-- 	buffer = false, -- For editing buffers in Neovim
+							-- 	file = false, -- For editing files in the current working directory
+							-- },
+							-- user_confirmation = false, -- Require confirmation from the user before accepting the edit?
 						},
 					},
 				},
