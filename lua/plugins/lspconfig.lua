@@ -155,6 +155,8 @@ return {
 				},
 				clangd = {},
 				omnisharp = {},
+				jsonls = {},
+				cmake = {},
 				-- Explicitly exclude julials from LazyVim management
 				julials = {
 					mason = false, -- Don't manage julia through mason
