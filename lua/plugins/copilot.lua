@@ -1,5 +1,6 @@
 return {
 	"github/copilot.vim",
+	enabled = false,
 	event = "VeryLazy",
 	config = function()
 		vim.api.nvim_set_keymap("i", "<C-CR>", 'copilot#Accept("")', { silent = true, expr = true })

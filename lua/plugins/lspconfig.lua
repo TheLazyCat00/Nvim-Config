@@ -154,6 +154,8 @@ return {
 					}
 				},
 				clangd = {},
+				html = {},
+				cssls = {},
 				omnisharp = {},
 				-- Explicitly exclude julials from LazyVim management
 				julials = {
