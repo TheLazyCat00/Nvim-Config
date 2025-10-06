@@ -24,6 +24,7 @@ end
 
 return {
 	"motosir/skel-nvim",
+	enabled = false,
 	event = "VeryLazy",
 	opts = {
 		templates_dir = templatesDir,
