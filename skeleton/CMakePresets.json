@@ -6,6 +6,7 @@
 			"name": "clang-ninja",
 			"description": "Use Clang with Ninja",
 			"generator": "Ninja",
+			"binaryDir": "${sourceDir}/build",
 			"cacheVariables": {
 				"CMAKE_C_COMPILER": "clang",
 				"CMAKE_CXX_COMPILER": "clang++",

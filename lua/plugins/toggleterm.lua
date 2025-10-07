@@ -3,7 +3,7 @@ return {
 	version = "*",
 	opts = {
 		on_create = function ()
-			vim.cmd([[TermExec cmd="pwsh"]])
+			-- vim.cmd([[TermExec cmd="pwsh"]])
 		end
 	},
 	keys = {
