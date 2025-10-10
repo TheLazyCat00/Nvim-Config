@@ -4,9 +4,20 @@ return {
 	opts = {
 		on_create = function ()
 			vim.cmd([[TermExec cmd="pwsh"]])
-		end
+			vim.cmd([[TermExec cmd="clear"]])
+			vim.cmd([[ToggleTerm]])
+			vim.cmd([[ToggleTerm]])
+		end,
+		on_open = function ()
+			vim.schedule(function ()
+				vim.cmd.startinsert()
+			end)
+		end,
+		autochdir = true,
 	},
 	keys = {
-		{ "<leader>t", "<Cmd>ToggleTerm size=80 direction=vertical name=main<CR>" }
+		{ "<leader>t", function ()
+			vim.cmd("ToggleTerm size=80 direction=vertical name=main")
+		end }
 	}
 }
