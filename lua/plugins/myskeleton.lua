@@ -1,5 +1,5 @@
 return {
-	"TheLazyCat00/skeleton",
+	"TheLazyCat00/skeli",
 	event = "VeryLazy",
 	opts = {}
 }

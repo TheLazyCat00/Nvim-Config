@@ -30,8 +30,10 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.api.nvim_create_autocmd("BufRead", {
 	pattern = { "*" },
-	callback = function()
-		vim.opt.fileformat = "unix"
+	callback = function(args)
+		if vim.bo[args.buf].modifiable then
+			vim.opt.fileformat = "unix"
+		end
 	end,
 })
 

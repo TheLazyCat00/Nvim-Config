@@ -7,6 +7,7 @@ vim.loader.enable()
 vim.cmd("language en_US.UTF-8")
 vim.g.maplocalleader = " "
 
+vim.opt.undolevels = 1000
 vim.opt.undofile = true
 vim.opt.expandtab = false
 vim.opt.tabstop = 4
