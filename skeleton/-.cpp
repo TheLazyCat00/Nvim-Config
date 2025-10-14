@@ -5,7 +5,9 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <filesystem>
 
+namespace fs = std::filesystem;
 using namespace std;
 
 const int LINES_PER_TEST = 2;
@@ -108,6 +110,12 @@ namespace tls {
 
 		return buffer;
 	}
+
+	string getOutFile(){
+		fs::path thisPath(__FILE__);
+		string outFile = thisPath.replace_extension("").string() + "_output.txt";
+		return outFile;
+	}
 };
 
 class TestData {
@@ -148,9 +156,12 @@ public:
 		for (const auto & test : tests){
 			tls::Buffer testResult = algorithm(test);
 
-			tls::print(testResult);
 			solution.insert(solution.end(), testResult.begin(), testResult.end());
+			tls::print(testResult);
 		}
+
+		string outFile = tls::getOutFile();
+		tls::write(outFile, solution.concatenate());
 	}
 };
 
@@ -172,7 +183,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	string filepath = argv[1];
+	string filepath = argv[1]; // get the file path from command line
 	Program program(filepath);
 
 	return 0;
