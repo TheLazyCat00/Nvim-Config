@@ -160,7 +160,12 @@ return {
 				clangd = {
 					cmd = {'clangd', '--background-index', '--clang-tidy', '--log=verbose'},
 					init_options = {
-						fallbackFlags = { '-std=c++23' },
+						fallbackFlags = {
+							'-std=c++23',
+							'-Wall',
+							'-Wextra',
+							'-pedantic',
+						},
 					},
 				},
 				html = {},
