@@ -1,7 +1,7 @@
 return {
 	"TheLazyCat00/simple-format",
 	event = "BufReadPost",
-	-- enabled = false,
+	enabled = false,
 	opts = {},
 	config = function (_, opts)
 		local simple_format = require("simple-format")
