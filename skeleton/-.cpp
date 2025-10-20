@@ -1,7 +1,11 @@
 #include <cstddef>
+#include <cstdlib>
 #include <functional>
 #include <iostream>
 #include <fstream>
+#include <regex>
+#include <stacktrace>
+#include <stdexcept>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -13,6 +17,22 @@ using namespace std;
 const int LINES_PER_TEST = 2;
 
 namespace tls {
+	void printStacktrace(const stacktrace & trace){
+
+		cout << "Stacktrace:\n";
+		for(const auto & frame : trace){
+			cout << frame << "\n";
+		}
+	}
+
+	template<typename ExceptionType>
+	void error(const string & msg) {
+		cerr << msg << "\n";
+		stacktrace trace = stacktrace::current();
+		printStacktrace(trace);
+		throw ExceptionType(msg);
+	}
+
 	struct Range {
 		int start;
 		int end;
@@ -34,22 +54,63 @@ namespace tls {
 				this -> begin() + end + 1
 			);
 		}
+
+		void sort(function<float(const T &)>getValue){
+			std::sort(this -> begin(), this -> end(), [ & getValue](const T & a, const T & b) {
+				return getValue(a) < getValue(b);
+			});
+		}
+
+		bool contains(T element) const{
+			return find(this -> begin(), this -> end(), element) != this -> end();
+		}
+
+		template<typename GenericOut>
+		List<GenericOut> apply(const function<GenericOut(T)> callback){
+			List<GenericOut> result;
+			for (const T& element : *this) {
+				result.push_back(callback(element));
+			}
+
+			return result;
+		}
+
+		size_t index(const T & item) const{
+			for(size_t index = 0; index < this -> size(); index ++ ){
+				if (( * this)[index] == item){
+					return index;
+				}
+			}
+
+			error<out_of_range>("Element not found in List");
+		}
+
+		void remove(const T & item){
+			size_t index = this -> index(item);
+			this -> erase(this -> begin() + index);
+		}
 	};
 
 	class Buffer : public List<string> {
 	public:
 		using List<string>::List;
 
-		Buffer range(Range range) {
-			List<string> result = List<string>::range(range);
-			return Buffer(result.begin(), result.end());
-		}
+		Buffer(const List<string> & list) : List<string>(list) {}
 
 		string concatenate() const{
+			string result = this -> concatenate("\n");
+			return result;
+		}
+
+		string concatenate(string delimiter) const{
 			string result;
-			for (const auto & str : * this) {
+			for (size_t i = 0; i < this -> size() - 1; i ++ ) {
+				string str = (* this)[i];
 				result += str;
+				result += delimiter;
 			}
+
+			result += (* this)[this -> size() - 1];
 			return result;
 		}
 	};
@@ -60,27 +121,28 @@ namespace tls {
 		cout << "\n";
 	}
 
-	template<>
 	void print(bool value){
 		std::cout << (value ? "true" : "false");
 		cout << "\n";
 	}
 
-	template<>
-	void print(Buffer value) {
+	void print(const Buffer & value) {
 		for (const auto& str : value) {
-			std::cout << str;
-			cout << "\n";
+			print(str);
 		}
 	}
 
-	template<>
+	void print(const string & value) {
+		cout << value;
+		cout << "\n";
+	}
+
 	void print(Range value) {
 		cout << "start: " << value.start << ", end: " << value.end;
 		cout << "\n";
 	}
 
-	string read(string filepath){
+	string read(const string& filepath){
 		ifstream file(filepath);
 		if (!file) {
 			cerr << "Error: could not open file '" << filepath << "'\n";
@@ -91,7 +153,7 @@ namespace tls {
 		return buffer.str();
 	};
 
-	void write(string filepath, string text){
+	void write(const string & filepath, const string & text){
 		std::ofstream outFile(filepath);
 		if (outFile.is_open()) {
 			outFile << text;
@@ -99,8 +161,8 @@ namespace tls {
 		}
 	}
 
-	Buffer getLines(string raw){
-		Buffer buffer({});
+	Buffer getLines(const string & raw){
+		Buffer buffer{};
 
 		stringstream ss(raw);
 		string line;
@@ -116,6 +178,19 @@ namespace tls {
 		string outFile = thisPath.replace_extension("").string() + "_output.txt";
 		return outFile;
 	}
+
+	List<string> split(const string & str, const string & delimiter){
+		List<string> tokens;
+		regex re(delimiter);
+		sregex_token_iterator it(str.begin(), str.end(), re, -1);
+		sregex_token_iterator reg_end;
+
+		for (; it != reg_end; ++it) {
+			tokens.push_back(it->str());
+		}
+
+		return tokens;
+	}
 };
 
 class TestData {
@@ -127,7 +202,7 @@ public:
 	tls::List<tls::Buffer> tests;
 	size_t nTests;
 
-	TestData(string filepath) : filepath(filepath){
+	TestData(const string& filepath) : filepath(filepath){
 		raw = tls::read(filepath);
 		content = tls::getLines(raw);
 		body = content.range({ 1, -1 });
@@ -151,10 +226,11 @@ public:
 		return content[lineNumber];
 	}
 
-	void registerSolution(function<tls::Buffer(tls::Buffer)> algorithm) const{
+	void registerSolution(function<tls::Buffer(tls::Buffer, int)> algorithm) const{
 		tls::Buffer solution{};
-		for (const auto & test : tests){
-			tls::Buffer testResult = algorithm(test);
+		for (size_t i = 0; i < tests.size(); i ++ ){
+			tls::Buffer test = tests[i];
+			tls::Buffer testResult = algorithm(test, i);
 
 			solution.insert(solution.end(), testResult.begin(), testResult.end());
 			tls::print(testResult);
@@ -169,15 +245,16 @@ class Program{
 public:
 	TestData testData;
 	Program(string filepath) : testData(filepath) {
-		testData.registerSolution(algorithm);
+		testData.registerSolution([this](tls::Buffer data, int testNumber){
+			return this->algorithm(data, testNumber);
+		});
 	}
-	
-	static tls::Buffer algorithm(tls::Buffer data){
-		return data;
+
+	tls::Buffer algorithm(tls::Buffer data, int testNumber) {
 	}
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char * argv[]) {
 	if (argc < 2) { // check if a file path was provided
 		cerr << "Usage: " << argv[0] << " <path_to_file>\n";
 		return 1;
