@@ -5,7 +5,6 @@ return {
 		on_create = function ()
 			vim.cmd([[TermExec cmd="pwsh"]])
 			vim.cmd([[TermExec cmd="clear"]])
-			vim.cmd([[TermExec cmd="pwsh"]])
 			vim.cmd([[ToggleTerm]])
 			vim.cmd([[ToggleTerm]])
 		end,
