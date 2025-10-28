@@ -8,6 +8,7 @@
   "codecompanion.nvim": { "branch": "main", "commit": "d8de75a1e67bdc9024a5ec69baea11337a11a02e" },
   "copilot.vim": { "branch": "release", "commit": "f3d66c148aa60ad04c0a21d3e0a776459de09eb2" },
   "flash.nvim": { "branch": "main", "commit": "3be9bf7e85550045ec576379a0c45aac144d0438" },
+  "focus-nvim": { "branch": "main", "commit": "455b2c0dd7b35e628cc83bd4ba9634c16e486749" },
   "friendly-snippets": { "branch": "main", "commit": "572f5660cf05f8cd8834e096d7b4c921ba18e175" },
   "gitsigns.nvim": { "branch": "main", "commit": "20ad4419564d6e22b189f6738116b38871082332" },
   "grug-far.nvim": { "branch": "main", "commit": "3e72397465f774b01aa38e4fe8e6eecf23d766d9" },
