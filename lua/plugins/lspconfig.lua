@@ -172,6 +172,32 @@ return {
 				cssls = {},
 				omnisharp = {
 					cmd = { "omnisharp", "-z", "--hostPID", "12345", "DotNet:enablePackageRestore=false", "--encoding", "utf-8", "--languageserver" },
+					-- settings = {
+					-- 	FormattingOptions = {
+					-- 		EnableEditorConfigSupport = true
+					-- 	},
+					-- 	MsBuild = {},
+					-- 	RenameOptions = {},
+					-- 	RoslynExtensionsOptions = {
+					-- 		inlayHintsOptions = {
+					-- 			enableForParameters = true,
+					-- 			forLiteralParameters = true,
+					-- 			forIndexerParameters = true,
+					-- 			forObjectCreationParameters = true,
+					-- 			forOtherParameters = true,
+					-- 			suppressForParametersThatDifferOnlyBySuffix = false,
+					-- 			suppressForParametersThatMatchMethodIntent = false,
+					-- 			suppressForParametersThatMatchArgumentName = false,
+					-- 			enableForTypes = true,
+					-- 			forImplicitVariableTypes = true,
+					-- 			forLambdaParameterTypes = true,
+					-- 			forImplicitObjectCreation = true
+					-- 		}
+					-- 	},
+					-- 	Sdk = {
+					-- 		IncludePrereleases = true
+					-- 	}
+					-- }
 				},
 				jsonls = {},
 				cmake = {},
