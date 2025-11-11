@@ -171,33 +171,29 @@ return {
 				html = {},
 				cssls = {},
 				omnisharp = {
-					cmd = { "omnisharp", "-z", "--hostPID", "12345", "DotNet:enablePackageRestore=false", "--encoding", "utf-8", "--languageserver" },
-					-- settings = {
-					-- 	FormattingOptions = {
-					-- 		EnableEditorConfigSupport = true
-					-- 	},
-					-- 	MsBuild = {},
-					-- 	RenameOptions = {},
-					-- 	RoslynExtensionsOptions = {
-					-- 		inlayHintsOptions = {
-					-- 			enableForParameters = true,
-					-- 			forLiteralParameters = true,
-					-- 			forIndexerParameters = true,
-					-- 			forObjectCreationParameters = true,
-					-- 			forOtherParameters = true,
-					-- 			suppressForParametersThatDifferOnlyBySuffix = false,
-					-- 			suppressForParametersThatMatchMethodIntent = false,
-					-- 			suppressForParametersThatMatchArgumentName = false,
-					-- 			enableForTypes = true,
-					-- 			forImplicitVariableTypes = true,
-					-- 			forLambdaParameterTypes = true,
-					-- 			forImplicitObjectCreation = true
-					-- 		}
-					-- 	},
-					-- 	Sdk = {
-					-- 		IncludePrereleases = true
-					-- 	}
-					-- }
+					cmd = {
+						"omnisharp",
+						"-z",
+						"--hostPID",
+						"12345",
+						"DotNet:enablePackageRestore=false",
+						"--encoding",
+						"utf-8",
+						"--languageserver",
+
+						"RoslynExtensionsOptions:inlayHintsOptions:enableForParameters=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forLiteralParameters=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forIndexerParameters=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forObjectCreationParameters=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forOtherParameters=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:suppressForParametersThatDifferOnlyBySuffix=false",
+						"RoslynExtensionsOptions:inlayHintsOptions:suppressForParametersThatMatchMethodIntent=false",
+						"RoslynExtensionsOptions:inlayHintsOptions:suppressForParametersThatMatchArgumentName=false",
+						"RoslynExtensionsOptions:inlayHintsOptions:enableForTypes=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forImplicitVariableTypes=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forLambdaParameterTypes=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forImplicitObjectCreation=true",
+					},
 				},
 				jsonls = {},
 				cmake = {},
