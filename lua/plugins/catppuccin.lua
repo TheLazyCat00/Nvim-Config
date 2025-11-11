@@ -1,5 +1,6 @@
 return {
 	"catppuccin/nvim",
+	enabled = false,
 	lazy = false, -- Loads the plugin immediately at startup
 	priority = 1000,
 	name = "catppuccin",

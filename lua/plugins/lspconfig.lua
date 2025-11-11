@@ -170,14 +170,13 @@ return {
 				},
 				html = {},
 				cssls = {},
-				omnisharp = {},
+				omnisharp = {
+					cmd = { "omnisharp", "-z", "--hostPID", "12345", "DotNet:enablePackageRestore=false", "--encoding", "utf-8", "--languageserver" },
+				},
 				jsonls = {},
 				cmake = {},
 				-- Explicitly exclude julials from LazyVim management
-				julials = {
-					mason = false, -- Don't manage julia through mason
-					enabled = false, -- Don't set up through standard LazyVim mechanism
-				},
+				julials = {},
 			},
 			-- you can do any additional lsp server setup here
 			-- return true if you don't want this server to be setup with lspconfig
