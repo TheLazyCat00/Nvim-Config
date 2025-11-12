@@ -18,7 +18,6 @@ const int LINES_PER_TEST = 2;
 
 namespace tls {
 	void printStacktrace(const stacktrace & trace){
-
 		cout << "Stacktrace:\n";
 		for(const auto & frame : trace){
 			cout << frame << "\n";
@@ -103,6 +102,10 @@ namespace tls {
 		}
 
 		string concatenate(string delimiter) const{
+			if(this->size() == 0){
+				return "";
+			}
+
 			string result;
 			for (size_t i = 0; i < this -> size() - 1; i ++ ) {
 				string str = (* this)[i];
@@ -113,6 +116,15 @@ namespace tls {
 			result += (* this)[this -> size() - 1];
 			return result;
 		}
+	};
+
+	template<typename T>
+	struct Element {
+		T value;
+		size_t index;
+		tls::List<T> & list;
+		Element<T>(tls::List<T> & list, size_t index):
+			value(list[index]), index(index), list(const_cast<tls::List<T>&>(list)) {}
 	};
 
 	template<typename T>
@@ -140,6 +152,13 @@ namespace tls {
 	void print(Range value) {
 		cout << "start: " << value.start << ", end: " << value.end;
 		cout << "\n";
+	}
+
+	template<typename T>
+	void print(const List<T>& value) {
+		for (const auto& element : value) {
+			print(element);
+		}
 	}
 
 	string read(const string& filepath){
@@ -243,16 +262,18 @@ public:
 
 class Program{
 public:
-	TestData testData;
-	Program(string filepath) : testData(filepath) {
-		testData.registerSolution([this](tls::Buffer data, int testNumber){
-			return this->algorithm(data, testNumber);
-		});
+	Program() {
 	}
 
 	tls::Buffer algorithm(tls::Buffer data, int testNumber) {
+		
 	}
 };
+
+tls::Buffer testCase(tls::Buffer data, int testNumber){
+	Program program{};
+	return program.algorithm(data, testNumber);
+}
 
 int main(int argc, char * argv[]) {
 	if (argc < 2) { // check if a file path was provided
@@ -261,7 +282,9 @@ int main(int argc, char * argv[]) {
 	}
 
 	string filepath = argv[1]; // get the file path from command line
-	Program program(filepath);
+	
+	TestData testData(filepath);
+	testData.registerSolution(testCase);
 
 	return 0;
 }

@@ -3,6 +3,12 @@
 -- Add any additional options here
 
 vim.loader.enable()
+local handle = io.popen([[
+powershell -NoProfile -Command "[Environment]::GetEnvironmentVariable('PATH','Machine')"
+]])
+local system_path = handle:read("*a"):gsub("\r?\n", "")
+handle:close()
+vim.env.PATH = vim.env.PATH .. ";" .. system_path
 
 vim.cmd("language en_US.UTF-8")
 vim.g.maplocalleader = " "

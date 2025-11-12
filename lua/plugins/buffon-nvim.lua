@@ -1,8 +1,8 @@
 return {
 	"francescarpi/buffon.nvim",
 	lazy = false,
+	enabled = false,
 	-- branch = "develop",
-	dev = true,
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
 		"nvim-lua/plenary.nvim",

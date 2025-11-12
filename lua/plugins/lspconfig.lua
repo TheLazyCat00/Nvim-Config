@@ -170,14 +170,35 @@ return {
 				},
 				html = {},
 				cssls = {},
-				omnisharp = {},
+				omnisharp = {
+					cmd = {
+						"omnisharp",
+						"-z",
+						"--hostPID",
+						"12345",
+						"DotNet:enablePackageRestore=false",
+						"--encoding",
+						"utf-8",
+						"--languageserver",
+
+						"RoslynExtensionsOptions:inlayHintsOptions:enableForParameters=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forLiteralParameters=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forIndexerParameters=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forObjectCreationParameters=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forOtherParameters=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:suppressForParametersThatDifferOnlyBySuffix=false",
+						"RoslynExtensionsOptions:inlayHintsOptions:suppressForParametersThatMatchMethodIntent=false",
+						"RoslynExtensionsOptions:inlayHintsOptions:suppressForParametersThatMatchArgumentName=false",
+						"RoslynExtensionsOptions:inlayHintsOptions:enableForTypes=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forImplicitVariableTypes=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forLambdaParameterTypes=true",
+						"RoslynExtensionsOptions:inlayHintsOptions:forImplicitObjectCreation=true",
+					},
+				},
 				jsonls = {},
 				cmake = {},
 				-- Explicitly exclude julials from LazyVim management
-				julials = {
-					mason = false, -- Don't manage julia through mason
-					enabled = false, -- Don't set up through standard LazyVim mechanism
-				},
+				julials = {},
 			},
 			-- you can do any additional lsp server setup here
 			-- return true if you don't want this server to be setup with lspconfig
