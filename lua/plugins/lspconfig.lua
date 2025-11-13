@@ -188,7 +188,7 @@ return {
 						"RoslynExtensionsOptions:inlayHintsOptions:forOtherParameters=true",
 						"RoslynExtensionsOptions:inlayHintsOptions:suppressForParametersThatDifferOnlyBySuffix=false",
 						"RoslynExtensionsOptions:inlayHintsOptions:suppressForParametersThatMatchMethodIntent=false",
-						"RoslynExtensionsOptions:inlayHintsOptions:suppressForParametersThatMatchArgumentName=false",
+						"RoslynExtensionsOptions:inlayHintsOptions:suppressForParametersThatMatchArgumentName=true",
 						"RoslynExtensionsOptions:inlayHintsOptions:enableForTypes=true",
 						"RoslynExtensionsOptions:inlayHintsOptions:forImplicitVariableTypes=true",
 						"RoslynExtensionsOptions:inlayHintsOptions:forLambdaParameterTypes=true",
