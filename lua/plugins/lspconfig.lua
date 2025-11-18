@@ -197,8 +197,8 @@ return {
 				},
 				jsonls = {},
 				cmake = {},
-				-- Explicitly exclude julials from LazyVim management
 				julials = {},
+				serve_d = {},
 			},
 			-- you can do any additional lsp server setup here
 			-- return true if you don't want this server to be setup with lspconfig

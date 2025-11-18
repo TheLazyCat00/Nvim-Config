@@ -4,6 +4,7 @@ local installedLanguages = {
 	"cpp",
 	"c_sharp",
 	"cmake",
+	"d",
 	"diff",
 	"html",
 	"javascript",
