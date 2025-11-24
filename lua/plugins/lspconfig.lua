@@ -202,8 +202,8 @@ return {
 					cmd = {
 						"C:/D/serve-d/serve-d.exe",
 						"--provide implement-snippets",
-						"--provide implement-snippets",
-						"--provide implement-snippets"
+						"--provide context-snippets",
+						"--provide default-snippets"
 					}
 				},
 			},
