@@ -28,6 +28,14 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "d",
+	callback = function()
+		vim.opt_local.indentexpr = ""
+		vim.opt_local.cindent = true
+	end,
+})
+
 vim.api.nvim_create_autocmd("BufRead", {
 	pattern = { "*" },
 	callback = function(args)
