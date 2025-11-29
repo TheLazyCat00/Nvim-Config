@@ -9,7 +9,7 @@ return {
 		vim.api.nvim_create_autocmd("InsertLeave", {
 			callback = function()
 				vim.schedule(function ()
-					-- simpleFormat.reveal() commented out right now, but this shows the line "structure"
+					-- simpleFormat.reveal()
 					replace("(%S) -(<.-|operator|.-=.->)", "%1 %2")
 					replace("(<.-|operator|.-=.->) -(%S)", "%1 %2")
 					replace("(<.-|punctuation.delimiter|.-=,>) -(%S)", "%1 %2")
