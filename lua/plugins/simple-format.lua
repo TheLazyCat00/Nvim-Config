@@ -19,6 +19,8 @@ return {
 				replace("(<.-|punctuation.bracket|.-={>) *(<.*>) *(<.-|punctuation.bracket|.-=}>)","%1 %2 %3")
 
 				replace("(<|punctuation.bracket|=%(>) *(.-) *(<|punctuation.bracket|=%)>)","%1%2%3")
+
+				replace("(<.*>) *(<.-|punctuation.bracket|.-={>)", "%1 %2")
 			end)
 		end
 
