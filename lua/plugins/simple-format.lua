@@ -9,8 +9,8 @@ return {
 
 		local function format()
 			vim.schedule(function ()
-				replace("(<.->) *(<|operator|=.->)","%1 %2")
-				replace("(<|operator|=.->) *(<.->)","%1 %2")
+				replace("(<.->) *(<|operator|=[%+%-%*/%=]*>)","%1 %2")
+				replace("(<|operator|=[%+%-%*/%=]*>) *(<.->)","%1 %2")
 
 				replace("(<.->) *(<|punctuation.delimiter|=,>)", "%1%2")
 				replace("(<|punctuation.delimiter|=,>) *(<.->)", "%1 %2")
