@@ -206,6 +206,13 @@ return {
 						"--provide", "default-snippets"
 					}
 				},
+				dartls = {
+					settings = {
+						dart = {
+							inlayHints = true,
+						}
+					}
+				},
 			},
 			-- you can do any additional lsp server setup here
 			-- return true if you don't want this server to be setup with lspconfig
