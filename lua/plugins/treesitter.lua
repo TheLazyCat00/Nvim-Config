@@ -6,6 +6,7 @@ local installedLanguages = {
 	"cmake",
 	"d",
 	"diff",
+	"dart",
 	"html",
 	"javascript",
 	"java",
