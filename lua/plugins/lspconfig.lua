@@ -210,7 +210,14 @@ return {
 					settings = {
 						dart = {
 							completeFunctionCalls = false,
-							inlayHints = true,
+							inlayHints = {
+								dotShorthandTypes = true,
+								parameterNames = "all",
+								parameterTypes = false,
+								returnTypes = false,
+								typeArguments = false,
+								variableTypes = false,
+							}
 						}
 					}
 				},
