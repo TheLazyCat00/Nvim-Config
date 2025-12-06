@@ -209,6 +209,7 @@ return {
 				dartls = {
 					settings = {
 						dart = {
+							completeFunctionCalls = false,
 							inlayHints = true,
 						}
 					}
