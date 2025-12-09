@@ -120,6 +120,7 @@ end
 return {
 	'stevearc/overseer.nvim',
 	cmd = { "OverseerRun", "OverseerToggle" },
+	enabled = false,
 	opts = {
 		task_list = {
 			bindings = {
