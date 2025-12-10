@@ -1,6 +1,5 @@
 return {
 	"TheLazyCat00/runner-nvim",
-	lazy = false,
 	opts = {},
 	keys = {
 		{ "<leader>r", function () require("runner-nvim").runLast() end },
