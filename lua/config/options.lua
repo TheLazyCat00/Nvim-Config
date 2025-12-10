@@ -21,6 +21,11 @@ vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4 -- Number of spaces a tab counts for while editing
 vim.opt.autoindent = true
 
+vim.o.shell = "pwsh"
+vim.o.shellcmdflag = "-Command"
+vim.o.shellquote = ""
+vim.o.shellxquote = ""
+
 vim.o.cmdheight = 0
 vim.opt.laststatus = 3
 vim.opt.scrolloff = 10
