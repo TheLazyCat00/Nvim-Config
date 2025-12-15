@@ -19,12 +19,9 @@ vim.cmd([[
 ]])
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "python", "yaml" },
+	pattern = { "python", "yaml", "rust" },
 	callback = function()
-		vim.bo.expandtab = false -- Use tabs instead of spaces
-		vim.bo.tabstop = 4       -- Number of spaces per tab
-		vim.bo.shiftwidth = 4    -- Number of spaces for indentation
-		vim.bo.softtabstop = 4   -- Tab key behaves as 4 spaces
+		SetIndent()
 	end,
 })
 
@@ -54,22 +51,6 @@ vim.api.nvim_create_autocmd('User', {
 		end)
 	end,
 })
-
-if vim.g.static_scrolling then
-	vim.api.nvim_create_autocmd("VimResized", {
-		callback = function()
-			vim.cmd("silent! set scroll=15")
-		end
-	})
-
-	vim.api.nvim_create_autocmd("WinScrolled", {
-		callback = function()
-			vim.cmd("silent! set scroll=15")
-		end
-	})
-
-	vim.opt.scroll = 15
-end
 
 local term_group = vim.api.nvim_create_augroup('TermGroup', { clear = true })
 

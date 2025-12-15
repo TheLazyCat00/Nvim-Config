@@ -15,10 +15,6 @@ vim.g.maplocalleader = " "
 
 vim.opt.undolevels = 1000
 vim.opt.undofile = true
-vim.opt.expandtab = false
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.softtabstop = 4 -- Number of spaces a tab counts for while editing
 vim.opt.autoindent = true
 
 vim.o.shell = "pwsh"
@@ -34,7 +30,6 @@ vim.g.lazyvim_picker = "snacks"
 vim.g.lazyvim_cmp = "blink"
 vim.g.ai_assistant = "codecompanion"
 vim.g.ai_cmp = false
-vim.g.static_scrolling = false
 
 vim.g.autoformat = false
 vim.g.autoformat_align = 1 -- Only align code
@@ -49,6 +44,15 @@ vim.keymap.set("n", "[m", "<NOP>")
 function Print(value)
 	vim.notify(vim.inspect(value))
 end
+
+function SetIndent()
+	vim.opt.expandtab = false
+	vim.opt.tabstop = 4
+	vim.opt.shiftwidth = 4
+	vim.opt.softtabstop = 4 -- Number of spaces a tab counts for while editing
+end
+
+SetIndent()
 
 if vim.g.neovide then
 	require("config.neovide")
