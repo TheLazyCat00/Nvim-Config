@@ -7,6 +7,7 @@ local installedLanguages = {
 	"d",
 	"diff",
 	"dart",
+	"go",
 	"html",
 	"javascript",
 	"java",
