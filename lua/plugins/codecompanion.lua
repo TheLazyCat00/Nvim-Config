@@ -1,8 +1,3 @@
-local maxTokens = {
-	default = 30000,
-	desc = "The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.",
-}
-
 return {
 	"olimorris/codecompanion.nvim",
 	enabled = vim.g.ai_assistant == "codecompanion",
@@ -10,75 +5,52 @@ return {
 		"nvim-lua/plenary.nvim",
 		"nvim-treesitter/nvim-treesitter",
 		"folke/which-key.nvim",
-		-- "ravitemer/codecompanion-history.nvim"
 	},
 	opts = {
-		display = {
-			action_palette = {
-				width = 95,
-				height = 10,
-				prompt = "Prompt ", -- Prompt used for interactive LLM calls
-				provider = "default", -- default|telescope|mini_pick
-				opts = {
-					show_default_actions = true, -- Show the default actions in the action palette?
-					show_default_prompt_library = true, -- Show the default prompt library in the action palette?
-				},
-			},
-		},
 		adapters = {
-			opts = {
-				show_defaults = false,
-				cache_models_for = 1800,
-				show_model_choices = true,
+			acp = {
+				opts = {
+					show_presets = false,
+				},
 			},
-
-			["copilot"] = function()
-				return require("codecompanion.adapters").extend("copilot", {
-					schema = {
-						model = {
-							default = "claude-haiku-4.5",
-						},
-						max_tokens = maxTokens
-					},
-				})
-			end,
+			http = {
+				opts = {
+					show_presets = false,
+					show_model_choices = true,
+				},
+			},
 		},
-		strategies = {
-			-- Change the default chat adapter
+		interactions = {
+			-- BACKGROUND INTERACTION -------------------------------------------------
+			background = {
+				adapter = {
+					name = "copilot",
+					model = "claude-haiku-4.5",
+				},
+				-- Callbacks within the plugin that you can attach background actions to
+				chat = {
+					callbacks = {
+						["on_ready"] = {
+							actions = {
+								"interactions.background.builtin.chat_make_title",
+							},
+							enabled = true,
+						},
+					},
+					opts = {
+						enabled = false, -- Enable ALL background chat interactions?
+					},
+				},
+			},
+			-- CHAT INTERACTION -------------------------------------------------------
 			chat = {
-				adapter = "copilot",
-				tools = {
-					["insert_edit_into_file"] = {
-						callback = "strategies.chat.tools.catalog.insert_edit_into_file",
-						description = "Insert code into an existing file",
-						opts = {
-							patching_algorithm = "strategies.chat.tools.catalog.helpers.patch",
-							-- requires_approval = { -- Require approval before the tool is executed?
-							-- 	buffer = false, -- For editing buffers in Neovim
-							-- 	file = false, -- For editing files in the current working directory
-							-- },
-							-- user_confirmation = false, -- Require confirmation from the user before accepting the edit?
-						},
-					},
+				adapter = {
+					name = "copilot",
+					model = "claude-haiku-4.5",
 				},
-				slash_commands = {
-					["file"] = {
-						opts = {
-							provider = vim.g.lazyvim_picker, -- Other options include 'default', 'mini_pick', 'fzf_lua', snacks
-							contains_code = true,
-						},
-					},
-					["buffer"] = {
-						opts = {
-							provider = vim.g.lazyvim_picker, -- Other options include 'default', 'mini_pick', 'fzf_lua', snacks
-							contains_code = true,
-						},
-					},
-				},
-
 				roles = {
 					---The header name for the LLM's messages
-					---@type string|fun(adapter: CodeCompanion.Adapter): string
+					---@type string|fun(adapter: CodeCompanion.HTTPAdapter|CodeCompanion.ACPAdapter): string
 					llm = function(adapter)
 						return "CodeCompanion (" .. adapter.parameters.model .. ")"
 					end,
@@ -86,6 +58,44 @@ return {
 					---The header name for your messages
 					---@type string
 					user = "Me",
+				},
+				tools = {
+					opts = {
+						---Tools and/or groups that are always loaded in a chat buffer
+						---@type string[]
+						default_tools = {},
+					},
+				},
+				variables = {
+				},
+				slash_commands = {
+					["buffer"] = {
+						callback = "interactions.chat.slash_commands.builtin.buffer",
+						description = "Insert open buffers",
+						opts = {
+							contains_code = true,
+							default_params = "diff", -- all|diff
+							provider = vim.g.lazyvim_picker, -- telescope|fzf_lua|mini_pick|snacks|default
+						},
+					},
+					["fetch"] = {
+						callback = "interactions.chat.slash_commands.builtin.fetch",
+						description = "Insert URL contents",
+						opts = {
+							adapter = "jina", -- jina
+							cache_path = vim.fn.stdpath("data") .. "/codecompanion/urls",
+							provider = vim.g.lazyvim_picker, -- telescope|fzf_lua|mini_pick|snacks|default
+						},
+					},
+					["file"] = {
+						callback = "interactions.chat.slash_commands.builtin.file",
+						description = "Insert a file",
+						opts = {
+							contains_code = true,
+							max_lines = 1000,
+							provider = vim.g.lazyvim_picker, -- telescope|fzf_lua|mini_pick|snacks|default
+						},
+					},
 				},
 				keymaps = {
 					completion = {
@@ -118,16 +128,6 @@ return {
 							n = "<leader>ay",
 						},
 					},
-					pin = {
-						modes = {
-							n = "<leader>ap",
-						},
-					},
-					watch = {
-						modes = {
-							n = "<leader>aw",
-						},
-					},
 					change_adapter = {
 						modes = {
 							n = "<leader>a?",
@@ -148,22 +148,50 @@ return {
 							n = "<leader>as",
 						},
 					},
+					buffer_sync_all = {
+						modes = {
+							n = "<leader>ag",
+						},
+					},
+					buffer_sync_diff = {
+						modes = {
+							n = "<leader>ab",
+						},
+					},
 				},
 			},
+			-- INLINE INTERACTION -----------------------------------------------------
 			inline = {
+				adapter = "copilot",
 				keymaps = {
 					accept_change = {
 						modes = {
 							n = "<leader>ay",
 						},
+						opts = {},
 					},
 					reject_change = {
 						modes = {
 							n = "<leader>ax",
 						},
+						opts = {},
 					},
 				},
 			},
+		},
+		opts = {
+			log_level = "ERROR", -- TRACE|DEBUG|ERROR|INFO
+			language = "English", -- The language used for LLM responses
+
+			-- If this is false then any default prompt that is marked as containing code
+			-- will not be sent to the LLM. Please note that whilst I have made every
+			-- effort to ensure no code leakage, using this is at your own risk
+			---@type boolean|function
+			---@return boolean
+			send_code = true,
+
+			job_start_delay = 1500, -- Delay in milliseconds between cmd tools
+			submit_delay = 2000, -- Delay in milliseconds before auto-submitting the chat buffer
 		},
 	},
 	keys = {
