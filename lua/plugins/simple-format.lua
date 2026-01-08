@@ -12,16 +12,16 @@ return {
 				replace("(<.->) *(<|operator|=[%+%-%*/%=]*>)", "%1 %2")
 				replace("(<|operator|=[%+%-%*/%=]*>) *(<.->)", "%1 %2")
 
-				replace("(<.->) *(<|punctuation.delimiter|=,>)", "%1%2")
-				replace("(<|punctuation.delimiter|=,>) *(<.->)", "%1 %2")
+				replace("(<.->) *(<|punctuation%.delimiter|=,>)", "%1%2")
+				replace("(<|punctuation%.delimiter|=,>) *(<.->)", "%1 %2")
 
-				replace("(<.-|punctuation.bracket|.-={>) *(<.-|punctuation.bracket|.-=}>)", "%1%2")
-				replace("(<.-|punctuation.bracket|.-={>) *(<.*>) *(<.-|punctuation.bracket|.-=}>)","%1 %2 %3")
+				replace("(<.-|punctuation%.bracket|.-={>) *(<.-|punctuation%.bracket|.-=}>)", "%1%2")
+				replace("(<.-|punctuation%.bracket|.-={>) *(.*) *(<.-|punctuation%.bracket|.-=})","%1 %2 %3")
 
-				replace("(<.*>) *(<.-|punctuation.bracket|.-={>)", "%1 %2")
+				replace("(<.*>) *(<.-|punctuation%.bracket|.-={>)", "%1 %2")
 
-				replace("(<|punctuation.bracket|=%(>) *(.-)","%1%2")
-				replace("(.-) *(<|punctuation.bracket|=%)>)","%1%2")
+				replace("(<|punctuation%.bracket|=%(>) *(.-)","%1%2")
+				replace("(.-) *(<|punctuation%.bracket|=%)>)","%1%2")
 			end)
 		end
 
