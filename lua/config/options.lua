@@ -20,7 +20,7 @@ local shellConfigs = {
 		vim.o.shellxquote = ""
 	end,
 	msys2 = function()
-		vim.o.shell = "C:/Users/TheLa/scoop/shims/msys2.cmd"
+		vim.o.shell = vim.fn.exepath("msys2"):gsub("\\", "/")
 		vim.o.shellcmdflag = "-c"
 		vim.o.shellquote = ""
 		vim.o.shellxquote = ""
