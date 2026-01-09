@@ -11,7 +11,7 @@ vim.opt.undolevels = 1000
 vim.opt.undofile = true
 vim.opt.autoindent = true
 
-local shell = "msys2"
+local shell = "pwsh"
 local shellConfigs = {
 	pwsh = function ()
 		vim.o.shell = "pwsh"
