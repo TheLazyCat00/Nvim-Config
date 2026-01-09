@@ -3,12 +3,6 @@
 -- Add any additional options here
 
 vim.loader.enable()
-local handle = io.popen([[
-powershell -NoProfile -Command "[Environment]::GetEnvironmentVariable('PATH','Machine')"
-]])
-local system_path = handle:read("*a"):gsub("\r?\n", "")
-handle:close()
-vim.env.PATH = vim.env.PATH .. ";" .. system_path
 
 vim.cmd("language en_US.UTF-8")
 vim.g.maplocalleader = " "
@@ -17,10 +11,22 @@ vim.opt.undolevels = 1000
 vim.opt.undofile = true
 vim.opt.autoindent = true
 
-vim.o.shell = "pwsh"
-vim.o.shellcmdflag = "-Command"
-vim.o.shellquote = ""
-vim.o.shellxquote = ""
+local shell = "msys2"
+local shellConfigs = {
+	pwsh = function ()
+		vim.o.shell = "pwsh"
+		vim.o.shellcmdflag = "-Command"
+		vim.o.shellquote = ""
+		vim.o.shellxquote = ""
+	end,
+	msys2 = function()
+		vim.o.shell = "C:/Users/TheLa/scoop/shims/msys2.cmd"
+		vim.o.shellcmdflag = "-c"
+		vim.o.shellquote = ""
+		vim.o.shellxquote = ""
+	end,
+}
+shellConfigs[shell]()
 
 vim.o.cmdheight = 0
 vim.opt.laststatus = 3
