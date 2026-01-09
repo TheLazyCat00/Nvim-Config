@@ -20,7 +20,7 @@ local shellConfigs = {
 		vim.o.shellxquote = ""
 	end,
 	msys2 = function()
-		vim.o.shell = "C:/msys64/msys2_shell.cmd -defterm -here -no-start -msys2"
+		vim.o.shell = "C:/msys64/msys2_shell.cmd -defterm -here -no-start -ucrt64"
 		vim.o.shellcmdflag = "-c"
 		vim.o.shellquote = ""
 		vim.o.shellxquote = ""
