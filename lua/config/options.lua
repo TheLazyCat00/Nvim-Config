@@ -11,7 +11,7 @@ vim.opt.undolevels = 1000
 vim.opt.undofile = true
 vim.opt.autoindent = true
 
-local shell = "pwsh"
+local shell = "wsl"
 local shellConfigs = {
 	pwsh = function ()
 		vim.o.shell = "pwsh"
@@ -25,6 +25,12 @@ local shellConfigs = {
 		vim.o.shellquote = ""
 		vim.o.shellxquote = ""
 	end,
+	wsl = function ()
+		vim.o.shell = "bash"
+		vim.o.shellcmdflag = "-c"
+		vim.o.shellquote = ""
+		vim.o.shellxquote = ""
+	end
 }
 shellConfigs[shell]()
 
