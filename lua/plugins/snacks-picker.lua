@@ -88,8 +88,11 @@ local explorer = {
 }
 
 local function getDirectorySelector()
+	local maxResults = 50
+	local maxDepth = 4
 	---@type snacks.picker.Config
 	return {
+		live = true,
 		finder = function(config, ctx)
 			local items = {{
 				file = "..",
@@ -97,9 +100,13 @@ local function getDirectorySelector()
 				dir = true,
 			}}
 
+			Print(ctx.picker.input:get())
 			local dirs = vim.fn.systemlist({
 				"fd",
 				"--type", "d",
+				"--max-results", maxResults,
+				"--max-depth", maxDepth,
+				ctx.picker.input:get()
 			}, ctx:cwd())
 
 			if vim.v.shell_error ~= 0 then
@@ -137,29 +144,37 @@ local function getDirectorySelector()
 			fuzzy = true,
 		},
 		actions = (function()
+			---@param picker snacks.Picker
 			local function changeCwd(cwd, picker)
+				cwd = picker:cwd() .. "/" .. cwd
 				picker:set_cwd(cwd)
 				pcall(function ()
 					vim.fn.chdir(cwd)
 				end)
 				picker:refresh()
 			end
+
+			--- @alias PickerAction fun(picker: snacks.Picker, item: snacks.picker.Item)
+			--- @type table<string, PickerAction>
 			return {
-				---@param picker snacks.Picker
-				---@param item snacks.picker.Item
 				change_cwd = function(picker, item)
 					changeCwd(item.file, picker)
 				end,
 				up = function(picker, item)
 					changeCwd("..", picker)
-				end
+				end,
+				confirm = function(picker, item)
+					changeCwd(item.file, picker)
+					picker:close()
+					Snacks.explorer()
+				end,
 			}
 		end)(),
 		win = {
 			input = {
 				keys = {
 					["<BS>"] = "up",
-					["<CR>"] = { "change_cwd", mode = { "n", "i" } },
+					["<CR>"] = { "confirm", mode = { "n", "i" } },
 					["<c-a>"] = { "explorer_add", mode = { "n", "i" }},
 					["<c-x>"] = { "explorer_del", mode = { "n", "i" }},
 					["<c-r>"] = { "explorer_rename", mode = { "n", "i" }},
@@ -171,7 +186,7 @@ local function getDirectorySelector()
 			list = {
 				keys = {
 					["<BS>"] = "up",
-					["<CR>"] = "change_cwd",
+					["<CR>"] = "confirm",
 					["h"] = "explorer_close", -- close directory
 					["a"] = "explorer_add",
 					["d"] = "explorer_del",
