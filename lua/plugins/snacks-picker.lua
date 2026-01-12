@@ -132,10 +132,6 @@ local function getDirectorySelector()
 		follow = false,
 		jump = { close = true },
 		layout = { preset = "default", preview = true },
-		formatters = {
-			file = { filename_only = true },
-			severity = { pos = "right" },
-		},
 		matcher = {
 			sort_empty = true, -- sort even when the filter is empty
 			fuzzy = true,
