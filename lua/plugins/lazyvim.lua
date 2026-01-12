@@ -4,4 +4,7 @@ return {
 	opts = {
 		colorscheme = "kanagawa",
 	},
+	config = function ()
+		require("lazyvim").setup(opts?)
+	end
 }
