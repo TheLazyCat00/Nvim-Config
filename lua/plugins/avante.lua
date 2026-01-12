@@ -1,7 +1,6 @@
 return {
 	"yetone/avante.nvim",
-	event = "VeryLazy",
-	enabled = vim.g.ai_assistant == "avante",
+	enabled = false,
 	version = false, -- Use latest code changes
 	opts = {
 		provider = "copilot3",
