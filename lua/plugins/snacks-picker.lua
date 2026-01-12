@@ -96,11 +96,9 @@ local function getDirectorySelector()
 		finder = function(config, ctx)
 			local items = {{
 				file = "..",
-				text = "..",
 				dir = true,
 			}}
 
-			Print(ctx.picker.input:get())
 			local dirs = vim.fn.systemlist({
 				"fd",
 				"--type", "d",
@@ -116,15 +114,14 @@ local function getDirectorySelector()
 			for _, dir in ipairs(dirs) do
 				items[#items + 1] = {
 					file = dir,
-					text = dir,
 					dir = true,
 				}
 			end
 
 			return items
 		end,
-		format = Snacks.picker.format.file,
-		preview = Snacks.picker.preview.file,
+		format = "file",
+		preview = "file",
 		title = "Directories",
 		sort = {
 			fields = { "score:desc", "#text", "idx" },
@@ -161,7 +158,8 @@ local function getDirectorySelector()
 					changeCwd(item.file, picker)
 				end,
 				up = function(picker, item)
-					changeCwd("..", picker)
+					picker:set_cwd(picker:cwd() .. "/" .. item.file)
+					picker:refresh()
 				end,
 				confirm = function(picker, item)
 					changeCwd(item.file, picker)
