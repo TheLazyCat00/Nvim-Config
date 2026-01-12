@@ -249,13 +249,13 @@ return {
 		},
 	},
 	keys = {
-		{ "<leader>fc", function () Snacks.explorer({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
 		{ "<leader>e", false },
 		{ "<leader>E", false },
 		{ "<leader>fE", false },
+		{ "<leader>fp", false },
+		{ "<leader>fc", function () Snacks.explorer({cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
 		{ "<leader><space>", function() Snacks.explorer() end, desc = "File Explorer (cwd)" },
 		{ "<leader>fe", function() Snacks.explorer({ cwd = LazyVim.root() }) end, desc = "File Explorer (root)" },
 		{ "<leader>fd", function() Snacks.picker.pick(getDirectorySelector()) end, desc = "Directory Selector (cwd)" },
-		{ "<leader>fp", false },
 	},
 }

@@ -13,7 +13,6 @@ local wholeImage =
 return {
 	"folke/snacks.nvim",
 	lazy = false,
-	---@type snacks.Config
 	opts = function ()
 		Toggler = {}
 		Toggler.__index = Toggler
@@ -39,6 +38,7 @@ return {
 			toggler:map(lhs)
 		end
 
+		---@type snacks.Config
 		return {
 			animate = { enabled = false },
 			image = { enabled = false },
