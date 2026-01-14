@@ -104,6 +104,7 @@ local function getDirectorySelector()
 				"--type", "d",
 				"--max-results", maxResults,
 				"--max-depth", maxDepth,
+				"--no-ignore",
 				ctx.picker.input:get()
 			}, ctx:cwd())
 
@@ -251,7 +252,7 @@ return {
 		{ "<leader>fp", false },
 		{ "<leader>fc", function () Snacks.explorer({cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
 		{ "<leader><space>", function() Snacks.explorer() end, desc = "File Explorer (cwd)" },
-		{ "<leader>fe", function() Snacks.explorer({ cwd = LazyVim.root() }) end, desc = "File Explorer (root)" },
+		{ "<leader>fe", function() Snacks.explorer({cwd = LazyVim.root() }) end, desc = "File Explorer (root)" },
 		{ "<leader>fd", function() Snacks.picker.pick(getDirectorySelector()) end, desc = "Directory Selector (cwd)" },
 	},
 }
