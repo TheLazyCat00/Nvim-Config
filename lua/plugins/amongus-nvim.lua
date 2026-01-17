@@ -1,5 +1,6 @@
 return {
 	"TheLazyCat00/amongus-nvim",
+	enabled = false,
 	opts = {},
 	keys = {
 		{ "<M-h>", function ()
