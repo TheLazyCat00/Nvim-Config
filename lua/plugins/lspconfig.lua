@@ -141,22 +141,22 @@ return {
 						},
 					},
 				},
-				basedpyright = {
-					settings = {
-						basedpyright = {
-							analysis = {
-								typeCheckingMode = "basic",
-								disableTypeCheckingForAny = true,
-								inlayHints = {
-									variableTypes = false,
-									callArgumentNames = true,
-									functionReturnTypes = false,
-									genericTypes = false,
-								}
-							},
-						}
-					}
-				},
+				-- basedpyright = {
+				-- 	settings = {
+				-- 		basedpyright = {
+				-- 			analysis = {
+				-- 				typeCheckingMode = "basic",
+				-- 				disableTypeCheckingForAny = true,
+				-- 				inlayHints = {
+				-- 					variableTypes = false,
+				-- 					callArgumentNames = true,
+				-- 					functionReturnTypes = false,
+				-- 					genericTypes = false,
+				-- 				}
+				-- 			},
+				-- 		}
+				-- 	}
+				-- },
 				clangd = {
 					cmd = {'clangd', '--background-index', '--clang-tidy', '--log=verbose'},
 					init_options = {
@@ -231,7 +231,8 @@ return {
 						}
 					}
 				},
-				bashls = {}
+				bashls = {},
+				ty = {}
 			},
 			-- you can do any additional lsp server setup here
 			-- return true if you don't want this server to be setup with lspconfig
