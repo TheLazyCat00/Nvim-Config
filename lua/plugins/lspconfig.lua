@@ -119,8 +119,6 @@ return {
 								setType = false,
 								paramType = true,
 								paramName = "All", -- Show parameter names
-								semicolon = "Disable", -- Show semicolon hints
-								arrayIndex = "Disable", -- Show array index hints
 							},
 							diagnostics = {
 								disable = { "unused-function" }
