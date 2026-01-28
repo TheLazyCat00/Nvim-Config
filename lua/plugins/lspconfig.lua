@@ -238,10 +238,13 @@ return {
 			-- return true if you don't want this server to be setup with lspconfig
 			---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
 			setup = {
-			},
+				julials = function(_, opts)
+					vim.lsp.config("julials", opts)
+					vim.lsp.enable("julials")
+					return true
+				end,
+			}
 		}
-		local keys = require("lazyvim.plugins.lsp.keymaps").get()
-		keys[#keys + 1] = { "<C-k>", false, mode = "i" }
 		return ret
 	end,
 }
