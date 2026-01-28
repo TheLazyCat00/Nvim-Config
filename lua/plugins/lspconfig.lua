@@ -195,7 +195,9 @@ return {
 				},
 				jsonls = {},
 				cmake = {},
-				julials = {},
+				julials = {
+					root_markers = { "Project.toml", "JuliaProject.toml", "Manifest.toml" }
+				},
 				serve_d = {
 					cmd = {
 						"C:/D/serve-d/serve-d.exe",
