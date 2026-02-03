@@ -2,6 +2,7 @@ return {
 	"TheLazyCat00/simple-format",
 	event = "BufReadPost",
 	opts = {},
+	enablde = false,
 	config = function (_, opts)
 		local simpleFormat = require("simple-format")
 		simpleFormat.setup(opts)

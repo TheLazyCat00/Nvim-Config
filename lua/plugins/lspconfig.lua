@@ -139,22 +139,6 @@ return {
 						},
 					},
 				},
-				-- basedpyright = {
-				-- 	settings = {
-				-- 		basedpyright = {
-				-- 			analysis = {
-				-- 				typeCheckingMode = "basic",
-				-- 				disableTypeCheckingForAny = true,
-				-- 				inlayHints = {
-				-- 					variableTypes = false,
-				-- 					callArgumentNames = true,
-				-- 					functionReturnTypes = false,
-				-- 					genericTypes = false,
-				-- 				}
-				-- 			},
-				-- 		}
-				-- 	}
-				-- },
 				clangd = {
 					cmd = {'clangd', '--background-index', '--clang-tidy', '--log=verbose'},
 					init_options = {
