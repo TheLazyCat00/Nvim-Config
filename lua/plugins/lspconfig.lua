@@ -229,6 +229,8 @@ return {
 				end,
 			}
 		}
+		local keys = require("lazyvim.plugins.lsp.keymaps").get()
+		keys[#keys + 1] = { "<C-k>", false, mode = "i" }
 		return ret
 	end,
 }
