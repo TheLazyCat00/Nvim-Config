@@ -1,5 +1,5 @@
 return {
-	"krady21/compiler-explorer.nvim",
+	"TheLazyCat00/compiler-explorer.nvim",
 	lazy = false,
 	opts = {
 		line_match = {
