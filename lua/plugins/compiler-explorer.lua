@@ -4,7 +4,7 @@ return {
 	opts = {
 		line_match = {
 			highlight = true,
-			jump = false,
+			jump = true,
 		},
 	},
 }

@@ -9,6 +9,11 @@
 vim.cmd("hi clear StatusLine")
 vim.cmd("hi link StatusLine lualine_c_normal")
 
+vim.api.nvim_create_user_command('Size', function(opts)
+	vim.g.size = opts.args
+	vim.g.updateFont()
+end, { nargs = 1 })
+
 vim.api.nvim_create_user_command('Font', function(opts)
 	vim.g.font = opts.args
 	vim.g.updateFont()

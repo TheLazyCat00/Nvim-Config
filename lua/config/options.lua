@@ -65,6 +65,15 @@ end
 
 SetIndent()
 
+vim.g.updateFont = function ()
+	vim.opt.guifont = vim.g.font .. ":h" .. vim.g.size
+end
+
+vim.g.font = "CommitMono Nerd Font Mono"
+vim.g.size = "10"
+
+vim.g.updateFont()
+
 if vim.g.neovide then
 	require("config.neovide")
 end
