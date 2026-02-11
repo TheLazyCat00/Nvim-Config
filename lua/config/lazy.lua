@@ -14,6 +14,10 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+if vim.g.vscode then
+	vim.g.vscode = false
+end
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
