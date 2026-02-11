@@ -42,12 +42,20 @@ return {
 		return {
 			animate = { enabled = false },
 			image = { enabled = false },
-			indent = { enabled = false },
 			scroll = { enabled = false },
 			scope = { enabled = false },
 			rename = { enabled = false },
 			bufdelete = { enabled = false },
 
+			indent = {
+				enabled = true,
+				indent = {
+					char = "▏",
+				},
+				animate = {enabled = false},
+				scope = {enabled = false},
+				chunk = {enabled = false},
+			},
 			notifier = { enabled = true },
 			profiler = { enabled = true },
 			bigfile = { enabled = true },
