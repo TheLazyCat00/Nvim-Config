@@ -80,15 +80,6 @@ return {
 			folds = {
 				enabled = true,
 			},
-			-- add any global capabilities here
-			capabilities = {
-				workspace = {
-					fileOperations = {
-						didRename = true,
-						willRename = true,
-					},
-				},
-			},
 			-- options for vim.lsp.buf.format
 			-- `bufnr` and `filter` is handled by the LazyVim formatter,
 			-- but can be also overridden when specified
@@ -99,11 +90,25 @@ return {
 			-- LSP Server Settings
 			---@type lspconfig.options
 			servers = {
+				["*"] = {
+					capabilities = {
+
+						workspace = {
+							fileOperations = {
+								didRename = true,
+								willRename = true,
+							},
+						},
+					},
+					keys = {
+						{ "<C-K>", false },
+					},
+				},
 				lua_ls = {
 					settings = {
 						Lua = {
 							workspace = {
-								checkThirdParty = false,
+								checkThirdParty = true,
 							},
 							codeLens = {
 								enable = true,
@@ -118,7 +123,9 @@ return {
 								enable = true,
 								setType = false,
 								paramType = true,
-								paramName = "All", -- Show parameter names
+								paramName = "All",
+								semicolon = "Disable",
+								arrayIndex = "Disable",
 							},
 							diagnostics = {
 								disable = { "unused-function" }
@@ -229,8 +236,6 @@ return {
 				end,
 			}
 		}
-		local keys = require("lazyvim.plugins.lsp.keymaps").get()
-		keys[#keys + 1] = { "<C-k>", false, mode = "i" }
 		return ret
 	end,
 }

@@ -22,7 +22,20 @@ return {
 			}
 		},
 		context = {
-			enabled = false
+			cursor_data = {
+				enabled = false,
+				context_lines = 5,
+			},
+			diagnostics = {
+				enabled = false,
+				info = false,
+				warn = true,
+				error = true,
+			},
+			current_file = {
+				enabled = false,
+				show_full_path = true,
+			},
 		}
 	},
 	dependencies = {
