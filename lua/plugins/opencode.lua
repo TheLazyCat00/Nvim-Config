@@ -15,6 +15,8 @@ return {
 		keymap = {
 			input_window = {
 				['<esc>'] = false,
+				['<cr>'] = false,
+				['<S-cr>'] = false,
 				['<C-s>'] = { 'submit_input_prompt', mode = { 'n', 'i' } }
 			},
 			output_window = {

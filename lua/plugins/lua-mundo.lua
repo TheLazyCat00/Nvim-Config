@@ -1,11 +1,18 @@
 return {
-	"TheLazyCat00/lua-mundo",
-	opts = {
-		auto_preview = 1,
-		right = 1,
-		preview_debounce = 0,
+    "TheLazyCat00/atone.nvim",
+    cmd = "Atone",
+    opts = {
+		layout = {
+			direction = "right",
+			width = "adaptive"
+		},
+		diff_cur_node = {
+			enabled = true,
+			split_percent = 0.3,
+			width = "adaptive"
+		},
 	},
 	keys = {
-		{ "<leader>cu", "<Cmd>MundoToggle<CR>", "Toggle undotree" }
+		{ "<leader>cu", "<Cmd>Atone toggle<CR>", "Toggle undotree"}
 	}
 }
