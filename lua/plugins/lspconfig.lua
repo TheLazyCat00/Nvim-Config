@@ -19,7 +19,7 @@ local coqDeps = {
 
 	-- lua & third party sources -- See https://github.com/ms-jpq/coq.thirdparty
 	-- Need to **configure separately**
-	{ 'ms-jpq/coq.thirdparty', branch = "3p" }
+	{ "ms-jpq/coq.thirdparty", branch = "3p" }
 	-- - shell repl
 	-- - nvim lua api
 	-- - scientific calculator
@@ -68,7 +68,7 @@ return {
 			-- provide the inlay hints.
 			inlay_hints = {
 				enabled = true,
-				exclude = {}, -- filetypes for which you don't want to enable inlay hints
+				exclude = {}, -- filetypes for which you don"t want to enable inlay hints
 			},
 			-- Enable this to enable the builtin LSP code lenses on Neovim >= 0.10.0
 			-- Be aware that you also will need to properly configure your LSP server to
@@ -100,14 +100,17 @@ return {
 						},
 					},
 					keys = {
-						{ "<leader>cl", function() Snacks.picker.lsp_config() end, desc = "Lsp Info" },
-						{ "gd", vim.lsp.buf.definition, desc = "Goto Definition", has = "definition" },
-						{ "gr", vim.lsp.buf.references, desc = "References", nowait = true },
-						{ "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
-						{ "gy", vim.lsp.buf.type_definition, desc = "Goto T[y]pe Definition" },
-						{ "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
 						{ "K", function() return vim.lsp.buf.hover() end, desc = "Hover" },
 						{ "gK", function() return vim.lsp.buf.signature_help() end, desc = "Signature Help", has = "signatureHelp" },
+						{ "gd", function() Snacks.picker.lsp_definitions() end, desc = "Goto Definition" },
+						{ "gD", function() Snacks.picker.lsp_declarations() end, desc = "Goto Declaration" },
+						{ "gr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "References" },
+						{ "gI", function() Snacks.picker.lsp_implementations() end, desc = "Goto Implementation" },
+						{ "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition" },
+						{ "gai", function() Snacks.picker.lsp_incoming_calls() end, desc = "C[a]lls Incoming" },
+						{ "gao", function() Snacks.picker.lsp_outgoing_calls() end, desc = "C[a]lls Outgoing" },
+						{ "<leader>cl", function() Snacks.picker.lsp_config() end, desc = "Lsp Info" },
+
 						{ "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "x" }, has = "codeAction" },
 						{ "<leader>cc", vim.lsp.codelens.run, desc = "Run Codelens", mode = { "n", "x" }, has = "codeLens" },
 						{ "<leader>cC", vim.lsp.codelens.refresh, desc = "Refresh & Display Codelens", mode = { "n" }, has = "codeLens" },
@@ -155,11 +158,11 @@ return {
 				},
 				ts_ls = {
 					name = "tsserver",
-					cmd = { 'typescript-language-server', '--stdio' },
-					filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact' },
+					cmd = { "typescript-language-server", "--stdio" },
+					filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
 				},
 				volar = {
-					filetypes = { 'vue' },
+					filetypes = { "vue" },
 					init_options = {
 						vue = {
 							hybridMode = true,
@@ -167,13 +170,20 @@ return {
 					},
 				},
 				clangd = {
-					cmd = {'clangd', '--background-index', '--clang-tidy', '--log=verbose'},
+					cmd = {
+						"clangd",
+						"--background-index",
+						"--clang-tidy",
+						"--log=verbose",
+						"--header-insertion=iwyu",
+						"--experimental-modules-support"
+					},
 					init_options = {
 						fallbackFlags = {
-							'-std=c++23',
-							'-Wall',
-							'-Wextra',
-							'-pedantic',
+							"-std=c++23",
+							"-Wall",
+							"-Wextra",
+							"-pedantic",
 						},
 					},
 				},
@@ -246,7 +256,7 @@ return {
 				ty = {}
 			},
 			-- you can do any additional lsp server setup here
-			-- return true if you don't want this server to be setup with lspconfig
+			-- return true if you don"t want this server to be setup with lspconfig
 			---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
 			setup = {
 				julials = function(_, opts)

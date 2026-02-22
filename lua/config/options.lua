@@ -52,6 +52,12 @@ vim.hl = vim.highlight -- workaround for :Inspect
 vim.keymap.set("n", "]m", "<NOP>")
 vim.keymap.set("n", "[m", "<NOP>")
 
+vim.filetype.add({
+	extension = {
+		ixx = "cpp",
+	},
+})
+
 function Print(value)
 	vim.notify(vim.inspect(value))
 end
