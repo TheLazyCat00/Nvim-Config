@@ -10,6 +10,7 @@ vim.g.maplocalleader = " "
 vim.opt.undolevels = 1000
 vim.opt.undofile = true
 vim.opt.autoindent = true
+vim.opt.listchars = { tab = '→ ', trail = '·' }
 
 local shell = "wsl"
 local shellConfigs = {
