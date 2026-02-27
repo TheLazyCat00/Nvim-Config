@@ -2,7 +2,6 @@ return {
 	"TheLazyCat00/simple-format",
 	event = "BufReadPost",
 	opts = {},
-	enabled = false,
 	config = function (_, opts)
 		local simpleFormat = require("simple-format")
 		simpleFormat.setup(opts)
@@ -10,8 +9,8 @@ return {
 
 		local function format()
 			vim.schedule(function ()
-				-- replace("(<.->) *(<|operator|=[%+%-%*/%=]*>)", "%1 %2")
-				-- replace("(<|operator|=[%+%-%*/%=]*>) *(<.->)", "%1 %2")
+				replace("(<.->) *(<|operator|=[%+%-%*/%=]*>)", "%1 %2")
+				replace("(<|operator|=[%+%-%*/%=]*>) *(<.->)", "%1 %2")
 
 				replace("(<.->) *(<|punctuation%.delimiter|=,>)", "%1%2")
 				replace("(<|punctuation%.delimiter|=,>) *(<.->)", "%1 %2")
