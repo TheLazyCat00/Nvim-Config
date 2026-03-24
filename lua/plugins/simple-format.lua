@@ -12,10 +12,9 @@ return {
 					formattingFunc("(<.->) *(<|punctuation%.delimiter|=,>)", "%1%2")
 					formattingFunc("(<|punctuation%.delimiter|=,>) *(<.->)", "%1 %2")
 
-					formattingFunc("(<.-|punctuation%.bracket|.-={>) *(<.-|punctuation%.bracket|.-=}>)", "%1%2")
-					formattingFunc("(<.-|punctuation%.bracket|.-={>) -(%S.*%S) -(<.-|punctuation%.bracket|.-=})","%1 %2 %3")
-
 					formattingFunc("(<.*>) *(<.-|punctuation%.bracket|.-={>)", "%1 %2")
+					formattingFunc("(<.-|punctuation%.bracket|.-={>) -(<.-|punctuation%.bracket|.-=}>)", "%1%2")
+					formattingFunc("(<.-|punctuation%.bracket|.-={>) *(%S.-) *(<.-|punctuation%.bracket|.-=})","%1 %2 %3")
 
 					formattingFunc("(<|punctuation%.bracket|=%(>) *(.-)","%1%2")
 					formattingFunc("(.-) *(<|punctuation%.bracket|=%)>)","%1%2")

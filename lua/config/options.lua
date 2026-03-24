@@ -56,6 +56,7 @@ vim.keymap.set("n", "[m", "<NOP>")
 vim.filetype.add({
 	extension = {
 		ixx = "cpp",
+		mdx = "markdown"
 	},
 })
 

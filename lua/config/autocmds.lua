@@ -24,7 +24,7 @@ vim.cmd([[
 ]])
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "python", "rust" },
+	pattern = { "python", "rust", "scss" },
 	callback = function()
 		SetIndent()
 	end,
