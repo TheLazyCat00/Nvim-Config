@@ -100,6 +100,7 @@ return {
 						},
 					},
 					keys = {
+						{ "<leader>t", false },
 						{ "K", function() return vim.lsp.buf.hover() end, desc = "Hover" },
 						{ "gK", function() return vim.lsp.buf.signature_help() end, desc = "Signature Help", has = "signatureHelp" },
 						{ "gd", function() Snacks.picker.lsp_definitions() end, desc = "Goto Definition" },
@@ -180,7 +181,6 @@ return {
 					},
 					init_options = {
 						fallbackFlags = {
-							"-std=c++23",
 							"-Wall",
 							"-Wextra",
 							"-pedantic",
@@ -255,6 +255,7 @@ return {
 				bashls = {},
 				ty = {},
 				astro = {},
+				ocamllsp = {}
 			},
 			-- you can do any additional lsp server setup here
 			-- return true if you don"t want this server to be setup with lspconfig
@@ -267,6 +268,8 @@ return {
 				end,
 			}
 		}
+		vim.g.no_ocaml_maps = 1
+
 		return ret
 	end,
 }
