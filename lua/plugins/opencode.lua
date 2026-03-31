@@ -9,6 +9,7 @@ vim.api.nvim_create_autocmd("DirChanged", {
 
 return {
 	"sudo-tee/opencode.nvim",
+	enabled = false,
 	lazy = false,
 	opts = {
 		keymap_prefix = '<leader>a',
