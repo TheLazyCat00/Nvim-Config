@@ -1,11 +1,3 @@
-vim.api.nvim_create_autocmd("DirChanged", {
-	callback = function ()
-		local state = require('opencode.state')
-		if state.opencode_server then
-			state.opencode_server:shutdown()
-		end
-	end
-})
 
 return {
 	"sudo-tee/opencode.nvim",
@@ -54,4 +46,14 @@ return {
 		'saghen/blink.cmp',
 		'folke/snacks.nvim',
 	},
+	init = function ()
+		vim.api.nvim_create_autocmd("DirChanged", {
+			callback = function ()
+				local state = require('opencode.state')
+				if state.opencode_server then
+					state.opencode_server:shutdown()
+				end
+			end
+		})
+	end
 }
