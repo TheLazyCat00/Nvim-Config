@@ -3,6 +3,7 @@ local installedLanguages = {
 	"c",
 	"cpp",
 	"c_sharp",
+	"coda",
 	"cmake",
 	"d",
 	"diff",
@@ -37,6 +38,18 @@ local installedLanguages = {
 	"xml",
 	"yaml",
 }
+
+vim.api.nvim_create_autocmd('User', {
+	pattern = 'TSUpdate',
+	callback = function()
+		require('nvim-treesitter.parsers').coda = {
+			install_info = {
+				url = 'https://github.com/zane-lang/tree-sitter-coda',
+				queries = "queries",
+			},
+		}
+	end,
+})
 
 return {
 	"nvim-treesitter/nvim-treesitter",
