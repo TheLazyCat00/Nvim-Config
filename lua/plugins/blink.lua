@@ -1,6 +1,6 @@
 return {
 	"saghen/blink.cmp",
-	enabled = vim.g.lazyvim_cmp == "blink",
+	enabled = vim.g.lazyvim_cmp == "blink.cmp",
 	opts = {
 		appearance = {
 			kind_icons = {

@@ -40,7 +40,7 @@ vim.opt.laststatus = 3
 vim.opt.scrolloff = 10
 
 vim.g.lazyvim_picker = "snacks"
-vim.g.lazyvim_cmp = "blink"
+vim.g.lazyvim_cmp = "blink.cmp"
 vim.g.ai_cmp = false
 
 vim.g.autoformat = false
