@@ -5,7 +5,14 @@
 vim.loader.enable()
 
 vim.cmd("language en_US.UTF-8")
+vim.cmd('packadd nvim.tohtml')
+
+vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+
+if vim.g.vscode then
+	vim.g.vscode = false
+end
 
 vim.opt.undolevels = 1000
 vim.opt.undofile = true
