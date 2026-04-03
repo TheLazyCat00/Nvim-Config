@@ -13,7 +13,7 @@ return {
 		required_title_by_default = false,
 
 		-- copy the generated image to the clipboard after saving
-		copy_to_clipboard = false,
+		copy_to_clipboard = true,
 
 		-- output directory for saved screenshots
 		-- when nil, saves to the current file's directory
@@ -36,7 +36,7 @@ return {
 		highlight_current_line = false,
 
 		-- show diagnostic signs highlights
-		diagnostics_on = false,
+		diagnostics_on = true,
 
 		-- show a file icon in the titlebar
 		-- depends on nvim-web-devicons
