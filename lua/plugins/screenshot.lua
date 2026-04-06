@@ -23,8 +23,8 @@ return {
 		background = "#00000000",
 
 		-- font to be used
-		-- font = "~/.local/share/fonts/CommitMono/CommitMonoNerdFontMono-Regular.otf";
-		type = "svg",
+		font = "~/.local/share/fonts/CommitMono/CommitMonoNerdFontMono-Regular.otf";
+		type = "png",
 
 		-- line number visibility
 		-- true:              current settings

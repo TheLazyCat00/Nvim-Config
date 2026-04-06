@@ -9,6 +9,7 @@ vim.cmd('packadd nvim.tohtml')
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.opt.showtabline = 0
 
 if vim.g.vscode then
 	vim.g.vscode = false
