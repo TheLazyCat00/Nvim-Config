@@ -8,6 +8,17 @@ local nvimFiles = {
 		"  Enabled: false",
 		"Style:",
 		"  Enabled: false",
+	},
+	["~/.config/opencode/opencode.json"] = {
+		[[{]],
+		[[	"$schema": "https://opencode.ai/config.json",]],
+		[[	"permission": {]],
+		[[		"*": "allow",]],
+		[[		"edit": "ask",]],
+		[[		"bash": "ask",]],
+		[[		"external_directory": "ask"]],
+		[[	}]],
+		[[}]],
 	}
 }
 
