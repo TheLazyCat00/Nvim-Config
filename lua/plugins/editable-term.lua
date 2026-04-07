@@ -3,7 +3,8 @@ return {
 	event = "TermOpen",
 	opts = {
 		promts = {
-			["# "] = {},
+			["^# "] = {},
+			["^   ┃  "] = {},
 		},
 		wait_for_keys_delay = 20,
 	},
