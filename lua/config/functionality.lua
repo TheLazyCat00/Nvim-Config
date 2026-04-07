@@ -24,11 +24,9 @@ local nvimFiles = {
 
 for path, content in pairs(nvimFiles) do
 	local expanded = vim.fn.expand(path)
-	if vim.fn.filereadable(expanded) == 0 then
-		local f = io.open(expanded, "w")
-		if f then
-			f:write(type(content) == "table" and table.concat(content, "\n") or content)
-			f:close()
-		end
+	local f = io.open(expanded, "w")
+	if f then
+		f:write(type(content) == "table" and table.concat(content, "\n") or content)
+		f:close()
 	end
 end
