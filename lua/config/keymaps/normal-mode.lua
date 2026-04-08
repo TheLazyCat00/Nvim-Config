@@ -11,6 +11,8 @@ return {
 	{ "sk", "<Cmd>wa | qa!<CR>", desc = "Save all and quit" },
 	{ ">", "<Cmd>norm! >><CR>", desc = "Indent line right" },
 	{ "<", "<Cmd>norm! <<<CR>", desc = "Indent line left" },
+	{ "Q", "<Cmd>norm! qq<CR>", desc = "Record macro" },
+	{ "q", "<Cmd>norm! @q<CR>", desc = "Run macro" },
 
 	{ "<leader>p", group = "profiler" } ,
 	{ "s", "<NOP>", group = "session/exit" } ,

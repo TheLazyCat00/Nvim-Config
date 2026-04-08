@@ -19,6 +19,7 @@ vim.opt.undolevels = 1000
 vim.opt.undofile = true
 vim.opt.autoindent = true
 vim.opt.listchars = { tab = '→ ', trail = '·' }
+vim.fn.setreg('q', '') -- clear q macro
 
 local shell = "wsl"
 local shellConfigs = {
