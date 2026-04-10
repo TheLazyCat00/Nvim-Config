@@ -1,15 +1,14 @@
 return {
 	"TheLazyCat00/focus-nvim",
 	lazy = false,
-	enabled = false,
 	opts = {
 		languages = {
 			["cs"] = [[
-				(method_declaration) @func
-				(constructor_declaration) @func
-				(operator_declaration) @func
+				(method_declaration) @fold
+				(constructor_declaration) @fold
+				(operator_declaration) @fold
 			]],
-			["lua"] = "(function_declaration) @func",
+			["lua"] = "(function_declaration) @fold",
 		},
 	},
 	config = function (_, opts)

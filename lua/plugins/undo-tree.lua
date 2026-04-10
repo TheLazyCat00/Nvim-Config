@@ -1,5 +1,5 @@
 return {
-    "TheLazyCat00/atone.nvim",
+    "XXiaoA/atone.nvim",
     cmd = "Atone",
     opts = {
 		layout = {
