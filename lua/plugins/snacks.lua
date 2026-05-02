@@ -63,7 +63,14 @@ return {
 			quickfile = { enabled = true },
 			statuscolumn = { enabled = true },
 			words = { enabled = true },
-			lazygit = { enabled = true },
+			lazygit = {
+				enabled = true,
+				win = {
+					keys = {
+						hide = { "q", "hide", mode = "t", desc = "Hide LazyGit" },
+					},
+				},
+			},
 			zen = { enabled = true },
 
 			dashboard = {
