@@ -1,6 +1,6 @@
 return {
 	"TheLazyCat00/racer-nvim",
-	lazy = false,
+	event = "VeryLazy",
 	opts = {
 		triggers = {
 			{"[", "]"},
