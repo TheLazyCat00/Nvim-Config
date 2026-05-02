@@ -1,5 +1,6 @@
 return {
 	"TheLazyCat00/racer-nvim",
+	lazy = false,
 	opts = {
 		triggers = {
 			{"[", "]"},
@@ -11,7 +12,7 @@ return {
 		}
 	},
 	keys = {
-		{";", "<cmd>lua require('racer-nvim').prev()<CR>", mode = {"n", "x"}, desc = "Repeat previous"},
-		{",", "<cmd>lua require('racer-nvim').next()<CR>", mode = {"n", "x"}, desc = "Repeat next"},
+		{ ";", function() require('racer-nvim').prev() end, mode = {"n", "x"}, desc = "Repeat previous" },
+		{ ",", function() require('racer-nvim').next() end, mode = {"n", "x"}, desc = "Repeat next" },
 	},
 }

@@ -20,6 +20,21 @@ return {
 			{}
 		)
 	end,
+	init = function ()
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "CodeDiffOpen",
+			callback = function ()
+				vim.defer_fn(require("focus-nvim").disable, 100)
+			end
+		})
+
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "CodeDiffClose",
+			callback = function ()
+				vim.defer_fn(require("focus-nvim").enable, 100)
+			end
+		})
+	end,
 	keys = {
 		{
 			"l",
