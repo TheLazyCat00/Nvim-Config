@@ -14,11 +14,6 @@ return {
 	config = function (_, opts)
 		local focusNvim = require("focus-nvim")
 		focusNvim.setup(opts)
-		vim.api.nvim_create_user_command(
-			"ResetFolds",
-			function() vim.schedule(focusNvim.reset) end,
-			{}
-		)
 	end,
 	init = function ()
 		vim.api.nvim_create_autocmd("User", {
