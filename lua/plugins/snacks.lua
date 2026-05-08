@@ -67,7 +67,7 @@ return {
 				enabled = true,
 				win = {
 					keys = {
-						hide = { "q", "hide", mode = "t", desc = "Hide LazyGit" },
+						hide = { "<C-q>", "hide", mode = "t", desc = "Hide LazyGit" },
 					},
 				},
 			},
