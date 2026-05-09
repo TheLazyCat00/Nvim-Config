@@ -34,7 +34,7 @@ return {
 			},
 		},
 		nes = {
-			enabled = true,
+			enabled = false,
 			auto_trigger = true,
 			keymap = {
 				accept_and_goto = "<S-CR>",
