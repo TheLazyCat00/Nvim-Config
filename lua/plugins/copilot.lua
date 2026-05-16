@@ -18,7 +18,7 @@ return {
 	event = "InsertEnter",
 	opts = {
 		suggestion = {
-			enabled = true,
+			enabled = false,
 			auto_trigger = true,
 			hide_during_completion = true,
 			debounce = 15,
@@ -34,7 +34,7 @@ return {
 			},
 		},
 		nes = {
-			enabled = true,
+			enabled = false,
 			auto_trigger = true,
 			keymap = {
 				accept_and_goto = "<S-CR>",

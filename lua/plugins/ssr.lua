@@ -16,6 +16,6 @@ return {
 		},
 	},
 	keys = {
-		{ "<leader>ss", function() require("ssr").open() end, mode = { "n", "x" }, desc = "Structural Search and Replace" },
+		{ "<leader>sS", function() require("ssr").open() end, mode = { "n", "x" }, desc = "Structural Search and Replace" },
 	},
 }
