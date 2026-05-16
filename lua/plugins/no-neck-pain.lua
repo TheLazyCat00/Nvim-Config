@@ -1,5 +1,6 @@
 return {
 	"shortcuts/no-neck-pain.nvim",
+	enabled = false,
 	lazy = false,
 	version = "*",
 	opts = {

@@ -6,5 +6,8 @@ return {
 			du = "delete",
 			d = { action = "delete", mode = {"v", "o"} },
 		}
-	}
+	},
+	keys = {
+		{ "<leader>cs", false },
+	},
 }
