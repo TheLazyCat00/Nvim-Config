@@ -5,7 +5,7 @@
 vim.loader.enable()
 
 vim.cmd("language en_US.UTF-8")
-vim.cmd('packadd nvim.tohtml')
+vim.cmd("packadd nvim.tohtml")
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -18,12 +18,12 @@ end
 vim.opt.undolevels = 1000
 vim.opt.undofile = true
 vim.opt.autoindent = true
-vim.opt.listchars = { tab = '→ ', trail = '·' }
-vim.fn.setreg('q', '') -- clear q macro
+vim.opt.listchars = { tab = "→ ", trail = "·" }
+vim.fn.setreg("q", "") -- clear q macro
 
 local shell = "wsl"
 local shellConfigs = {
-	pwsh = function ()
+	pwsh = function()
 		vim.o.shell = "pwsh"
 		vim.o.shellcmdflag = "-Command"
 		vim.o.shellquote = ""
@@ -35,12 +35,12 @@ local shellConfigs = {
 		vim.o.shellquote = ""
 		vim.o.shellxquote = ""
 	end,
-	wsl = function ()
+	wsl = function()
 		vim.o.shell = "bash"
 		vim.o.shellcmdflag = "-c"
 		vim.o.shellquote = ""
 		vim.o.shellxquote = ""
-	end
+	end,
 }
 shellConfigs[shell]()
 
@@ -83,7 +83,7 @@ end
 
 SetIndent()
 
-vim.g.updateFont = function ()
+vim.g.updateFont = function()
 	vim.opt.guifont = vim.g.font .. ":h" .. vim.g.size
 end
 
