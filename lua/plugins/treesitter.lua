@@ -39,6 +39,16 @@ local installedLanguages = {
 	"yaml",
 }
 
+vim.api.nvim_create_autocmd("BufReadPost", {
+	pattern = "*.y",
+	callback = function(ev)
+		vim.notify("hi")
+		-- Force bison as the TS language (matches what you tested)
+		pcall(vim.treesitter.start, ev.buf, "bison")
+	end,
+})
+
+vim.treesitter.language.register("bison", "yacc")
 vim.api.nvim_create_autocmd('User', {
 	pattern = 'TSUpdate',
 	callback = function()
@@ -48,15 +58,20 @@ vim.api.nvim_create_autocmd('User', {
 				queries = "queries",
 			},
 		}
+		require("nvim-treesitter.parsers").bison = {
+			install_info = {
+				url = "https://github.com/lemonadern/tree-sitter-bison",
+				branch = "master",
+			}
+		}
 	end,
 })
 
 return {
 	"nvim-treesitter/nvim-treesitter",
 	version = false, -- last release is way too old and doesn't work on Windows
+	lazy = false,
 	build = ":TSUpdate",
-	event = { "LazyFile", "VeryLazy" },
-	lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
 	---@type TSConfig
 	---@diagnostic disable-next-line: missing-fields
 	cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
