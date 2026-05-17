@@ -41,7 +41,6 @@ return {
 		require("aerial").setup(opts)
 		vim.api.nvim_create_autocmd("VimResized", {
 			callback = function ()
-				vim.notify("hi")
 				local aerial = require("aerial")
 				if aerial.is_open() then
 					aerial.close()
