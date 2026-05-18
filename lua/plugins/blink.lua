@@ -2,7 +2,7 @@ return {
 	"saghen/blink.cmp",
 	enabled = vim.g.lazyvim_cmp == "blink.cmp",
 	opts = function(_, opts)
-		vim.tbl_extend("force", opts, {
+		opts = vim.tbl_extend("force", opts, {
 			appearance = {
 				kind_icons = vim.deepcopy(LazyVim.config.icons.kinds)
 			},
