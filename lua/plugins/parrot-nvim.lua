@@ -101,4 +101,84 @@ return {
 		{ "<leader>ar", "<cmd>PrtContext<CR>", mode = "n", desc = "Parrot Context" },
 		{ "<leader>a?", "<cmd>PrtInfo<CR>", mode = "n", desc = "Parrot Info" },
 	},
+	config = function()
+		local parrot = require("parrot")
+		parrot.setup(require("lazy.core.plugin").values({
+			mod = "parrot.nvim",
+		}, "opts"))
+
+		-- Store state for aerial window replacement
+		local aerial_was_open = false
+		local aerial = require("aerial")
+
+		-- Override the toggle command to handle aerial replacement
+		local original_toggle = vim.cmd.PrtChatToggle
+		
+		-- Create a custom toggle function
+		local function toggle_parrot_chat()
+			local aerial_is_open = aerial and aerial.is_open and aerial.is_open() or false
+			
+			if aerial_is_open then
+				aerial_was_open = true
+				aerial.close()
+				-- Open parrot in a vertical split with same width as aerial (20%)
+				vim.cmd("vsplit")
+				vim.cmd("vertical resize " .. math.floor(vim.o.columns * 0.2))
+				vim.cmd("PrtChatToggle")
+			else
+				-- Check if parrot chat is currently open
+				local parrot_chat_open = false
+				for _, win in ipairs(vim.api.nvim_list_wins()) do
+					local buf = vim.api.nvim_win_get_buf(win)
+					if vim.bo[buf].filetype == "parrot-chat" then
+						parrot_chat_open = true
+						break
+					end
+				end
+				
+				if parrot_chat_open then
+					-- Close parrot and reopen aerial if it was open before
+					vim.cmd("PrtChatToggle")
+					if aerial_was_open then
+						aerial_was_open = false
+						vim.schedule(function()
+							aerial.open({ focus = false })
+						end)
+					end
+				else
+					-- Open parrot normally
+					vim.cmd("PrtChatToggle")
+				end
+			end
+		end
+
+		-- Create command that wraps our custom toggle
+		vim.api.nvim_create_user_command("PrtChatToggle", toggle_parrot_chat, {})
+		
+		-- Also handle the case when parrot chat is closed directly
+		vim.api.nvim_create_autocmd("WinClosed", {
+			pattern = "*",
+			callback = function(args)
+				local buf = vim.api.nvim_win_get_buf(tonumber(args.match))
+				if vim.bo[buf].filetype == "parrot-chat" then
+					-- Check if any parrot chat windows are still open
+					local any_parrot_open = false
+					for _, win in ipairs(vim.api.nvim_list_wins()) do
+						local b = vim.api.nvim_win_get_buf(win)
+						if vim.bo[b].filetype == "parrot-chat" then
+							any_parrot_open = true
+							break
+						end
+					end
+					
+					if not any_parrot_open and aerial_was_open then
+						aerial_was_open = false
+						vim.schedule(function()
+							aerial.open({ focus = false })
+						end)
+					end
+				end
+			end,
+		})
+	end,
 }
