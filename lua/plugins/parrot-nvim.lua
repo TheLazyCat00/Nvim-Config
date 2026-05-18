@@ -29,11 +29,6 @@ return {
 			},
 		},
 
-		system_prompt = {
-			chat = "You are a helpful coding assistant. Be concise and to the point. Always provide code examples when relevant.",
-			command = "You are a helpful coding assistant. Follow the user's instructions precisely. Only respond with the code or text that should replace the selection.",
-		},
-
 		cmd_prefix = "Prt",
 
 		-- The directory to store persisted state information
