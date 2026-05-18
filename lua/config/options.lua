@@ -67,7 +67,7 @@ vim.filetype.add({
 		ixx = "cpp",
 		mdx = "markdown",
 		coda = "coda",
-		re = "re2c",
+		re = "cpp",
 		y = "yacc"
 	},
 })

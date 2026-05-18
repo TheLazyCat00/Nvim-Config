@@ -1,33 +1,52 @@
 return {
 	"olimorris/codecompanion.nvim",
-	enabled = false,
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-treesitter/nvim-treesitter",
 		"folke/which-key.nvim",
 	},
 	opts = {
+		-- Adapters -----------------------------------------------------------------
 		adapters = {
+			-- Keep ACP configured (even if you’re not using it) ----------------------
 			acp = {
 				opts = {
 					show_presets = false,
 				},
 			},
+
+			-- HTTP adapters (this is what Inline uses) -------------------------------
 			http = {
 				opts = {
 					show_presets = false,
 					show_model_choices = true,
 				},
+
+				-- IMPORTANT:
+				-- You had `show_presets = false`, which hides built-in adapters unless
+				-- you define them here. So we explicitly “extend” the built-in Mistral adapter.
+				mistral = function()
+					return require("codecompanion.adapters").extend("mistral", {
+						schema = {
+							model = {
+								default = "codestral-latest", -- best default for “implement this function”
+							},
+							-- Optional: make it more deterministic for refactors/impl
+							temperature = { default = 0 },
+						},
+					})
+				end,
 			},
 		},
+
+		-- Interactions -------------------------------------------------------------
 		interactions = {
 			-- BACKGROUND INTERACTION -------------------------------------------------
 			background = {
 				adapter = {
-					name = "copilot",
-					model = "claude-haiku-4.5",
+					name = "mistral",
+					model = "mistral-small-latest",
 				},
-				-- Callbacks within the plugin that you can attach background actions to
 				chat = {
 					callbacks = {
 						["on_ready"] = {
@@ -42,32 +61,28 @@ return {
 					},
 				},
 			},
+
 			-- CHAT INTERACTION -------------------------------------------------------
 			chat = {
 				adapter = {
-					name = "copilot",
-					model = "claude-haiku-4.5",
+					name = "mistral",
+					model = "codestral-latest",
 				},
 				roles = {
-					---The header name for the LLM's messages
-					---@type string|fun(adapter: CodeCompanion.HTTPAdapter|CodeCompanion.ACPAdapter): string
 					llm = function(adapter)
-						return "CodeCompanion (" .. adapter.parameters.model .. ")"
+						local model = (adapter.parameters and adapter.parameters.model)
+						or (adapter.schema and adapter.schema.model and adapter.schema.model.default)
+						or "unknown-model"
+						return "CodeCompanion (" .. model .. ")"
 					end,
-
-					---The header name for your messages
-					---@type string
 					user = "Me",
 				},
 				tools = {
 					opts = {
-						---Tools and/or groups that are always loaded in a chat buffer
-						---@type string[]
 						default_tools = {},
 					},
 				},
-				variables = {
-				},
+				variables = {},
 				slash_commands = {
 					["buffer"] = {
 						callback = "interactions.chat.slash_commands.builtin.buffer",
@@ -98,106 +113,55 @@ return {
 					},
 				},
 				keymaps = {
-					completion = {
-						modes = {
-							i = "<C-_>",
-						},
-					},
-					regenerate = {
-						modes = {
-							n = "<leader>ar",
-						},
-					},
-					stop = {
-						modes = {
-							n = "<leader>aq",
-						},
-					},
-					clear = {
-						modes = {
-							n = "<leader>ax",
-						},
-					},
-					codeblock = {
-						modes = {
-							n = "<leader>ac",
-						},
-					},
-					yank_code = {
-						modes = {
-							n = "<leader>ay",
-						},
-					},
-					change_adapter = {
-						modes = {
-							n = "<leader>a?",
-						},
-					},
-					fold_code = {
-						modes = {
-							n = "<leader>af",
-						},
-					},
-					debug = {
-						modes = {
-							n = "<leader>ad",
-						},
-					},
-					system_prompt = {
-						modes = {
-							n = "<leader>as",
-						},
-					},
-					buffer_sync_all = {
-						modes = {
-							n = "<leader>ag",
-						},
-					},
-					buffer_sync_diff = {
-						modes = {
-							n = "<leader>ab",
-						},
-					},
+					completion = { modes = { i = "<C-_>" } },
+					regenerate = { modes = { n = "<leader>ar" } },
+					stop = { modes = { n = "<leader>aq" } },
+					clear = { modes = { n = "<leader>ax" } },
+					codeblock = { modes = { n = "<leader>ac" } },
+					yank_code = { modes = { n = "<leader>ay" } },
+					change_adapter = { modes = { n = "<leader>a?" } },
+					fold_code = { modes = { n = "<leader>af" } },
+					debug = { modes = { n = "<leader>ad" } },
+					system_prompt = { modes = { n = "<leader>as" } },
+					buffer_sync_all = { modes = { n = "<leader>ag" } },
+					buffer_sync_diff = { modes = { n = "<leader>ab" } },
 				},
 			},
+
 			-- INLINE INTERACTION -----------------------------------------------------
+			-- Inline only supports HTTP adapters, so this must be the HTTP "mistral".
 			inline = {
-				adapter = "copilot",
+				adapter = {
+					name = "mistral",
+					model = "codestral-latest",
+				},
 				keymaps = {
 					accept_change = {
-						modes = {
-							n = "<leader>ay",
-						},
+						modes = { n = "<leader>ay" },
 						opts = {},
 					},
 					reject_change = {
-						modes = {
-							n = "<leader>ax",
-						},
+						modes = { n = "<leader>ax" },
 						opts = {},
 					},
 				},
 			},
 		},
+
+		-- Global plugin opts -------------------------------------------------------
 		opts = {
 			log_level = "ERROR", -- TRACE|DEBUG|ERROR|INFO
-			language = "English", -- The language used for LLM responses
-
-			-- If this is false then any default prompt that is marked as containing code
-			-- will not be sent to the LLM. Please note that whilst I have made every
-			-- effort to ensure no code leakage, using this is at your own risk
-			---@type boolean|function
-			---@return boolean
+			language = "English",
 			send_code = true,
-
-			job_start_delay = 1500, -- Delay in milliseconds between cmd tools
-			submit_delay = 2000, -- Delay in milliseconds before auto-submitting the chat buffer
+			job_start_delay = 1500,
+			submit_delay = 2000,
 		},
 	},
+
 	keys = {
-		{"<leader>at", "<cmd>CodeCompanionChat Toggle<CR>", mode = "n", desc = "Toggle Companion"},
-		{"<leader>aa", "<cmd>CodeCompanionActions<CR>", mode = "n", desc = "Companion Actions"},
-		{"<leader>ai", "<cmd>CodeCompanion<CR>", mode = "n", desc = "Inline Assistant"},
-		{"<leader>ap", "<cmd>CodeCompanionChat Add<CR>", mode = "x", desc = "Add Selected to Chat"},
-	}
+		{ "<leader>at", "<cmd>CodeCompanionChat Toggle<CR>", mode = "n", desc = "Toggle Companion" },
+		{ "<leader>aa", "<cmd>CodeCompanionActions<CR>", mode = "n", desc = "Companion Actions" },
+		{ "<leader>ai", "<cmd>CodeCompanion<CR>", mode = { "n", "x" }, desc = "Inline Assistant" },
+		{ "<leader>ap", "<cmd>CodeCompanionChat Add<CR>", mode = "x", desc = "Add Selected to Chat" },
+	},
 }
