@@ -37,7 +37,22 @@ return {
 		}
 	end,
 	keys = {
-		{ "<leader>cs", "<cmd>AerialToggle<cr>", desc = "Aerial (Symbols)" },
+		{ "<leader>cs", function()
+			local aerial = require("aerial")
+			local parrot_ok, parrot = pcall(require, "parrot")
+			
+			-- Close parrot if it's open
+			if parrot_ok and parrot.is_open and parrot.is_open() then
+				parrot.close()
+			end
+			
+			-- Toggle aerial
+			if aerial.is_open() then
+				aerial.close()
+			else
+				aerial.open({ focus = false })
+			end
+		end, desc = "Aerial (Symbols)" },
 	},
 	config = function(_, opts)
 		require("aerial").setup(opts)
