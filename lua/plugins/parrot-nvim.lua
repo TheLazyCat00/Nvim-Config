@@ -1,6 +1,7 @@
 local data_dir = vim.fn.stdpath("data"):gsub("/$", "")
 local chat_dir = data_dir .. "/parrot/chats"
 local default_sidebar_width = 0.2
+local split_sidebar_window_count = 2
 
 local function is_parrot_sidebar_buffer(bufnr)
 	if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
@@ -8,7 +9,7 @@ local function is_parrot_sidebar_buffer(bufnr)
 	end
 
 	local name = vim.api.nvim_buf_get_name(bufnr)
-	return name:sub(1, #chat_dir + 1) == chat_dir .. "/" or name:match("/%.parrot%.md$")
+	return vim.startswith(name, chat_dir .. "/") or name:match("/%.parrot%.md$")
 end
 
 local function find_window(predicate)
@@ -43,16 +44,16 @@ end
 
 local function restore_aerial_sidebar()
 	local state = vim.t.parrot_sidebar_state
-	if not state or not state.restore_aerial or find_parrot_sidebar_window() or find_aerial_window() then
+	if not state or not state.restore_aerial then
 		return
 	end
-
-	state.restore_aerial = false
 
 	vim.schedule(function()
 		if find_parrot_sidebar_window() or find_aerial_window() then
 			return
 		end
+
+		state.restore_aerial = false
 
 		local aerial = require("aerial")
 		aerial.open(false, "left")
@@ -169,7 +170,7 @@ return {
 					state.width = state.width or get_default_width()
 				end
 
-				if #vim.api.nvim_tabpage_list_wins(0) > 1 then
+				if #vim.api.nvim_tabpage_list_wins(0) >= split_sidebar_window_count then
 					vim.cmd("wincmd H")
 				end
 
