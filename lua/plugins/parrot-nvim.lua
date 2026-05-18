@@ -1,7 +1,7 @@
 local data_dir = vim.fn.stdpath("data"):gsub("/$", "")
 local chat_dir = data_dir .. "/parrot/chats"
 local default_sidebar_width = 0.2
-local split_sidebar_window_count = 2
+local min_windows_for_sidebar_move = 2
 
 local function is_parrot_sidebar_buffer(bufnr)
 	if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
@@ -56,7 +56,7 @@ local function restore_aerial_sidebar()
 		state.restore_aerial = false
 
 		local aerial = require("aerial")
-		aerial.open(false, "left")
+		aerial.open(false, "left") -- keep focus in the code window
 
 		local aerial_win = find_aerial_window()
 		if aerial_win then
@@ -170,7 +170,7 @@ return {
 					state.width = state.width or get_default_width()
 				end
 
-				if #vim.api.nvim_tabpage_list_wins(0) >= split_sidebar_window_count then
+				if #vim.api.nvim_tabpage_list_wins(0) >= min_windows_for_sidebar_move then
 					vim.cmd("wincmd H")
 				end
 
@@ -184,6 +184,10 @@ return {
 			group = group,
 			callback = function(args)
 				if is_parrot_sidebar_buffer(args.buf) then
+					local current_win = vim.api.nvim_get_current_win()
+					if vim.api.nvim_win_is_valid(current_win) and vim.api.nvim_win_get_buf(current_win) == args.buf then
+						pcall(vim.api.nvim_set_option_value, "winfixwidth", false, { scope = "local", win = current_win })
+					end
 					vim.schedule(restore_aerial_sidebar)
 				end
 			end,
