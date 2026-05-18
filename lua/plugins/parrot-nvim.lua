@@ -79,11 +79,6 @@ return {
 
 		-- Time in hours until the model cache is refreshed
 		model_cache_expiry_hours = 48,
-
-		-- fzf_lua options
-		fzf_lua_opts = {
-			["--ansi"]
-		},
 	},
 
 	keys = {
