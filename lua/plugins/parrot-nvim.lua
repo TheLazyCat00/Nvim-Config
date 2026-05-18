@@ -47,16 +47,16 @@ return {
 		chat_confirm_delete = true,
 
 		-- Local chat buffer shortcuts
-		chat_shortcut_respond = { modes = { "n", "i", "v", "x" }, shortcut = "<C-g><C-g>" },
-		chat_shortcut_delete = { modes = { "n", "i", "v", "x" }, shortcut = "<C-g>d" },
-		chat_shortcut_stop = { modes = { "n", "i", "v", "x" }, shortcut = "<C-g>s" },
-		chat_shortcut_new = { modes = { "n", "i", "v", "x" }, shortcut = "<C-g>c" },
+		chat_shortcut_respond = { modes = { "n", "i", "x" }, shortcut = "<C-CR>" },
+		chat_shortcut_delete = { modes = { "n", "i", "x" }, shortcut = "<C-g>d" },
+		chat_shortcut_stop = { modes = {"n", "i"}, shortcut = "<C-g>s" },
+		chat_shortcut_new = { modes = { "n", "i" }, shortcut = "<C-g>c" },
 
 		-- Option to move the cursor to the end of the file after finished respond
 		chat_free_cursor = false,
 
 		-- Default target for PrtChatToggle, PrtChatNew, PrtContext
-		toggle_target = "vsplit",
+		toggle_target = "split",
 
 		-- The interactive user input
 		user_input_ui = "native",
