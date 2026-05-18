@@ -47,16 +47,6 @@ vim.api.nvim_create_autocmd("BufRead", {
 	end,
 })
 
-vim.api.nvim_create_autocmd('User', {
-	pattern = 'CodeCompanionRequestStarted',
-	callback = function()
-		vim.notify("Message sent", vim.log.levels.INFO)
-		vim.schedule(function()
-			vim.cmd('stopinsert')
-		end)
-	end,
-})
-
 local term_group = vim.api.nvim_create_augroup('TermGroup', { clear = true })
 
 -- Set a buffer-local keymap when a terminal is opened

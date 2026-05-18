@@ -14,15 +14,6 @@ local filetypes = { "markdown" }
 -- 	end
 -- })
 
--- vim.api.nvim_create_autocmd("user", {
--- 	pattern = 'CodeCompanionRequestFinished',
--- 	callback = function(request)
--- 		vim.cmd("buffer " .. request.data.bufnr)
--- 		require("otter").activate()
--- 		vim.cmd("buffer " .. currentBuf)
--- 	end
--- })
-
 return {
 	"jmbuhr/otter.nvim",
 	dependencies = {
