@@ -1,3 +1,30 @@
+local function toggle_parrot()
+	local parrot = require("parrot")
+	local aerial_ok, aerial = pcall(require, "aerial")
+	
+	-- Close aerial if it's open
+	if aerial_ok and aerial.is_open and aerial.is_open() then
+		aerial.close()
+	end
+	
+	-- If parrot is open, close it
+	if parrot.is_open and parrot.is_open() then
+		parrot.close()
+		return
+	end
+	
+	-- Create a left split with 20% width
+	local width = math.floor(vim.o.columns * 0.2)
+	vim.cmd("leftabove vsplit")
+	
+	-- Set window width
+	local win = vim.api.nvim_get_current_win()
+	vim.api.nvim_win_set_width(win, width)
+	
+	-- Open parrot chat in this window
+	parrot.chat_new()
+end
+
 return {
 	"frankroeder/parrot.nvim",
 	dependencies = {
@@ -78,7 +105,7 @@ return {
 
 	keys = {
 		-- Chat commands
-		{ "<leader>at", "<cmd>PrtChatToggle<CR>", mode = "n", desc = "Toggle Parrot Chat" },
+		{ "<leader>at", toggle_parrot, mode = "n", desc = "Toggle Parrot Chat" },
 		{ "<leader>aa", "<cmd>PrtChatNew<CR>", mode = "n", desc = "New Parrot Chat" },
 		{ "<leader>ap", "<cmd>PrtChatPaste<CR>", mode = "x", desc = "Paste to Parrot Chat" },
 
