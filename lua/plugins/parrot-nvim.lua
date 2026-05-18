@@ -1,3 +1,69 @@
+local data_dir = vim.fn.stdpath("data"):gsub("/$", "")
+local chat_dir = data_dir .. "/parrot/chats"
+local default_sidebar_width = 0.2
+
+local function is_parrot_sidebar_buffer(bufnr)
+	if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
+		return false
+	end
+
+	local name = vim.api.nvim_buf_get_name(bufnr)
+	return name:sub(1, #chat_dir + 1) == chat_dir .. "/" or name:match("/%.parrot%.md$")
+end
+
+local function find_window(predicate)
+	for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+		local buf = vim.api.nvim_win_get_buf(win)
+		if predicate(win, buf) then
+			return win, buf
+		end
+	end
+end
+
+local function find_aerial_window()
+	return find_window(function(_, buf)
+		return vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "aerial"
+	end)
+end
+
+local function find_parrot_sidebar_window()
+	return find_window(function(_, buf)
+		return is_parrot_sidebar_buffer(buf)
+	end)
+end
+
+local function get_sidebar_state()
+	vim.t.parrot_sidebar_state = vim.t.parrot_sidebar_state or {}
+	return vim.t.parrot_sidebar_state
+end
+
+local function get_default_width()
+	return math.max(20, math.floor(vim.o.columns * default_sidebar_width))
+end
+
+local function restore_aerial_sidebar()
+	local state = vim.t.parrot_sidebar_state
+	if not state or not state.restore_aerial or find_parrot_sidebar_window() or find_aerial_window() then
+		return
+	end
+
+	state.restore_aerial = false
+
+	vim.schedule(function()
+		if find_parrot_sidebar_window() or find_aerial_window() then
+			return
+		end
+
+		local aerial = require("aerial")
+		aerial.open(false, "left")
+
+		local aerial_win = find_aerial_window()
+		if aerial_win then
+			pcall(vim.api.nvim_win_set_width, aerial_win, state.width or get_default_width())
+		end
+	end)
+end
+
 return {
 	"frankroeder/parrot.nvim",
 	dependencies = {
@@ -32,10 +98,10 @@ return {
 		cmd_prefix = "Prt",
 
 		-- The directory to store persisted state information
-		state_dir = vim.fn.stdpath("data"):gsub("/$", "") .. "/parrot/persisted",
+		state_dir = data_dir .. "/parrot/persisted",
 
 		-- The directory to store the chats
-		chat_dir = vim.fn.stdpath("data"):gsub("/$", "") .. "/parrot/chats",
+		chat_dir = chat_dir,
 
 		-- Chat user prompt prefix
 		chat_user_prefix = "🗨:",
@@ -75,7 +141,53 @@ return {
 		-- Time in hours until the model cache is refreshed
 		model_cache_expiry_hours = 48,
 	},
+	config = function(_, opts)
+		require("parrot").setup(opts)
 
+		local group = vim.api.nvim_create_augroup("ParrotSidebar", { clear = true })
+
+		vim.api.nvim_create_autocmd("BufWinEnter", {
+			group = group,
+			callback = function(args)
+				if not is_parrot_sidebar_buffer(args.buf) then
+					return
+				end
+
+				local win = vim.fn.bufwinid(args.buf)
+				if win == -1 or vim.api.nvim_win_get_config(win).relative ~= "" then
+					return
+				end
+
+				local state = get_sidebar_state()
+				local aerial_win = find_aerial_window()
+
+				if aerial_win then
+					state.restore_aerial = true
+					state.width = vim.api.nvim_win_get_width(aerial_win)
+					require("aerial").close()
+				else
+					state.width = state.width or get_default_width()
+				end
+
+				if #vim.api.nvim_tabpage_list_wins(0) > 1 then
+					vim.cmd("wincmd H")
+				end
+
+				local current_win = vim.api.nvim_get_current_win()
+				vim.api.nvim_set_option_value("winfixwidth", true, { scope = "local", win = current_win })
+				pcall(vim.api.nvim_win_set_width, current_win, state.width or get_default_width())
+			end,
+		})
+
+		vim.api.nvim_create_autocmd("BufWinLeave", {
+			group = group,
+			callback = function(args)
+				if is_parrot_sidebar_buffer(args.buf) then
+					vim.schedule(restore_aerial_sidebar)
+				end
+			end,
+		})
+	end,
 	keys = {
 		-- Chat commands
 		{ "<leader>at", "<cmd>PrtChatToggle<CR>", mode = "n", desc = "Toggle Parrot Chat" },
