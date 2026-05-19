@@ -1,8 +1,8 @@
 return {
 	"frankroeder/parrot.nvim",
+	event = "VeryLazy",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		"ibhagwan/fzf-lua",
 		"folke/which-key.nvim",
 	},
 	opts = {
@@ -21,44 +21,30 @@ return {
 					params = { max_completion_tokens = 64 },
 				},
 				models = {
+					"mistral-large-latest",
 					"codestral-latest",
 					"mistral-small-latest",
 					"mistral-medium-latest",
-					"mistral-large-latest",
 				},
 			},
 		},
 
 		cmd_prefix = "Prt",
 
-		-- The directory to store persisted state information
 		state_dir = vim.fn.stdpath("data"):gsub("/$", "") .. "/parrot/persisted",
-
-		-- The directory to store the chats
 		chat_dir = vim.fn.stdpath("data"):gsub("/$", "") .. "/parrot/chats",
 
-		-- Chat user prompt prefix
 		chat_user_prefix = "🗨:",
-
-		-- LLM prompt prefix
 		llm_prefix = "🦜:",
 
-		-- Explicitly confirm deletion of a chat file
-		chat_confirm_delete = true,
-
-		-- Local chat buffer shortcuts
 		chat_shortcut_respond = { modes = { "n", "i", "x" }, shortcut = "<C-CR>" },
 		chat_shortcut_delete = { modes = { "n", "i", "x" }, shortcut = "<C-g>d" },
 		chat_shortcut_stop = { modes = {"n", "i"}, shortcut = "<C-g>s" },
 		chat_shortcut_new = { modes = { "n", "i" }, shortcut = "<C-g>c" },
 
-		-- Option to move the cursor to the end of the file after finished respond
-		chat_free_cursor = false,
-
-		-- Default target for PrtChatToggle, PrtChatNew, PrtContext
-		toggle_target = "split",
-
-		-- The interactive user input
+		chat_confirm_delete = true,
+		chat_free_cursor = true,
+		toggle_target = "popup",
 		user_input_ui = "native",
 
 		-- Popup window layout
@@ -69,10 +55,7 @@ return {
 		style_popup_margin_top = 2,
 		style_popup_max_width = 160,
 
-		-- auto select command response
 		command_auto_select_response = true,
-
-		-- Time in hours until the model cache is refreshed
 		model_cache_expiry_hours = 48,
 	},
 
