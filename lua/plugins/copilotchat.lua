@@ -4,8 +4,8 @@ return {
 	dependencies = {
 		{ "nvim-lua/plenary.nvim", branch = "master" },
 		"folke/which-key.nvim",
+		"folke/snacks.nvim",
 	},
-	-- optional but recommended for better token counting / history mgmt
 	build = "make tiktoken",
 	opts = function()
 		local data_dir = vim.fn.stdpath("data"):gsub("/$", "")
@@ -14,53 +14,113 @@ return {
 		local ro_tools = { "file", "glob", "grep", "gitdiff", "buffer" }
 
 		return {
-			-- Behavior / vibe
+			-- Default model: Mistral (provider added in config() below)
+			model = "mistral-small-latest",
 			system_prompt = "Be concise. Get to the point. No fluff.",
 			temperature = 0.2,
 
-			-- Default context for most asks (visual selection like Parrot)
 			resources = "selection",
 			selection = "visual",
 
-			-- IMPORTANT: only share *read-only* tools by default
-			-- (so the model can explore, but cannot write/execute)
+			-- read-only tool set
 			tools = ro_tools,
-			trusted_tools = ro_tools, -- auto-run read-only tool calls without asking <!--citation:1-->
+			trusted_tools = ro_tools,
 
-			-- UI
 			window = {
 				layout = "float",
 				border = "single",
-				width = 160,   -- columns (since > 1)
-				height = 25,   -- rows
+				width = 160,
+				height = 25,
 				title = "Copilot Chat",
 			},
+
 			show_help = true,
 			auto_follow_cursor = true,
 			auto_insert_mode = false,
-			clear_chat_on_new_prompt = false, -- keep the conversation going
+			clear_chat_on_new_prompt = false,
 
-			-- Prefixes similar to your Parrot config
 			headers = {
 				user = "🗨:",
-				assistant = "🦜:",
+				assistant = ":",
 				tool = "Tool",
 			},
 
-			-- Persisted chat history location
+			-- if you're using blink completion for copilot-chat filetype
+			chat_autocomplete = false,
+
 			history_path = data_dir .. "/copilotchat/chats",
 			log_path = vim.fn.stdpath("state") .. "/CopilotChat.log",
 
-			-- Pick up repo instruction files automatically (defaults already include these)
 			instruction_files = { ".github/copilot-instructions.md", "AGENTS.md" },
 		}
 	end,
+
 	config = function(_, opts)
+		-- -----------------------------------------------------------------------
+		-- Providers: add Mistral + (optionally) disable Copilot/GitHub providers
+		-- -----------------------------------------------------------------------
+		local cfg = require("CopilotChat.config")
+
+		-- If your goal is “Mistral only” (no GitHub auth), disable these:
+		if cfg.providers and cfg.providers.copilot then
+			cfg.providers.copilot.disabled = true
+		end
+		if cfg.providers and cfg.providers.github_models then
+			cfg.providers.github_models.disabled = true
+		end
+
+		cfg.providers.mistral = {
+			prepare_input = require("CopilotChat.config.providers").copilot.prepare_input,
+			prepare_output = require("CopilotChat.config.providers").copilot.prepare_output,
+
+			get_headers = function()
+				local api_key = assert(os.getenv("MISTRAL_API_KEY"), "MISTRAL_API_KEY env not set")
+				return {
+					Authorization = "Bearer " .. api_key,
+					["Content-Type"] = "application/json",
+				}
+			end,
+
+			get_models = function(headers)
+				local response, err = require("CopilotChat.utils").http_get("https://api.mistral.ai/v1/models", {
+					headers = headers,
+					json_response = true,
+				})
+				if err then
+					error(err)
+				end
+
+				-- Keep it close to your Parrot list (but you can remove this filter if you want all models)
+				local allow = {
+					["mistral-large-latest"] = true,
+					["codestral-latest"] = true,
+					["mistral-small-latest"] = true,
+					["mistral-medium-latest"] = true,
+				}
+
+				return vim
+					.iter(response.body.data)
+					:filter(function(model)
+						return model.capabilities and model.capabilities.completion_chat and allow[model.id]
+					end)
+					:map(function(model)
+						return { id = model.id, name = model.name }
+					end)
+					:totable()
+			end,
+
+			get_url = function()
+				return "https://api.mistral.ai/v1/chat/completions"
+			end,
+		}
+
+		-- Now start CopilotChat
 		local chat = require("CopilotChat")
 		chat.setup(opts)
 
-		-- --- Per-project persistent chat ---------------------------------------
-		-- CopilotChat.save(name) writes: history_path .. "/" .. name .. ".json" <!--citation:2-->
+		-- -----------------------------------------------------------------------
+		-- Per-project persistent chat
+		-- -----------------------------------------------------------------------
 		local function project_root()
 			local git_root = vim.fn.systemlist("git rev-parse --show-toplevel 2> /dev/null")[1]
 			if git_root and git_root ~= "" then
@@ -95,10 +155,8 @@ return {
 			pcall(chat.save, name, opts.history_path)
 		end
 
-		-- load once when plugin initializes (so your first rewrite already has context)
 		load_project_chat()
 
-		-- auto-save on exit; auto-save+load when changing directories
 		vim.api.nvim_create_autocmd("VimLeavePre", {
 			callback = save_project_chat,
 		})
@@ -109,20 +167,18 @@ return {
 			end,
 		})
 
-		-- convenience user commands (like Parrot chat finder-ish workflows)
 		vim.api.nvim_create_user_command("CopilotChatProjectSave", save_project_chat, {})
 		vim.api.nvim_create_user_command("CopilotChatProjectLoad", load_project_chat, {})
 		vim.api.nvim_create_user_command("CopilotChatProjectNew", function()
 			save_project_chat()
-			chat.reset() -- clears current buffer and starts fresh <!--citation:1-->
+			chat.reset()
 		end, {})
 
-		-- --- Parrot-like prompts: Rewrite / Append / Prepend --------------------
-		-- CopilotChat automatically creates :CopilotChat<PromptName> commands
-		-- for anything you put into opts.prompts. <!--citation:2-->
+		-- -----------------------------------------------------------------------
+		-- Parrot-like prompts: Rewrite / Append / Prepend
+		-- -----------------------------------------------------------------------
 		chat.setup({
 			prompts = vim.tbl_extend("force", require("CopilotChat.config.prompts"), {
-				-- Like :PrtRewrite <instruction>
 				Rewrite = {
 					description = "Rewrite selection (read-only repo exploration enabled)",
 					prompt = table.concat({
@@ -161,7 +217,7 @@ return {
 			}),
 		})
 
-		-- --- Retry (Parrot's :PrtRetry equivalent) ------------------------------
+		-- Retry (Parrot-ish)
 		vim.api.nvim_create_user_command("CopilotChatRetry", function()
 			local constants = require("CopilotChat.constants")
 			local last_user = chat.chat:get_message(constants.ROLE.USER, true)
@@ -170,29 +226,23 @@ return {
 			end
 		end, {})
 	end,
+
 	keys = {
-		-- Chat commands (Parrot-ish)
 		{ "<leader>at", "<cmd>CopilotChatToggle<CR>", mode = "n", desc = "Toggle Copilot Chat" },
 		{ "<leader>an", "<cmd>CopilotChatProjectNew<CR>", mode = "n", desc = "New Chat (save+reset, per-project)" },
 
-		-- “Interactive” edits (your Parrot Rewrite/Append/Prepend)
-		-- NOTE: these commands accept trailing args, so mapping to ":Cmd " matches your Parrot UX
 		{ "<leader>ai", ":CopilotChatRewrite ", mode = { "n", "x" }, desc = "Rewrite (selection)" },
 		{ "<leader>aa", ":CopilotChatAppend ", mode = { "n", "x" }, desc = "Append (selection)" },
 		{ "<leader>aS", ":CopilotChatPrepend ", mode = { "n", "x" }, desc = "Prepend (selection)" },
-
-		-- Built-in “Fix” (quick equivalent of Parrot Edit-ish)
 		{ "<leader>ae", "<cmd>CopilotChatFix<CR>", mode = { "n", "x" }, desc = "Fix (selection)" },
 
-		-- Retry / Stop
 		{ "<leader>ar", "<cmd>CopilotChatRetry<CR>", mode = { "n", "x" }, desc = "Retry last prompt" },
 		{ "<leader>aq", "<cmd>CopilotChatStop<CR>", mode = { "n", "x" }, desc = "Stop" },
 
-		-- Model / Prompt pickers
+		-- These use vim.ui.select -> Snacks picker now
 		{ "<leader>am", "<cmd>CopilotChatModels<CR>", mode = "n", desc = "Select model" },
 		{ "<leader>ac", "<cmd>CopilotChatPrompts<CR>", mode = "n", desc = "Prompt picker" },
 
-		-- Save/load current project chat explicitly (optional, but nice)
 		{ "<leader>as", "<cmd>CopilotChatProjectSave<CR>", mode = "n", desc = "Save project chat" },
 		{ "<leader>aL", "<cmd>CopilotChatProjectLoad<CR>", mode = "n", desc = "Load project chat" },
 	},
