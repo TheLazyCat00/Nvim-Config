@@ -10,14 +10,7 @@ return {
 				implementation = "prefer_rust_with_warning",
 			},
 			sources = {
-				per_filetype = {
-					["copilot-chat"] = { "copilot_c" },
-				},
 				providers = {
-					copilot_c = {
-						name = "CopilotChat",
-						module = "blink-cmp-copilot-chat",
-					},
 					snippets = {
 						-- defaults:
 						-- lsp: 0

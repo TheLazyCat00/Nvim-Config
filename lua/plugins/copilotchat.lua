@@ -10,21 +10,20 @@ return {
 	opts = function()
 		local data_dir = vim.fn.stdpath("data"):gsub("/$", "")
 
-		-- "read-only tools" we allow the LLM to call
+		-- Read-only tools (no bash/edit)
 		local ro_tools = { "file", "glob", "grep", "gitdiff", "buffer" }
 
 		return {
-			-- Default model: Mistral (provider added in config() below)
 			model = "mistral-small-latest",
 			system_prompt = "Be concise. Get to the point. No fluff.",
 			temperature = 0.2,
 
-			resources = "selection",
-			selection = "visual",
+			-- Always include selection as context (CopilotChat has built-in `selection` function). <!--citation:2-->
+			resources = { "selection" },
 
-			-- read-only tool set
+			-- enable tool calling, but only read-only tools
 			tools = ro_tools,
-			trusted_tools = ro_tools,
+			trusted_tools = ro_tools, -- trust read-only tools for auto-execution <!--citation:2-->
 
 			window = {
 				layout = "float",
@@ -46,7 +45,7 @@ return {
 			},
 
 			-- if you're using blink completion for copilot-chat filetype
-			chat_autocomplete = false,
+			chat_autocomplete = true,
 
 			history_path = data_dir .. "/copilotchat/chats",
 			log_path = vim.fn.stdpath("state") .. "/CopilotChat.log",
@@ -57,11 +56,10 @@ return {
 
 	config = function(_, opts)
 		-- -----------------------------------------------------------------------
-		-- Providers: add Mistral + (optionally) disable Copilot/GitHub providers
+		-- Providers: add Mistral + disable Copilot/GitHub providers
 		-- -----------------------------------------------------------------------
 		local cfg = require("CopilotChat.config")
 
-		-- If your goal is “Mistral only” (no GitHub auth), disable these:
 		if cfg.providers and cfg.providers.copilot then
 			cfg.providers.copilot.disabled = true
 		end
@@ -69,6 +67,7 @@ return {
 			cfg.providers.github_models.disabled = true
 		end
 
+		-- Provider snippet mirrors the upstream discussion (uses curl_get). <!--citation:1-->
 		cfg.providers.mistral = {
 			prepare_input = require("CopilotChat.config.providers").copilot.prepare_input,
 			prepare_output = require("CopilotChat.config.providers").copilot.prepare_output,
@@ -82,7 +81,7 @@ return {
 			end,
 
 			get_models = function(headers)
-				local response, err = require("CopilotChat.utils").http_get("https://api.mistral.ai/v1/models", {
+				local response, err = require("CopilotChat.utils.curl").get("https://api.mistral.ai/v1/models", {
 					headers = headers,
 					json_response = true,
 				})
@@ -90,7 +89,6 @@ return {
 					error(err)
 				end
 
-				-- Keep it close to your Parrot list (but you can remove this filter if you want all models)
 				local allow = {
 					["mistral-large-latest"] = true,
 					["codestral-latest"] = true,
@@ -114,7 +112,7 @@ return {
 			end,
 		}
 
-		-- Now start CopilotChat
+		-- Start CopilotChat
 		local chat = require("CopilotChat")
 		chat.setup(opts)
 
@@ -157,9 +155,7 @@ return {
 
 		load_project_chat()
 
-		vim.api.nvim_create_autocmd("VimLeavePre", {
-			callback = save_project_chat,
-		})
+		vim.api.nvim_create_autocmd("VimLeavePre", { callback = save_project_chat })
 		vim.api.nvim_create_autocmd("DirChanged", {
 			callback = function()
 				save_project_chat()
@@ -175,7 +171,7 @@ return {
 		end, {})
 
 		-- -----------------------------------------------------------------------
-		-- Parrot-like prompts: Rewrite / Append / Prepend
+		-- Prompts (ensure they return edit blocks we can apply)
 		-- -----------------------------------------------------------------------
 		chat.setup({
 			prompts = vim.tbl_extend("force", require("CopilotChat.config.prompts"), {
@@ -184,42 +180,250 @@ return {
 					prompt = table.concat({
 						"Rewrite the selected code according to the user's instruction.",
 						"You MAY use the available read-only tools (file/glob/grep/gitdiff/buffer) to inspect the codebase before answering.",
-						"Return the replacement as CopilotChat edit blocks (path/start_line/end_line).",
-						"Be concise; no extra commentary unless asked.",
+						"Only modify the current file/selection.",
+						"Return ONLY CopilotChat edit blocks in this format:",
+						"```<ft> path=<path> start_line=<n> end_line=<n>",
+						"<replacement>",
+						"```",
 					}, "\n"),
-					resources = "selection",
+					resources = { "selection" },
 					tools = { "file", "glob", "grep", "gitdiff", "buffer" },
 				},
 
 				Append = {
-					description = "Append to selection (replace selection with selection+new content)",
+					description = "Append to selection",
 					prompt = table.concat({
 						"Append new code/content to the selected code according to the user's instruction.",
-						"Return the full replacement for the selected range as CopilotChat edit blocks (path/start_line/end_line).",
 						"You MAY use read-only tools (file/glob/grep/gitdiff/buffer) first.",
-						"Be concise.",
+						"Only modify the current file/selection.",
+						"Return ONLY CopilotChat edit blocks (same format as /Rewrite).",
 					}, "\n"),
-					resources = "selection",
+					resources = { "selection" },
 					tools = { "file", "glob", "grep", "gitdiff", "buffer" },
 				},
 
 				Prepend = {
-					description = "Prepend to selection (replace selection with new content+selection)",
+					description = "Prepend to selection",
 					prompt = table.concat({
 						"Prepend new code/content before the selected code according to the user's instruction.",
-						"Return the full replacement for the selected range as CopilotChat edit blocks (path/start_line/end_line).",
 						"You MAY use read-only tools (file/glob/grep/gitdiff/buffer) first.",
-						"Be concise.",
+						"Only modify the current file/selection.",
+						"Return ONLY CopilotChat edit blocks (same format as /Rewrite).",
 					}, "\n"),
-					resources = "selection",
+					resources = { "selection" },
+					tools = { "file", "glob", "grep", "gitdiff", "buffer" },
+				},
+
+				FixApply = {
+					description = "Fix selection (no explanation; just applyable edit blocks)",
+					prompt = table.concat({
+						"Fix bugs/issues in the selected code.",
+						"You MAY use read-only tools (file/glob/grep/gitdiff/buffer) first.",
+						"Only modify the current file/selection.",
+						"Return ONLY CopilotChat edit blocks (same format as /Rewrite).",
+					}, "\n"),
+					resources = { "selection" },
 					tools = { "file", "glob", "grep", "gitdiff", "buffer" },
 				},
 			}),
 		})
 
-		-- Retry (Parrot-ish)
+		-- -----------------------------------------------------------------------
+		-- Silent apply workflow (no visible chat, apply result, one undo)
+		-- -----------------------------------------------------------------------
+		local constants = require("CopilotChat.constants")
+		local diff = require("CopilotChat.utils.diff")
+
+		local silent_window = {
+			layout = "float",
+			relative = "editor",
+			width = 1,
+			height = 1,
+			row = 0,
+			col = 0,
+			border = "none",
+			title = "",
+			zindex = 1,
+			blend = 100,
+		}
+
+		local function match_block_header(header)
+			if not header then
+				return
+			end
+			local patterns = {
+				"^(%w+)%s+path=(.-)%s+start_line=(%d+)%s+end_line=(%d+)$",
+				"^(%w+)%s+path=(%S+)%s+start_line=(%d+)%s+end_line=(%d+)$",
+				"^(%w+)$",
+			}
+			for _, pattern in ipairs(patterns) do
+				local ft, path, s, e = header:match(pattern)
+				if path then
+					return ft, path, tonumber(s) or 1, tonumber(e) or tonumber(s) or 1
+				elseif ft then
+					return ft, nil, nil, nil
+				end
+			end
+		end
+
+		local function parse_edit_blocks(text)
+			local blocks = {}
+			local lines = vim.split(text or "", "\n", { plain = true })
+			local i = 1
+
+			while i <= #lines do
+				local header = lines[i]:match("^```%s*(.-)%s*$")
+				if header then
+					local ft, path, s, e = match_block_header(header)
+					local body = {}
+					i = i + 1
+					while i <= #lines and not lines[i]:match("^```%s*$") do
+						table.insert(body, lines[i])
+						i = i + 1
+					end
+
+					-- We accept:
+					-- 1) block format with start/end (preferred)
+					-- 2) unified diff blocks (` ```diff `) (start/end nil, but diff.apply_diff can still work via get_diff)
+					if ft then
+						table.insert(blocks, {
+							header = {
+								filetype = ft,
+								filename = path or "",
+								start_line = s,
+								end_line = e,
+							},
+							content = table.concat(body, "\n"),
+						})
+					end
+				end
+				i = i + 1
+			end
+
+			return blocks
+		end
+
+		local function is_busy()
+			local bufnr = chat.chat and chat.chat.bufnr
+			if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
+				-- Chat:start() sets modifiable=false; Chat:finish() sets it true
+				return not vim.bo[bufnr].modifiable
+			end
+			return false
+		end
+
+		local function ask_and_apply(prompt)
+			local orig_win = vim.api.nvim_get_current_win()
+			local was_visible = chat.chat:visible()
+			chat.chat:set_source(orig_win)
+
+			local before_assistant = chat.chat:get_message(constants.ROLE.ASSISTANT)
+			local before_id = before_assistant and before_assistant.id or nil
+
+			chat.ask(prompt, {
+				window = silent_window,
+				show_help = false,
+				auto_follow_cursor = false,
+			})
+
+			-- Immediately return focus (avoids “chat popped up” feeling)
+			vim.schedule(function()
+				if vim.api.nvim_win_is_valid(orig_win) then
+					vim.api.nvim_set_current_win(orig_win)
+				end
+			end)
+
+			local timeout_ms = 60000
+			local step_ms = 40
+			local waited = 0
+
+			local function poll()
+				waited = waited + step_ms
+				if waited > timeout_ms then
+					vim.notify("CopilotChat: timed out waiting for response", vim.log.levels.WARN)
+					if not was_visible then
+						pcall(chat.close)
+					end
+					return
+				end
+
+				if is_busy() then
+					vim.defer_fn(poll, step_ms)
+					return
+				end
+
+				local msg = chat.chat:get_message(constants.ROLE.ASSISTANT)
+				if not msg or (before_id and msg.id == before_id) then
+					vim.defer_fn(poll, step_ms)
+					return
+				end
+
+				local blocks = parse_edit_blocks(msg.content or "")
+				if #blocks == 0 then
+					vim.notify("CopilotChat: no edit blocks found; opening chat for inspection", vim.log.levels.WARN)
+					chat.open() -- fallback: show what happened
+					return
+				end
+
+				local source = chat.chat:get_source()
+				local bufnr = source.bufnr
+				if not (bufnr and vim.api.nvim_buf_is_valid(bufnr)) then
+					vim.notify("CopilotChat: invalid source buffer", vim.log.levels.ERROR)
+					if not was_visible then
+						pcall(chat.close)
+					end
+					return
+				end
+
+				local old_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+				local new_lines = old_lines
+
+				-- Apply in reverse order (safer for multiple blocks)
+				for i = #blocks, 1, -1 do
+					new_lines = diff.apply_diff(blocks[i], new_lines)
+				end
+
+				-- Single buffer write => typically one undo step
+				local view = nil
+				if source.winnr and vim.api.nvim_win_is_valid(source.winnr) then
+					view = vim.fn.winsaveview()
+				end
+
+				vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, new_lines)
+
+				if view and source.winnr and vim.api.nvim_win_is_valid(source.winnr) then
+					pcall(vim.fn.winrestview, view)
+				end
+
+				vim.notify("Applied AI edit (press `u` to undo)", vim.log.levels.INFO)
+
+				if not was_visible then
+					pcall(chat.close)
+				end
+			end
+
+			vim.defer_fn(poll, step_ms)
+		end
+
+		-- Commands that behave like Parrot, but apply immediately
+		vim.api.nvim_create_user_command("CopilotChatRewriteApply", function(cmd)
+			ask_and_apply("/Rewrite " .. (cmd.args or ""))
+		end, { nargs = "*" })
+
+		vim.api.nvim_create_user_command("CopilotChatAppendApply", function(cmd)
+			ask_and_apply("/Append " .. (cmd.args or ""))
+		end, { nargs = "*" })
+
+		vim.api.nvim_create_user_command("CopilotChatPrependApply", function(cmd)
+			ask_and_apply("/Prepend " .. (cmd.args or ""))
+		end, { nargs = "*" })
+
+		vim.api.nvim_create_user_command("CopilotChatFixApply", function()
+			ask_and_apply("/FixApply")
+		end, {})
+
+		-- Retry (still useful)
 		vim.api.nvim_create_user_command("CopilotChatRetry", function()
-			local constants = require("CopilotChat.constants")
 			local last_user = chat.chat:get_message(constants.ROLE.USER, true)
 			if last_user and last_user.content and vim.trim(last_user.content) ~= "" then
 				chat.ask(last_user.content)
@@ -228,18 +432,20 @@ return {
 	end,
 
 	keys = {
+		-- Still available when you actually want the chat UI
 		{ "<leader>at", "<cmd>CopilotChatToggle<CR>", mode = "n", desc = "Toggle Copilot Chat" },
 		{ "<leader>an", "<cmd>CopilotChatProjectNew<CR>", mode = "n", desc = "New Chat (save+reset, per-project)" },
 
-		{ "<leader>ai", ":CopilotChatRewrite ", mode = { "n", "x" }, desc = "Rewrite (selection)" },
-		{ "<leader>aa", ":CopilotChatAppend ", mode = { "n", "x" }, desc = "Append (selection)" },
-		{ "<leader>aS", ":CopilotChatPrepend ", mode = { "n", "x" }, desc = "Prepend (selection)" },
-		{ "<leader>ae", "<cmd>CopilotChatFix<CR>", mode = { "n", "x" }, desc = "Fix (selection)" },
+		-- Silent apply (one undo step)
+		{ "<leader>ai", ":CopilotChatRewriteApply ", mode = { "n", "x" }, desc = "Rewrite (apply; undo with u)" },
+		{ "<leader>aa", ":CopilotChatAppendApply ", mode = { "n", "x" }, desc = "Append (apply; undo with u)" },
+		{ "<leader>aS", ":CopilotChatPrependApply ", mode = { "n", "x" }, desc = "Prepend (apply; undo with u)" },
+		{ "<leader>ae", "<cmd>CopilotChatFixApply<CR>", mode = { "n", "x" }, desc = "Fix (apply; undo with u)" },
 
 		{ "<leader>ar", "<cmd>CopilotChatRetry<CR>", mode = { "n", "x" }, desc = "Retry last prompt" },
 		{ "<leader>aq", "<cmd>CopilotChatStop<CR>", mode = { "n", "x" }, desc = "Stop" },
 
-		-- These use vim.ui.select -> Snacks picker now
+		-- Pickers (Snacks via vim.ui.select)
 		{ "<leader>am", "<cmd>CopilotChatModels<CR>", mode = "n", desc = "Select model" },
 		{ "<leader>ac", "<cmd>CopilotChatPrompts<CR>", mode = "n", desc = "Prompt picker" },
 
