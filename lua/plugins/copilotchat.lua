@@ -2,9 +2,7 @@ return {
 	"CopilotC-Nvim/CopilotChat.nvim",
 	event = "VeryLazy",
 	dependencies = {
-		{ "nvim-lua/plenary.nvim", branch = "master" },
 		"folke/which-key.nvim",
-		"folke/snacks.nvim",
 	},
 	build = "make tiktoken",
 	opts = function()

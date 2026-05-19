@@ -218,7 +218,6 @@ return {
 	opts = {
 		explorer = {},
 		picker = {
-			ui_select = true,
 			sources = {
 				explorer = explorer,
 			},

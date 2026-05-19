@@ -3,7 +3,6 @@
   "LazyVim": { "branch": "main", "commit": "83d90f339defdb109a6ede333865a66ffc7ef6aa" },
   "aerial.nvim": { "branch": "master", "commit": "43dd88ad4024b1945906887521057c73d3b0d84e" },
   "atone.nvim": { "branch": "main", "commit": "2c9dbfe447a3c5857a03098b0336c84f3b5c837f" },
-  "blink-cmp-copilot-chat": { "branch": "main", "commit": "f6b88c9a0afa3080ab3157a630717a0962533185" },
   "blink.cmp": { "branch": "main", "commit": "78336bc89ee5365633bcf754d93df01678b5c08f" },
   "catppuccin": { "branch": "main", "commit": "426dbebe06b5c69fd846ceb17b42e12f890aedf1" },
   "codediff.nvim": { "branch": "main", "commit": "76ff1b13f0bcba655dca85cea1ef0df877a53c0f" },
