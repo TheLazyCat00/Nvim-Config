@@ -62,15 +62,15 @@ return {
 	keys = {
 		-- Chat commands
 		{ "<leader>at", "<cmd>PrtChatToggle<CR>", mode = "n", desc = "Toggle Parrot Chat" },
-		{ "<leader>aa", "<cmd>PrtChatNew<CR>", mode = "n", desc = "New Parrot Chat" },
+		{ "<leader>an", "<cmd>PrtChatNew<CR>", mode = "n", desc = "New Parrot Chat" },
 		{ "<leader>ap", "<cmd>PrtChatPaste<CR>", mode = "x", desc = "Paste to Parrot Chat" },
 
 		-- Interactive commands
 		{ "<leader>ai", ":PrtRewrite ", mode = { "n", "x" }, desc = "Parrot Rewrite" },
-		{ "<leader>an", "<cmd>PrtRetry<CR>", mode = { "n", "x" }, desc = "Parrot Retry" },
+		{ "<leader>ar", "<cmd>PrtRetry<CR>", mode = { "n", "x" }, desc = "Parrot Retry" },
 		{ "<leader>ae", "<cmd>PrtEdit<CR>", mode = { "n", "x" }, desc = "Parrot Edit" },
-		{ "<leader>ab", ":PrtAppend ", mode = { "n", "x" }, desc = "Parrot Append" },
-		{ "<leader>ac", ":PrtPrepend ", mode = { "n", "x" }, desc = "Parrot Prepend" },
+		{ "<leader>aa", ":PrtAppend ", mode = { "n", "x" }, desc = "Parrot Append" },
+		{ "<leader>as", ":PrtPrepend ", mode = { "n", "x" }, desc = "Parrot Prepend" },
 
 		-- Model and provider commands
 		{ "<leader>am", "<cmd>PrtModel<CR>", mode = "n", desc = "Parrot Model" },
@@ -81,7 +81,7 @@ return {
 		-- Other commands
 		{ "<leader>af", "<cmd>PrtChatFinder<CR>", mode = "n", desc = "Parrot Chat Finder" },
 		{ "<leader>ad", "<cmd>PrtChatDelete<CR>", mode = "n", desc = "Parrot Chat Delete" },
-		{ "<leader>ar", "<cmd>PrtContext<CR>", mode = "n", desc = "Parrot Context" },
+		{ "<leader>ac", "<cmd>PrtContext<CR>", mode = "n", desc = "Parrot Context" },
 		{ "<leader>a?", "<cmd>PrtInfo<CR>", mode = "n", desc = "Parrot Info" },
 	},
 }
