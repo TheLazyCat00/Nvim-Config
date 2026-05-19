@@ -1,6 +1,7 @@
 return {
 	"frankroeder/parrot.nvim",
 	event = "VeryLazy",
+	enabled = false,
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"folke/which-key.nvim",
@@ -36,6 +37,9 @@ return {
 
 		chat_user_prefix = "🗨:",
 		llm_prefix = "🦜:",
+		system_prompt = {
+			chat = "Be concise. Get to the point. No fluff."
+		},
 
 		chat_shortcut_respond = { modes = { "n", "i", "x" }, shortcut = "<C-CR>" },
 		chat_shortcut_delete = { modes = { "n", "i", "x" }, shortcut = "<C-g>d" },
@@ -55,10 +59,10 @@ return {
 		style_popup_margin_top = 2,
 		style_popup_max_width = 160,
 
+		enable_spinner = false,
 		command_auto_select_response = true,
 		model_cache_expiry_hours = 48,
 	},
-
 	keys = {
 		-- Chat commands
 		{ "<leader>at", "<cmd>PrtChatToggle<CR>", mode = "n", desc = "Toggle Parrot Chat" },
