@@ -20,11 +20,13 @@ vim.cmd([[
 	au BufReadPost * if expand('%:p') !~# '\m/\.git/' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 ]])
 
+vim.cmd("hi clear StatusLine")
+vim.cmd("hi link StatusLine lualine_c_normal")
 vim.api.nvim_create_autocmd("ColorScheme", {
-	callback = vim.schedule_wrap(function ()
+	callback = function ()
 		vim.cmd("hi clear StatusLine")
 		vim.cmd("hi link StatusLine lualine_c_normal")
-	end)
+	end
 })
 
 vim.api.nvim_create_autocmd("FileType", {
