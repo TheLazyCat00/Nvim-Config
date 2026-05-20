@@ -21,10 +21,10 @@ vim.cmd([[
 ]])
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-	callback = function ()
+	callback = vim.schedule_wrap(function ()
 		vim.cmd("hi clear StatusLine")
 		vim.cmd("hi link StatusLine lualine_c_normal")
-	end
+	end)
 })
 
 vim.api.nvim_create_autocmd("FileType", {
