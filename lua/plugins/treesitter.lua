@@ -42,7 +42,6 @@ local installedLanguages = {
 vim.api.nvim_create_autocmd("BufReadPost", {
 	pattern = "*.y",
 	callback = function(ev)
-		vim.notify("hi")
 		-- Force bison as the TS language (matches what you tested)
 		pcall(vim.treesitter.start, ev.buf, "bison")
 	end,
