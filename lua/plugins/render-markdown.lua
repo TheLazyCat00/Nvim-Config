@@ -1,14 +1,15 @@
 return {
 	"MeanderingProgrammer/render-markdown.nvim",
 	opts = {
+		render_modes = { 'n', 'c', 't', "i" },
 		code = {
 			sign = true,
 			width = "full",
 			right_pad = 1,
+			border = "thin"
 		},
 		heading = {
 			sign = false,
-			icons = {},
 		},
 	},
 	ft = { "markdown", "norg", "rmd", "org", "codecompanion" },

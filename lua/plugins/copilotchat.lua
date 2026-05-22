@@ -1,5 +1,6 @@
 return {
 	"CopilotC-Nvim/CopilotChat.nvim",
+	enabled = false,
 	event = "VeryLazy",
 	dependencies = {
 		{ "nvim-lua/plenary.nvim", branch = "master" },
@@ -11,24 +12,27 @@ return {
 
 		-- Read-only tools (no bash/edit)
 		local ro_tools = { "file", "glob", "grep", "gitdiff", "buffer" }
+		local all_tools_except_no_schema = {
+			"file", "glob", "grep", "gitdiff", "buffer",
+			"url", "bash", "edit",
+		}
 
 		return {
 			model = "mistral-large-latest",
 			system_prompt = "Be concise. Get to the point. No fluff.",
 			temperature = 0.2,
+			ro_tools = ro_tools,
+			all_tools_except_no_schema = all_tools_except_no_schema,
 
 			-- Always include selection as context
 			resources = { "selection" },
 
-			tools = "copilot",
+			tools = all_tools_except_no_schema,
 			trusted_tools = ro_tools, -- auto-execute only these trusted read-only tools
 
 			window = {
-				layout = "float",
+				layout = "horizontal",
 				border = "single",
-				width = 160,
-				height = 25,
-				title = "Copilot Chat",
 			},
 
 			show_help = true,
@@ -118,6 +122,48 @@ return {
 		-- Start CopilotChat
 		local chat = require("CopilotChat")
 		chat.setup(opts)
+		do
+			local client = require("CopilotChat.client")
+			local orig_ask = client.ask
+
+			local FLUSH_MS = 400
+
+			client.ask = function(self, ask_opts)
+				if ask_opts and ask_opts.on_progress then
+					local orig_progress = ask_opts.on_progress
+					local pending_content = ""
+					local pending_reasoning = ""
+					local scheduled = false
+					local last_role = nil
+
+					ask_opts.on_progress = function(msg)
+						last_role = msg.role or last_role
+						pending_content = pending_content .. (msg.content or "")
+						pending_reasoning = pending_reasoning .. (msg.reasoning or "")
+
+						if scheduled then
+							return
+						end
+						scheduled = true
+
+						vim.defer_fn(function()
+							scheduled = false
+							if pending_content ~= "" or pending_reasoning ~= "" then
+								orig_progress({
+									role = last_role,
+									content = pending_content,
+									reasoning = pending_reasoning,
+								})
+								pending_content = ""
+								pending_reasoning = ""
+							end
+						end, FLUSH_MS)
+					end
+				end
+
+				return orig_ask(self, ask_opts)
+			end
+		end
 
 		-- -----------------------------------------------------------------------
 		-- Per-project persistent chat

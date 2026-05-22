@@ -2,7 +2,7 @@ return {
 	"saghen/blink.cmp",
 	enabled = vim.g.lazyvim_cmp == "blink.cmp",
 	opts = function(_, opts)
-		opts = vim.tbl_extend("force", opts, {
+		return vim.tbl_extend("force", opts, {
 			appearance = {
 				kind_icons = vim.deepcopy(LazyVim.config.icons.kinds)
 			},
@@ -21,8 +21,17 @@ return {
 					}
 				}
 			},
+			completion = {
+				list = {
+					selection = {
+						preselect = false,
+						auto_insert = true,
+					},
+				},
+			},
 			keymap = {
 				preset = "enter",
+				["<CR>"] = { "fallback" },
 				['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
 				['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
 			},
