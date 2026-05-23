@@ -7,8 +7,10 @@ return {
 	},
 	init = function()
 		vim.o.autoread = true
+		local group = vim.api.nvim_create_augroup("opencode_dir_change", { clear = true })
 
 		vim.api.nvim_create_autocmd("DirChanged", {
+			group = group,
 			callback = function()
 				local ok, opencode = pcall(require, "opencode")
 				if ok then
