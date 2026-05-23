@@ -2,9 +2,6 @@
 return {
 	"nickjvandyke/opencode.nvim",
 	lazy = false,
-	dependencies = {
-		"folke/snacks.nvim",
-	},
 	init = function()
 		vim.o.autoread = true
 		local group = vim.api.nvim_create_augroup("opencode_dir_change", { clear = true })
@@ -23,7 +20,7 @@ return {
 		{
 			"<leader>aa",
 			function()
-				require("opencode").ask("@this: ", { submit = true })
+				require("opencode").ask()
 			end,
 			desc = "Ask opencode",
 			mode = { "n", "x" },
