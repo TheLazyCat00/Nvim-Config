@@ -1,52 +1,78 @@
 
 return {
-	"sudo-tee/opencode.nvim",
+	"nickjvandyke/opencode.nvim",
 	lazy = false,
-	opts = {
-		default_system_prompt = "Be concise. Get to the point. No fluff.",
-		keymap_prefix = '<leader>a',
-		keymap = {
-			input_window = {
-				['<esc>'] = false,
-				['<cr>'] = false,
-				['<S-cr>'] = false,
-				['<C-s>'] = { 'submit_input_prompt', mode = { 'n', 'i' } }
-			},
-			output_window = {
-				['<esc>'] = false,
-			}
-		},
-		context = {
-			cursor_data = {
-				enabled = false,
-				context_lines = 5,
-			},
-			diagnostics = {
-				enabled = false,
-				info = false,
-				warn = true,
-				error = true,
-			},
-			current_file = {
-				enabled = false,
-				show_full_path = true,
+	dependencies = {
+		"folke/snacks.nvim",
+	},
+	init = function()
+		vim.g.opencode_opts = {
+			server = {
+				toggle = function()
+					require("opencode.terminal").toggle("opencode --port", {
+						split = "right",
+						width = math.floor(vim.o.columns * 0.35),
+					})
+				end,
 			},
 		}
-	},
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		"MeanderingProgrammer/render-markdown.nvim",
-		'saghen/blink.cmp',
-		'folke/snacks.nvim',
-	},
-	init = function ()
+
+		vim.o.autoread = true
+
 		vim.api.nvim_create_autocmd("DirChanged", {
-			callback = function ()
-				local state = require('opencode.state')
-				if state.opencode_server then
-					state.opencode_server:shutdown()
-				end
-			end
+			callback = function()
+				pcall(function()
+					require("opencode").stop()
+				end)
+			end,
 		})
-	end
+	end,
+	keys = {
+		{
+			"<leader>aa",
+			function()
+				require("opencode").ask("@this: ", { submit = true })
+			end,
+			desc = "Ask opencode",
+			mode = { "n", "x" },
+		},
+		{
+			"<leader>ag",
+			function()
+				require("opencode").toggle()
+			end,
+			desc = "Toggle opencode",
+			mode = { "n", "t" },
+		},
+		{
+			"<leader>an",
+			function()
+				require("opencode").command("session.new")
+			end,
+			desc = "New opencode session",
+		},
+		{
+			"<leader>aq",
+			function()
+				require("opencode").stop()
+			end,
+			desc = "Close opencode",
+		},
+		{
+			"<leader>as",
+			function()
+				require("opencode").select()
+			end,
+			desc = "Select opencode",
+			mode = { "n", "x" },
+		},
+		{
+			"<C-.>",
+			function()
+				require("opencode").toggle()
+			end,
+			desc = "Toggle opencode",
+			mode = { "n", "t" },
+		},
+	},
 }
