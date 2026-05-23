@@ -10,9 +10,10 @@ return {
 
 		vim.api.nvim_create_autocmd("DirChanged", {
 			callback = function()
-				pcall(function()
-					require("opencode").stop()
-				end)
+				local ok, opencode = pcall(require, "opencode")
+				if ok then
+					opencode.stop()
+				end
 			end,
 		})
 	end,
