@@ -6,17 +6,6 @@ return {
 		"folke/snacks.nvim",
 	},
 	init = function()
-		vim.g.opencode_opts = {
-			server = {
-				toggle = function()
-					require("opencode.terminal").toggle("opencode --port", {
-						split = "right",
-						width = math.floor(vim.o.columns * 0.35),
-					})
-				end,
-			},
-		}
-
 		vim.o.autoread = true
 
 		vim.api.nvim_create_autocmd("DirChanged", {
@@ -65,14 +54,6 @@ return {
 			end,
 			desc = "Select opencode",
 			mode = { "n", "x" },
-		},
-		{
-			"<C-.>",
-			function()
-				require("opencode").toggle()
-			end,
-			desc = "Toggle opencode",
-			mode = { "n", "t" },
 		},
 	},
 }
