@@ -1,6 +1,6 @@
-
 return {
 	"sudo-tee/opencode.nvim",
+	enabled = false,
 	lazy = false,
 	opts = {
 		default_system_prompt = "Be concise. Get to the point. No fluff.",

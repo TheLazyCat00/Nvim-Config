@@ -1,6 +1,6 @@
 return {
 	"folke/sidekick.nvim",
-	enabled = false,
+	enabled = true,
 	opts = {
 		cli = {
 			win = {
@@ -35,7 +35,7 @@ return {
 		},
 		{
 			"<leader>aa",
-			function() require("sidekick.cli").toggle({ name = "copilot" }) end,
+			function() require("sidekick.cli").toggle({ name = "opencode" }) end,
 			desc = "Sidekick Toggle CLI",
 		},
 		{

@@ -24,14 +24,13 @@ return {
 			completion = {
 				list = {
 					selection = {
-						preselect = false,
+						preselect = true,
 						auto_insert = true,
 					},
 				},
 			},
 			keymap = {
 				preset = "enter",
-				["<CR>"] = { "fallback" },
 				['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
 				['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
 			},
