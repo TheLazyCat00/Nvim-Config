@@ -48,6 +48,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 vim.treesitter.language.register("bison", "yacc")
+vim.treesitter.language.register("cpp", "elkhound")
 vim.api.nvim_create_autocmd('User', {
 	pattern = 'TSUpdate',
 	callback = function()

@@ -1,19 +1,9 @@
--- return {
--- 	"github/copilot.vim",
--- 	event = "VeryLazy",
--- 	config = function()
--- 		vim.g.copilot_no_tab_map = true
--- 	end,
--- 	keys = {
--- 		{ "<C-CR>", 'copilot#Accept("")', mode = "i", silent = true, expr = true, replace_keycodes = false }
--- 	}
--- }
-
 return {
 	"zbirenbaum/copilot.lua",
 	dependencies = {
 		"copilotlsp-nvim/copilot-lsp",
 	},
+	enabled = false,
 	cmd = "Copilot",
 	event = "InsertEnter",
 	opts = {
@@ -34,7 +24,7 @@ return {
 			},
 		},
 		nes = {
-			enabled = false,
+			enabled = true,
 			auto_trigger = true,
 			keymap = {
 				accept_and_goto = "<S-CR>",
