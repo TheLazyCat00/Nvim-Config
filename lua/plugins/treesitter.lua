@@ -77,5 +77,8 @@ return {
 	cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 	opts = {
 		ensure_installed = installedLanguages,
+		indent = {
+			disable = { "ocaml" },
+		},
 	}
 }
