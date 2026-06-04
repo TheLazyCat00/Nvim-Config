@@ -1,3 +1,4 @@
+
 return {
 	'stevearc/aerial.nvim',
 	dependencies = {
@@ -5,9 +6,6 @@ return {
 	},
 	lazy = false,
 	opts = function()
-		-- Capture the ID of the first tab page when Neovim starts up
-		local first_tab = vim.api.nvim_get_current_tabpage()
-
 		return {
 			icons = LazyVim.config.icons.kinds,
 			layout = {
@@ -29,16 +27,21 @@ return {
 			},
 			backends = { "treesitter", "markdown", "man" },
 			attach_mode = "global",
-
-			-- Only open automatically if the current tab is the original first tab
-			open_automatic = function(bufnr)
-				return vim.api.nvim_get_current_tabpage() == first_tab
-			end,
 		}
 	end,
 	keys = {
 		{ "<leader>cs", "<cmd>AerialToggle<cr>", desc = "Aerial (Symbols)" },
 	},
+	init = function ()
+		vim.api.nvim_create_autocmd("User", {
+			pattern="SnacksDashboardClosed",
+			callback = function()
+				vim.schedule(function ()
+					vim.cmd("AerialOpen")
+				end)
+			end,
+		})
+	end,
 	config = function(_, opts)
 		require("aerial").setup(opts)
 		vim.api.nvim_create_autocmd("VimResized", {
