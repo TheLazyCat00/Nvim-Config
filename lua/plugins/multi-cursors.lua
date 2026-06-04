@@ -6,7 +6,7 @@ return {
 		mc.setup(opts)
 
 		mc.addKeymapLayer(function(layerSet)
-			layerSet("n", "gl", mc.alignCursors)
+			layerSet("n", "=", mc.alignCursors)
 			layerSet("n", "<esc>", function()
 				if mc.hasCursors() then
 					mc.clearCursors()
