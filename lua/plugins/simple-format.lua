@@ -1,6 +1,7 @@
 return {
 	"TheLazyCat00/simple-format",
 	lazy = false,
+	enabled = false,
 	opts = {},
 	config = function (_, opts)
 		local simpleFormat = require("simple-format")

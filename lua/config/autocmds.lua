@@ -22,6 +22,14 @@ vim.cmd([[
 
 vim.cmd("hi clear StatusLine")
 vim.cmd("hi link StatusLine lualine_c_normal")
+
+vim.api.nvim_create_user_command("DiagToggle", function()
+	local next_state = not vim.diagnostic.is_enabled()
+	vim.diagnostic.enable(next_state)
+	local current_state = next_state
+	vim.notify("Diagnostics " .. (current_state and "enabled" or "disabled"))
+end, { desc = "Toggle LSP Diagnostics" })
+
 vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = function ()
 		vim.cmd("hi clear StatusLine")
