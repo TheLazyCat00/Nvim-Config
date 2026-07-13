@@ -6,7 +6,6 @@ return {
 	{ "<leader>ft", "<NOP>", hidden = true } ,
 	{ "<leader>fT", "<NOP>", hidden = true } ,
 
-	{ "U", "<Cmd>redo<CR>", desc = "Redo" },
 	{ "sj", "<Cmd>wa<CR>", desc = "Save all buffers" },
 	{ "sk", "<Cmd>wa | qa!<CR>", desc = "Save all and quit" },
 	{ ">", "<Cmd>norm! >><CR>", desc = "Indent line right" },
