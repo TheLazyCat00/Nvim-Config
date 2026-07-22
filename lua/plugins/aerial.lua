@@ -32,16 +32,6 @@ return {
 	keys = {
 		{ "<leader>cs", "<cmd>AerialToggle<cr>", desc = "Aerial (Symbols)" },
 	},
-	init = function ()
-		vim.api.nvim_create_autocmd("User", {
-			pattern="SnacksDashboardClosed",
-			callback = function()
-				vim.schedule(function ()
-					vim.cmd("AerialOpen")
-				end)
-			end,
-		})
-	end,
 	config = function(_, opts)
 		require("aerial").setup(opts)
 		vim.api.nvim_create_autocmd("VimResized", {
