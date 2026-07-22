@@ -62,6 +62,7 @@
   "smart-paste.nvim": { "branch": "main", "commit": "bb46e9a06a728d65f004ad709ff7ee0249717e5e" },
   "snacks.nvim": { "branch": "main", "commit": "882c996cf28183f4d63640de0b4c02ec886d01f2" },
   "ssr.nvim": { "branch": "main", "commit": "7839acf6f940dc1c9210823a7c8b378df122765b" },
+  "stickybuf.nvim": { "branch": "master", "commit": "9e00edfd94baef4a78b4248ae8309a2d4943f118" },
   "substitute.nvim": { "branch": "main", "commit": "0d2077398552f069abccbd964a26dd7cd26882cd" },
   "termfile-nvim": { "branch": "main", "commit": "903583c7f7446c79867c2ae0e7d7afcc4dbf2135" },
   "todo-comments.nvim": { "branch": "main", "commit": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668" },
