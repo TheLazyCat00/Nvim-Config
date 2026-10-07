@@ -1,5 +1,6 @@
 local installedLanguages = {
 	"bash",
+	"bison",
 	"c",
 	"cpp",
 	"c_sharp",
@@ -15,7 +16,6 @@ local installedLanguages = {
 	"julia",
 	"jsdoc",
 	"json",
-	"jsonc",
 	"lua",
 	"luadoc",
 	"luap",
@@ -37,48 +37,77 @@ local installedLanguages = {
 	"vue",
 	"xml",
 	"yaml",
+	"zane",
 }
 
-vim.api.nvim_create_autocmd("BufReadPost", {
-	pattern = "*.y",
-	callback = function(ev)
-		-- Force bison as the TS language (matches what you tested)
-		pcall(vim.treesitter.start, ev.buf, "bison")
-	end,
-})
-
-vim.treesitter.language.register("bison", "yacc")
-vim.treesitter.language.register("cpp", "elkhound")
-vim.api.nvim_create_autocmd('User', {
-	pattern = 'TSUpdate',
-	callback = function()
-		require('nvim-treesitter.parsers').coda = {
-			install_info = {
-				url = 'https://github.com/zane-lang/tree-sitter-coda',
-				queries = "queries",
-			},
-		}
-		require("nvim-treesitter.parsers").bison = {
-			install_info = {
-				url = "https://github.com/lemonadern/tree-sitter-bison",
-				branch = "master",
-			}
-		}
-	end,
-})
+local indentDisabled = { ocaml = true }
 
 return {
-	"nvim-treesitter/nvim-treesitter",
-	version = false, -- last release is way too old and doesn't work on Windows
-	lazy = false,
-	build = ":TSUpdate",
-	---@type TSConfig
-	---@diagnostic disable-next-line: missing-fields
-	cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
-	opts = {
-		ensure_installed = installedLanguages,
-		indent = {
-			disable = { "ocaml" },
-		},
-	}
+	{
+		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
+		lazy = false, -- main doesn't support lazy-loading
+		build = ":TSUpdate",
+		init = function()
+			-- Registered in init so it exists before the first install or :TSUpdate,
+			-- both of which fire this event before reading the parser table.
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "TSUpdate",
+				callback = function()
+					local parsers = require("nvim-treesitter.parsers")
+					parsers.coda = {
+						install_info = {
+							url = "https://github.com/zane-lang/tree-sitter-coda",
+							queries = "queries",
+						},
+					}
+					parsers.zane = {
+						install_info = {
+							url = "https://github.com/zane-lang/compiler",
+							location = "editors/tree-sitter-zane",
+							generate = true,
+							generate_from_json = false,
+							queries = "editors/tree-sitter-zane/queries",
+						},
+					}
+					parsers.bison = {
+						install_info = {
+							url = "https://github.com/lemonadern/tree-sitter-bison",
+							branch = "master",
+						},
+					}
+				end,
+			})
+
+			-- Filetypes that use another filetype's parser.
+			vim.treesitter.language.register("bison", "yacc") -- *.y files are filetype yacc
+			vim.treesitter.language.register("cpp", "elkhound")
+		end,
+		config = function()
+			-- Only installs what's missing; runs in the background.
+			require("nvim-treesitter").install(installedLanguages)
+
+			-- main has no highlight/indent modules; enable them per buffer.
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function(args)
+					if not pcall(vim.treesitter.start, args.buf) then
+						return -- no parser for this filetype
+					end
+					if not indentDisabled[vim.bo[args.buf].filetype] then
+						vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+					end
+				end,
+			})
+		end,
+	},
+	{
+		-- Zane filetype detection, the zane-bound? predicate and the "; extends" query.
+		"zane-lang/compiler",
+		name = "zane.nvim",
+		lazy = false,
+		config = function(plugin)
+			vim.opt.rtp:append(plugin.dir .. "/editors/neovim")
+			dofile(plugin.dir .. "/editors/neovim/zane.lua")
+		end,
+	},
 }

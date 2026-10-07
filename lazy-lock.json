@@ -74,5 +74,6 @@
   "undo-glow.nvim": { "branch": "main", "commit": "ac70916caa2f4e57419bb4c1a2e303cdb7bb57e2" },
   "vim-wakatime": { "branch": "master", "commit": "9f8a1d3b9c6f3a948988a0896b3227c1e1f74a58" },
   "vscode.nvim": { "branch": "main", "commit": "aa1102a7e15195c9cca22730b09224a7f7745ba8" },
-  "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" }
+  "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
+  "zane.nvim": { "branch": "main", "commit": "960f8d8fef10a791ed71a1607a931ff67938910b" }
 }
