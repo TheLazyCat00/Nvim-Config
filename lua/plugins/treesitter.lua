@@ -38,6 +38,7 @@ local installedLanguages = {
 	"xml",
 	"yaml",
 	"zane",
+	"zig",
 }
 
 local indentDisabled = { ocaml = true }
