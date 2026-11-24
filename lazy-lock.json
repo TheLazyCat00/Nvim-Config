@@ -80,5 +80,5 @@
   "vscode.nvim": { "branch": "main", "commit": "aa1102a7e15195c9cca22730b09224a7f7745ba8" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
   "workspaces-nvim": { "branch": "main", "commit": "f293e2e667ed3af2d3999a5d8266874f49e5c6fb" },
-  "zane-nvim": { "branch": "main", "commit": "f8b7bb8d965849b521dae8763870fb9c14f21370" }
+  "zane-nvim": { "branch": "main", "commit": "a658371d20896c6bb11b583be8437441da1dd85d" }
 }
